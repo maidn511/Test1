@@ -1,0 +1,92 @@
+﻿@model PawnRoleModels
+@{
+    ViewBag.Title = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + " quyền";
+}
+
+
+<style>
+    .form-horizontal label {
+        padding-top: 0.5rem
+    }
+
+    .untop {
+        padding-top: 0 !important
+    }
+</style>
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + " quyền",
+    ListLiModels = new List<LiModels>
+    {
+        new LiModels { Href = Url.Action("Index"), Name = "Quản lý quyền"},
+        new LiModels { Name = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + " quyền", IsActive = true}
+    }
+})
+<div class="content-body">
+    <section id="basic-form-layouts">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-content collpase show">
+                        <div class="card-body">
+                            @using (Ajax.BeginRouteForm("Default", new { Action = "AddRole" }, new AjaxOptions
+                            {
+                                HttpMethod = "POST",
+                                OnSuccess = "success"
+                            }, new { @class = "form form-horizontal", id = "frmAddRole" }))
+                            {
+                                <div class="form-body">
+                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                    <h4 class="form-section"><i class="ft-mail"></i> Chi tiết quyền</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Tên quyền</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtRoleId" data-required="true" data-key="null" class="form-control border-primary" placeholder="Tên quyền" name="RoleName" value="@Model.RoleName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row skin skin-flat">
+                                                <label class="col-md-3 label-control untop">Active</label>
+                                                <div class="col-md-9">
+                                                    <input type="checkbox" id="chkIsActive" data-target="#hidIsActive" class="switchery" data-size="sm" @(Model.Id == 0 ? "checked" : (Model.IsActive ? "checked" : "")) />
+                                                    <label for="chkIsActive" class="font-medium-2 text-bold-600 ml-1"></label>
+                                                    <input type="hidden" name="IsActive" id="hidIsActive" value=" @(Model.Id == 0 ? "true" : (Model.IsActive ? "true" : "false"))" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Mô tả</label>
+                                                <div class="col-md-9">
+                                                    <textarea type="text" rows="4" id="txtDescription" class="form-control border-primary" placeholder="Description" name="Description">@Model.Description</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions right">
+                                    <a class="btn btn-warning mr-1" href="@Url.Action("Index")">
+                                        <i class="ft-x"></i> Cancel
+                                    </a>
+                                    <button type="button" id="btnCreate" class="btn btn-primary">
+                                        <i class="fa fa-check-square-o"></i> Save
+                                    </button>
+                                </div>
+                             }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts
+{
+    <script>
+        var urlRole = '@Url.Action("Index")';
+    </script>
+    <script src="~/Scripts/app/role/create.js"></script>
+}

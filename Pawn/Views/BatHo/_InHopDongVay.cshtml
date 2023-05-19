@@ -1,0 +1,38 @@
+﻿@using Pawn.Authorize;
+<div id="InHopDongVay" class="hidden">
+    <table style="width: 100%;margin: 10px;margin-left: 20px">
+        <tr><td>{{123|dateCharacter:'normal'}}</td><td> Giấy Cho Vay Tiền</td></tr>
+
+        <tr><td colspan="2" style="text-align: center;"><b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b></td></tr>
+        <tr><td colspan="2" style="text-align: center;">Độc Lập - Tự Do - Hạnh Phúc</td></tr>
+        <tr><td colspan="2" style="text-align: center;">............o0o............</td></tr>
+        <tr><td colspan="2" style="text-align: center;"><h1>HỢP ĐỒNG VAY TIỀN</h1></td></tr>
+        <tr><td colspan="2">Hôm nay, {{123|dateCharacter:'normal'}}.</td></tr>
+        <tr><td colspan="2">Chúng tôi gồm có:</td></tr>
+        <tr><td colspan="2"><b>BÊN A ( BÊN CHO VAY ) @RDAuthorize.Store.Name</b></td></tr>
+        <tr><td>Người đại diện : @RDAuthorize.Store.OwnerName </td><td> Điện thoại : @RDAuthorize.Store.Phone</td></tr>
+        <tr><td colspan="2">Địa chỉ : @RDAuthorize.Store.Address</td></tr>
+        <tr><td colspan="2"><b>BÊN B ( BÊN VAY )</b></td></tr>
+        <tr><td colspan="2">Họ và tên: {{Modal.Data.CustomerName}}</td></tr>
+        <tr><td colspan="2">Số CMTND: {{Modal.Data.IdentityCard}} Ngày Cấp: {{Modal.Data.CreateDateIdCard}} Nơi Cấp: {{Modal.Data.ICCCreatePlace}}</td></tr>
+        <tr><td colspan="2">Địa chỉ: {{Modal.Data.Address}}</td></tr>
+        <tr><td colspan="2">Bên A đồng ý cho bên B vay tiền với nội dung sau:</td></tr>
+        <tr><td colspan="2">1. Số tiền vay: <b>{{Modal.Data.TotalMoney |currency:"":"0"}} VNĐ</b> <i>( Ghi bằng chữ: {{Modal.Data.TotalMoney|moneyCharacter}} )</i></td></tr>
+        <tr><td colspan="2">2. Lãi suất: thỏa thuận.</td></tr>
+        <tr><td colspan="2">3. Thời hạn vay: Từ ngày <b>{{Modal.Data.FromDateString}}</b> đến ngày <b>{{Modal.Data.ToDateString}}</b>.</td></tr>
+        <tr><td colspan="2">4. Phương thức thanh toán: {{Modal.Data.Frequency}} ngày trả 1 lần với số tiền: <b>{{Modal.Data.MoneyForGues|currency:"":"0"}}</b> VNĐ kể từ ngày vay.</td></tr>
+        <tr><td colspan="2">5. Cam kết của các bên:</td></tr>
+        <tr><td colspan="2">- Bên A đưa đầy đủ số tiền vay ở trên cho bên B tại thời điểm ký giấy này.</td></tr>
+        <tr><td colspan="2">- Khi bên B ký vào giấy này, bên B trong trạng thái tinh thần hoàn toàn minh mẫn, đã đọc kỹ và hiểu toàn bộ trách nhiệm và nghĩa vụ trả nợ vay số tiền trên.</td></tr>
+        <tr>
+            <td colspan="2">
+                - Trong trường hợp Bên B không thanh toán cho Bên A khi hết hạn vay, Bên A có quyền thông
+                báo cho nơi công tác, nơi ở, chính quyền địa phương và cao nhất là cơ quan pháp luật để giải
+                quyết thu hồi công nợ.
+            </td>
+        </tr>
+        <tr>
+        <td style="text-align:center">BÊN CHO VAY </td>
+        <td style="text-align:center">BÊN VAY</td></tr>
+    </table>
+</div>

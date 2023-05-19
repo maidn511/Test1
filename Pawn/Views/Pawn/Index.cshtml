@@ -1,0 +1,280 @@
+﻿
+@{
+    ViewBag.Title = "Vay lãi";
+}
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Vay lãi",
+    ListLiModels = new List<LiModels>
+{
+new LiModels { Name = "Vay lãi", IsActive = true}
+}
+})
+
+<link href="~/Content/vendors/js/gallery/photo-swipe/photoswipe.css" rel="stylesheet" />
+<link href="~/Content/vendors/js/gallery/photo-swipe/default-skin/default-skin.css" rel="stylesheet" />
+<style>
+    .uploadfile {
+        border: dashed 1px #ccc;
+        height: 50px;
+        text-align: center;
+        line-height: 3.5;
+        width: 145px;
+    }
+
+    .delete-img {
+        position: absolute;
+        right: 24px;
+        top: 8px;
+        width: 25px;
+        height: 22px;
+        background: red;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .fa-heart {
+        color: #ff5d5d;
+        font-size: 18px;
+    }
+
+    .ft-rotate-cw {
+        color: green;
+        font-size: 15px;
+    }
+</style>
+<input style="display: none" id="fileupload" accept="image/*" type="file" multiple name="files" data-url="@Url.Action("UploadChungTu", "Upload")" data-sequential-uploads="true" data-form-data='{"script": "true"}' autocomplete="off" />
+<div class="content-body" id="table"
+     data-ng-controller="tableController"
+     data-url="@Url.Action("GetAllData", "Pawn")"
+     data-detail-url="@Url.Action("GetDetailById", "Pawn")"
+     data-update-url="@Url.Action("Pawn", "Pawn")"
+     data-add-url="@Url.Action("Addnewpawn", "Pawn")"
+     data-get-donglai-url="@Url.Action("GetPawnPaysById","Pawn")"
+     data-donglai-url="@Url.Action("DongLai","Pawn")"
+     data-donglaituybien-url="@Url.Action("DongLaiTuyBien","Pawn")"
+     data-delete-url="@Url.Action("DeleteIncomeAndExpense", "Pawn")"
+     data-history-remind-url="@Url.Action("LoadHistoryRemind", "Pawn")"
+     data-history-action-url="@Url.Action("LoadHistoryAction", "Pawn")"
+     data-add-history-remind-url="@Url.Action("AddHistoryRemind", "Pawn")"
+     data-giahanthem-url="@Url.Action("GiaHanThem","Pawn")"
+     data-donghopdong-url="@Url.Action("DongHopDong","Pawn")">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        {{pawn.CustomerName}}
+                        @Html.Partial("_Filter")
+                    </div>
+                    <div class="card-body">
+                        @Html.Partial("_List")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade text-left" id="addform" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            @Html.Partial("_Detail")
+        </div>
+    </div>
+    <div class="modal fade text-left" id="backdrop" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17">Hợp đồng vay lãi</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="Search()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="header cusName">
+                                                    <strong style="color:red">{{pawnData.CustomerName}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Tiền vay</strong></td>
+                                                <td colspan="2" align="right">{{(pawnData.TotalMoney + pawnData.TienVayThem)| currency:"":0}} VNĐ</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Lãi suất</strong></td>
+                                                <td colspan="2" align="right"><b>{{pawnData.InterestRate |currency:"":""}}</b>{{pawnData.InterestRateOptionString}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Vay từ ngày</strong></td>
+                                                <td align="right">{{pawnData.FromDate | jsonDate:'dd-MM-yyyy'}}</td>
+                                                <td align="right" id="tdToDate">{{pawnData.ToDate |jsonDate:'dd-MM-yyyy'}}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="header"><strong>Tổng lãi</strong></td>
+                                                    <td colspan="2" align="right"><span class="bold"><strong>{{pawnData.TongLai | currency:"":"0"}}</strong> </span>VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Đã thanh toán</strong></td>
+                                                    <td colspan="2" align="right"><span class="bold highlight"><strong style="color:brown">{{pawnData.LaiDaDong| currency:"":0}} </strong></span>VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Nợ cũ</strong></td>
+                                                    <td colspan="2" align="right">
+                                                        <span class="bold" id="spanPaymentMoney"><strong>{{pawnData.NoCu| currency:"":0}}</strong></span> VNĐ
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Trạng thái</strong></td>
+                                                    <td colspan="2" align="right">
+                                                        <span class="bold highlight" id="spanPaymentMoney"><strong style="color:brown">{{pawnData.StatusString}}</strong></span>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-tabs nav-underline no-hover-bg">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="dl-tab" data-toggle="tab" ng-click="DongLai(pawnData.Id)" href="#tab_dl" aria-controls="tab_dl" aria-expanded="true">Đóng lãi</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tbg-tab" data-toggle="tab" href="#tab_tbg" aria-controls="tab_tbg" aria-expanded="false" ng-click="ChangeTypeLoan(false)">Trả bớt gốc</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="vt-tab" data-toggle="tab" href="#tab_tbg" aria-controls="tab_tbg" aria-expanded="false" ng-click="ChangeTypeLoan(true)">Vay thêm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="gh-tab" ng-click="LoadGiaHan()" data-toggle="tab" href="#tab_gh" aria-controls="tab_gh" aria-expanded="false">Gia hạn</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="dhd-tab" ng-click="LoadCloseContract()" data-toggle="tab" href="#tab_dhd" aria-controls="tab_dhd" aria-expanded="false">Đóng hợp đồng</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="no-tab" data-toggle="tab" href="#tab_no" aria-controls="tab_no" aria-expanded="false">Nợ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="ct-tab" data-toggle="tab" href="#tab_ct" aria-controls="tab_ct" aria-expanded="false" ng-click="LoadChungTu(pawnData.Id)">Chứng từ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="ls-tab" ng-click="LoadHistory(pawnData.Id)" data-toggle="tab" href="#tab_ls" aria-controls="tab_ls" aria-expanded="false">Lịch sử</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="lstc-tab" data-toggle="tab" href="#tab_lstc" aria-controls="tab_lstc" aria-expanded="false">Lịch sử trả chậm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="hg-tab" data-toggle="tab" href="#tab_hg" aria-controls="tab_hg" aria-expanded="false" ng-click="CallTabTimer()">Hẹn giờ</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content pt-1">
+                                @*Tab đóng lãi*@
+                                <div role="tabpanel" class="tab-pane active in" id="tab_dl" aria-labelledby="tab_dl" aria-expanded="true">
+                                    @Html.Partial("_DongLai")
+                                </div>
+                                @*Tab  trả bớt gốc*@
+                                <div class="tab-pane" id="tab_tbg" role="tabpanel" aria-labelledby="tab_tbg" aria-expanded="false">
+                                    @Html.Partial("_TraBotGoc")
+                                </div>
+                                @*<div class="tab-pane" id="tab_vt" role="tabpanel" aria-labelledby="tab_vt" aria-expanded="false">
+                                        @Html.Partial("_TraBotGoc")
+                                    </div>*@
+                                @*Tab gia hạn*@
+                                <div class="tab-pane" id="tab_gh" role="tabpanel" aria-labelledby="tab_gh" aria-expanded="false">
+                                    @Html.Partial("_GiaHan")
+                                </div>
+                                @*Tab Đóng hợp đồng*@
+                                <div class="tab-pane" id="tab_dhd" role="tabpanel" aria-labelledby="tab_dhd" aria-expanded="false">
+                                    @Html.Partial("_DongHopDong")
+                                </div>
+                                @*Tab Nợ*@
+                                <div class="tab-pane" id="tab_no" role="tabpanel" aria-labelledby="tab_no" aria-expanded="false">
+                                    @Html.Partial("_No")
+                                </div>
+                                @*Tab Chứng từ*@
+                                <div class="tab-pane" id="tab_ct" role="tabpanel" aria-labelledby="tab_ct" aria-expanded="false">
+                                    @Html.Partial("_ChungTu")
+                                </div>
+                                @*Tab lịch sử*@
+                                <div class="tab-pane" id="tab_ls" role="tabpanel" aria-labelledby="tab_ls" aria-expanded="false">
+                                    @Html.Partial("_LichSu")
+
+                                </div>
+                                @*Tab lịch sử trả chậm*@
+                                <div class="tab-pane" id="tab_lstc" role="tabpanel" aria-labelledby="tab_lstc" aria-expanded="false">
+                                    @Html.Partial("_LichSuTraCham")
+                                </div>
+                                @*Tab hẹn giờ*@
+                                <div class="tab-pane" id="tab_hg" role="tabpanel" aria-labelledby="tab_hg" aria-expanded="false">
+                                    @Html.Partial("_HenGio")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" ng-click="Search()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section vendor{
+    <script src="~/Content/js/scripts/popover/popover.js"></script>
+    <script src="~/Content/vendors/js/gallery/masonry/masonry.pkgd.min.js"></script>
+    <script src="~/Content/vendors/js/gallery/photo-swipe/photoswipe.min.js"></script>
+    <script src="~/Content/vendors/js/gallery/photo-swipe/photoswipe-ui-default.min.js"></script>
+}
+@section scripts {
+    @Scripts.Render("~/Scripts/app/common/table.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+    var urlAddWithDrawCapital = '@Url.Action("AddWithDrawCapital", "Pawn")';
+        var urlLoadDataCapitalLoan = '@Url.Action("LoadDataCapitalLoan", "Pawn")';
+        var urlDeleteCapitalLoan = '@Url.Action("DeleteCapitalLoan", "Pawn")';
+        var urlAddExtentionContract = '@Url.Action("AddExtentionContract", "Common")';
+
+        var urlLoadChungtu = '@Url.Action("LoadChungtu", "Common")';
+        var urlAddFile = '@Url.Action("AddFile", "Common")';
+        var urlDeleteFile = '@Url.Action("DeleteFile", "Common")';
+
+        var urlAddDebt = '@Url.Action("AddDebt", "Common")';
+        var urlLoadSelectStaff = '@Url.Action("LoadSelectStaffByStore", "Common")';
+        var urlLoadTimer = '@Url.Action("LoadTimer", "Common")';
+        var urlAddTimer = '@Url.Action("AddTimer", "Common")';
+        var urlLoadCustomerList = '@Url.Action("LoadDataCustomer", "Common")';
+        var urlLoadSelectInterestRateType = '@Url.Action("LoadInterestRateType", "Pawn")';
+        var urlLoadDetailPawnContract = '@Url.Action("LoadDetailPawnContract", "Pawn")';
+        var urlDeletePawn = '@Url.Action("DeletePawn", "Pawn")';
+        var urlGetMaxContract =  '@Url.Action("GetMaxContractVLCode")';
+        var docType = @((int)Pawn.Libraries.DocumentTypeEnum.VayLai);
+        var urlLoadSelectStoreWithoutCurrent = '@Url.Action("LoadSelectStoreWithoutCurrent", "Common")';
+        var urlConvertStore = '@Url.Action("ConvertStore")';
+        var urlUpdateBadDebt = '@Url.Action("UpdateBadDebt")';
+        var urlUpdateMoneySI = '@Url.Action("UpdateMoneySI")';
+        var storeCurrent = @(RDAuthorize.Store.Id);
+    </script>
+    <script src="~/Content/js/scripts/gallery/photo-swipe/photoswipe-script.js"></script>
+    <script src="~/Scripts/app/pawn/index.js"></script>
+}
+
+

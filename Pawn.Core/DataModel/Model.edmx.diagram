@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b9827067c96e472994f6f5037ec023a0" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="PawnModel.Tb_Account" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Account_Store" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_AccountType" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_BH_Pay" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_BHContract" Width="1.5" PointX="4.75" PointY="4.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Capital" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Capital_Loan" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Capital_PayDay" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Contract" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Customer" Width="1.5" PointX="10.75" PointY="6.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_DebitContract" Width="1.5" PointX="6.75" PointY="10.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Debt" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_DiscoutHeadMoney" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Document" Width="1.5" PointX="2.75" PointY="12.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_ExtentionContract" Width="1.5" PointX="12.75" PointY="4.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_FileManagement" Width="1.5" PointX="12.75" PointY="8.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_History" Width="1.5" PointX="8.75" PointY="12.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_IncomeAndExpense" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_InfoInstallment" Width="1.5" PointX="4.75" PointY="14.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_InterestPay" Width="1.5" PointX="14.75" PointY="6.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Menu" Width="1.5" PointX="14.75" PointY="10.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_MenuPermission" Width="1.5" PointX="10.75" PointY="14.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_MoreLoan" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_PawnContract" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_PawnPay" Width="1.5" PointX="16.75" PointY="4.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Role" Width="1.5" PointX="6.75" PointY="16.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Status" Width="1.5" PointX="16.75" PointY="9.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_StatusContract" Width="1.5" PointX="12.75" PointY="16.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Store" Width="1.5" PointX="16.75" PointY="14.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Timer" Width="1.5" PointX="8.75" PointY="17.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_User" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_UserRole" Width="1.5" PointX="2.75" PointY="18.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_UserRoleAdmin" Width="1.5" PointX="18.75" PointY="5.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_Voucher" Width="1.5" PointX="18.75" PointY="8.75" />
+        <EntityTypeShape EntityType="PawnModel.Tb_CashBook" Width="1.5" PointX="19.375" PointY="11.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

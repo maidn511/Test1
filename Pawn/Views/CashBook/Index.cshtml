@@ -1,0 +1,247 @@
+﻿@using System.Configuration
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Sổ quỹ tiền mặt",
+    ListLiModels = new List<LiModels>
+{
+new LiModels { Name = "Sổ quỹ tiền mặt", IsActive = true}
+}
+})
+<div class="content-body" id="table"
+     data-ng-controller="tableController"
+     data-url="@Url.Action("GetAllData", "CashBook")"
+     data-notes-url="@Url.Action("GetNotesData", "CashBook")"
+     data-export-excel="@Url.Action("ExportExcel", "CashBook")">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-12 mb-1">
+                                @*<select name="cbbType" class="form-control" ng-change="Search()"
+                                            ng-options="option.Username as option.Firstname +' '+ option.Lastname for option in AdditionData.employee"
+                                            ng-model="Parameters.userName">
+                                        <option value="">Tất cả nhân viên</option>
+                                    </select>*@
+
+                                <select data-ng-model="Parameters.userName" chosen
+                                        no-results-text="'No data found!'" ng-change="Search()"
+                                        placeholder-text-multiple="'x'"
+                                        disable-search="false" class="form-control"
+                                        ng-options="option.Username as option.Firstname +' '+ option.Lastname for option in AdditionData.employee">
+                                    <option value="">Tất cả nhân viên</option>
+                                </select>
+
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-12 mb-1">
+                                <select name="cbbDoc" class="form-control" ng-change="search2()" style="height:34px!important"
+                                        ng-options="option.DocType as option.Description for option in AdditionData.document"
+                                        ng-model="Parameters.documentType">
+                                    <option value="">Tất cả</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-12 mb-1">
+                                <div class="input-group"
+                                     moment-picker="Parameters.fromDateString"
+                                     max-date="Parameters.toDateString"
+                                     format="DD-MM-YYYY">
+                                    <input class="form-control"
+                                           placeholder="Tư ngày"
+                                           ng-model="Parameters.fromDateString"
+                                           ng-model-options="{ updateOn: 'blur' }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-12 mb-1">
+                                <div class="input-group"
+                                     moment-picker="Parameters.toDateString"
+                                     min-date="Parameters.fromDateString"
+                                     format="DD-MM-YYYY">
+                                    <input class="form-control"
+                                           placeholder="Đến ngày"
+                                           ng-model="Parameters.toDateString"
+                                           ng-model-options="{ updateOn: 'blur' }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon3"><span class="fa fa-calendar"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <button type="button" ng-click="Search()" class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                <div class="card-body"
+                     ng-show="(Parameters.userName === null || Parameters.userName === undefined || Parameters.userName === '')">
+                     @*&&(Parameters.documentType == null || Parameters.documentType == ''|| Parameters.documentType === undefined )">*@
+                    <div class="panel-body" style="position: relative; padding: 15px 0 15px 0">
+                        @Html.Partial("_Loading")
+                        <table class="table table-bordered table-striped w-100"
+                               style="position: relative; width: 100%; height: 100%"
+                               role="grid">
+                            <thead class="cf">
+                            <tr>
+                                <th>Bảng tổng kết</th>
+                                <th>Thu</th>
+                                <th>Chi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-bold-600">Tiền đầu ngày</td>
+                                <td colspan="2" class="text-right">
+                                    <span ng-show="AdditionData.summary[0].BalanceAmount > 0" class="blue text-bold-600">
+                                        + {{AdditionData.summary[0].BalanceAmount|currency:"":'0'}}
+                                    </span>
+                                    <span ng-show="AdditionData.summary[0].BalanceAmount < 0" class="red text-bold-600">
+                                        - {{AdditionData.summary[0].BalanceAmount|currency:"":'0'}}
+                                    </span>
+                                    <span ng-show="AdditionData.summary[0].BalanceAmount == 0" class="black text-bold-600">
+                                        {{AdditionData.summary[0].BalanceAmount|currency:"":'0'}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="summary in AdditionData.summary">
+                                <td width="40%">{{summary.Description}}</td>
+                                <td class="text-right blue" width="30%">
+                                    <span ng-show="summary.CreditAccount > 0">+</span>
+                                    {{summary.CreditAccount|currency:"":'0'}}
+                                </td>
+                                <td class="text-right red" width="30%">
+                                    <span ng-show="summary.DebitAccount > 0">-</span>
+                                    {{summary.DebitAccount|currency:"":'0'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold-600">Tiền mặt còn lại</td>
+                                <td colspan="2" class="text-right">
+                                    <span ng-show="getCashBalance(AdditionData.summary[0].BalanceAmount) > 0" class="blue text-bold-600">
+                                        + {{getCashBalance(AdditionData.summary[0].BalanceAmount)|currency:"":'0'}}
+                                    </span>
+                                    <span ng-show="getCashBalance(AdditionData.summary[0].BalanceAmount) < 0" class="red text-bold-600">
+                                        - {{getCashBalance(AdditionData.summary[0].BalanceAmount)|currency:"":'0'}}
+                                    </span>
+                                    <span ng-show="getCashBalance(AdditionData.summary[0].BalanceAmount) == 0" class="black text-bold-600">
+                                        {{getCashBalance(AdditionData.summary[0].BalanceAmount)|currency:"":'0'}}
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-12 mb-1"><h3>Chi tiết giao dịch</h3></div>
+                            <div class="col-xl-6 col-lg-9 col-md-12 mb-1">
+                                <select data-ng-model="Parameters.Notes" chosen multiple
+                                        no-results-text="'No data found!'"
+                                        placeholder-text-multiple="'Tất cả diễn giải.'"
+                                        disable-search="true" class="form-control"
+                                        ng-change="Search()"
+                                        ng-options="option.Id as option.Description for option in Notes">
+                                </select>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-12 mb-1">
+                                <a class="btn btn-primary btn-min-width mr-1 mb-1" href="javascript:void(0)" ng-click="ExportExcel()">
+                                    <i class="fa fa-file-excel-o"></i> Xuất Excel
+                                </a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            @Html.Partial("_Loading")
+                            <table class="table table-bordered table-striped">
+                                <thead class="cf">
+                                    <tr>
+                                        <th style="text-align: center" class="{{sortType!='PageIndex'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}" tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'PageIndex'; sortReverse = !sortReverse">
+                                            #
+                                        </th>
+                                        <th class="{{sortType!='DocumentTypeString'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'DocumentTypeString'; sortReverse = !sortReverse">
+                                            Loại Hình
+                                        </th>
+                                        <th class="{{sortType!='DocumentName'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'DocumentName'; sortReverse = !sortReverse">
+                                            Mã HĐ
+                                        </th>
+                                        <th class="{{sortType!='Customer'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Customer'; sortReverse = !sortReverse">
+                                            Khách hàng
+                                        </th>
+                                        <th class="{{sortType!='FullName'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'FullName'; sortReverse = !sortReverse">
+                                            Người Giao Dịch
+                                        </th>
+                                        <th class="{{sortType!='DocumentDate'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'DocumentDate'; sortReverse = !sortReverse">
+                                            Ngày
+                                        </th>
+                                        <th class="{{sortType!='Note'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Note'; sortReverse = !sortReverse">
+                                            Diễn Giải
+                                        </th>
+                                        <th class="{{sortType!='CreditAccount'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}" style="width:8%"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'CreditAccount'; sortReverse = !sortReverse">
+                                            Thu
+                                        </th>
+                                        <th class="{{sortType!='DebitAccount'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}" style="width:8%"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'DebitAccount'; sortReverse = !sortReverse">
+                                            Chi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="item in filteredItems = (ListOfItem | filter : search | orderBy:sortType:sortReverse)" contextmenurepeater>
+                                        <td style="text-align: center; width: 40px !important; vertical-align: middle" data-title="#">{{(Pager.currentPage - 1) *Pager.pageSize + ($index + 1)}}</td>
+                                        <td class="text-center">{{item.DocumentTypeString}}</td>
+                                        <td style="vertical-align: middle;">
+                                            <a class="font-blue-alt" href="#" ng-click="ShowDetailByItem(item)">{{item.DocumentName}}</a>
+                                        </td>
+                                        <td class="text-center">{{item.Customer}}</td>
+                                        <td class="text-center">{{item.FullName}}</td>
+                                        <td class="text-center">{{item.DocumentDate}}</td>
+                                        <td class="text-center">{{item.Note}}</td>
+                                        <td class="text-right">{{item.CreditAccount| currency:"":0}}</td>
+                                        <td class="text-right">{{item.DebitAccount| currency:"":0}}</td>
+
+
+                                    </tr>
+                                    <tr ng-show="ListOfItem.length > 0 && ListOfItem != undefined">
+                                        <td colspan="7" class="text-right text-bold-600">Tổng cộng: </td>
+                                        <td class="text-right text-bold-600 font-red">{{ListOfItem[0].TotalCreditAccount| currency:"":0}}</td>
+                                        <td class="text-right text-bold-600 font-red">{{ListOfItem[0].TotalDebitAccount| currency:"":0}}</td>
+                                    </tr>
+                                    <tr ng-show="ListOfItem.length > 0 && ListOfItem != undefined">
+                                        <td colspan="7" class="text-right text-bold-600">Tổng thu - chi: </td>
+                                        <td colspan="7" class="text-center text-bold-600 font-red">{{(ListOfItem[0].TotalDebitAccount - ListOfItem[0].TotalCreditAccount)| currency:"":0}}</td>
+                                    </tr>
+                                    <tr ng-show="ListOfItem.length == 0 || ListOfItem == undefined">
+                                        <td colspan="9">
+                                            @Html.Partial("_NoDataFound")
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @Html.Partial("_PagingInformation")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/Scripts/app/common/table.js")
+    @Scripts.Render("~/Scripts/app/cashbooks/index.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

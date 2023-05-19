@@ -1,0 +1,82 @@
+﻿<form class="form form-horizontal form-bordered">
+    <div class="form-body" style="border:1px solid #d9d9d9">
+        <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+            <i class="ft-align-justify"></i> {{TitleLoan}}
+        </h4>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput1">{{DateTitleLoan}}</label>
+            <div class="col-md-8">
+                <div class="input-group"
+                     moment-picker="WithDrawal.LoadDateString"
+                     format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                    <input class="form-control"
+                           placeholder="{{DateTitleLoan}}"
+                           ng-model="WithDrawal.LoadDateString"
+                           ng-model-options="{ updateOn: 'blur' }">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput2">{{MoneyTitleLoan}}</label>
+            <div class="col-md-8">
+                <input type="text" format-currency-input ng-model="WithDrawal.MoneyNumber" value="1" ng-min="1"
+                       class="form-control" placeholder="{{MoneyTitleLoan}}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control">Ghi chú</label>
+            <div class="col-md-8">
+                <textarea rows="3" ng-model="WithDrawal.Note" class="form-control" placeholder="Ghi chú"></textarea>
+            </div>
+        </div>
+        <h4 class="form-section text-right" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9;padding-right:60px">
+            <button class="btn btn-primary" style="margin-bottom:3px" ng-click="AddWithDrawal()">Đồng ý</button>
+        </h4>
+    </div>
+</form>
+<form class="form form-horizontal form-bordered">
+    <div class="form-body">
+        <h4 class="form-section" style="margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+            <i class="ft-align-justify"></i> Danh sách tiền gốc
+        </h4>
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead class="cf">
+                    <tr>
+                        <th style="text-align: center">
+                            STT
+                        </th>
+                        <th style="text-align: center">
+                            Ngày
+                        </th>
+                        <th style="text-align: center">
+                            Nội dung
+                        </th>
+                        <th style="text-align: center">
+                            Số tiền
+                        </th>
+                        <th style="text-align: center">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in DrawalData">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{item.LoadDate | jsonDate:"dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{(!item.IsLoan ? "Trả bớt gốc" : "Vay thêm tiền") + ": " + (item.Note || "")}}</td>
+                        <td class="text-right">{{(item.IsLoan ? "" : "-") + "" + (item.MoneyNumber| currency:"":0)}} VND</td>
+                        <td class="text-center"><i class="ft-trash-2" style="cursor:pointer" ng-click="DeleteLoan(item)"></i></td>
+                    </tr>
+                    <tr class="bgtd">
+                        <td class="text-right" colspan="3" style="color:brown"><strong>Tổng gốc còn lại</strong></td>
+                        <td class="text-right" style="color:brown"><strong>{{pawnData.TotalMoney | currency:"":0 }} VNĐ</strong></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

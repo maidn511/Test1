@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "AssignCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/vendors/css/forms/listbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
+<style>
+    [id^='bootstrap-duallistbox'] {
+        height: 300px;
+        overflow-y: scroll !important;
+        margin-bottom: 25px;
+    }
+
+        [id^='bootstrap-duallistbox']::-webkit-scrollbar-track {
+            background-color: #efeaea;
+        }
+
+        [id^='bootstrap-duallistbox']::-webkit-scrollbar {
+            width: 4px;
+            background-color: #ccc;
+        }
+
+        [id^='bootstrap-duallistbox']::-webkit-scrollbar-thumb {
+            background-color: #a9a7a7;
+        }
+</style>
+<div class="content-body">
+    <!-- Dual Listbox start -->
+    @if (RDAuthorize.StoreList.Count > 1)
+    {
+        <section class="basic-dual-listbox">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-content collapse show">
+                            <div class="card-body" style="padding-bottom:0">
+                                <h4 class="card-title">Basic Dual ListBox</h4>
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            @Html.Action("LoadSelectStore", "Common",
+                                                                   new SelectOptionModels
+                                                                   {
+                                                                       ChosenSuggest = "-- Chọn cửa hàng --",
+                                                                       DataRequired = true,
+                                                                       Name = "Store.Id",
+                                                                       IdSelect = "slStoreId",
+                                                                       DataKey = "null",
+                                                                       PlaceHolder = "Cửa hàng",
+                                                                       Value = RDAuthorize.Store.Id + ""
+                                                                   })
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            @Html.Action("LoadSelectStore", "Common",
+                                                                   new SelectOptionModels
+                                                                   {
+                                                                       ChosenSuggest = "-- Chọn cửa hàng --",
+                                                                       DataRequired = true,
+                                                                       Name = "Store.Id",
+                                                                       IdSelect = "slStoreId",
+                                                                       DataKey = "null",
+                                                                       PlaceHolder = "Cửa hàng",
+                                                                   })
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    @{Html.RenderAction("_PatialAssignCustomer");}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+        @:Bạn phải sở hữu 2 cửa hàng trở lên thì với có thể sử dụng tính năng này
+    }<!-- Dual ListBox Custom Options end -->
+</div>
+
+@section vendor {
+    <script src="~/Content/vendors/js/forms/listbox/jquery.bootstrap-duallistbox.min.js"></script>
+}
+
+@section scripts {
+    <script>
+
+        $(function () {
+            'use strict';
+            $('.duallistbox').bootstrapDualListbox();
+        })
+
+
+    </script>
+}

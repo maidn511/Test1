@@ -1,0 +1,72 @@
+﻿<form class="form form-horizontal form-bordered">
+    <div class="form-body" style="border:1px solid #d9d9d9">
+        <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+            <i class="ft-align-justify"></i> Gia hạn hợp đồng
+        </h4>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput1">Khách hàng</label>
+            <div class="col-md-6 col-lg-offset-3">
+                <label style="padding-top: 6px;"><strong>{{pawnData.CustomerName}}</strong></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput2">Gia hạn thêm *</label>
+            <div class="col-md-6">
+                <input type="text" format-currency-input ng-model="ExtentionContract.AddTime" class="form-control" placeholder="{{pawnData.InterestRateTypeString}}">
+            </div>
+            <div class="col-md-3"><span>{{pawnData.InterestRateTypeString}}</span></div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control">Ghi chú</label>
+            <div class="col-md-6 col-lg-offset-3">
+                <textarea rows="3" ng-model="ExtentionContract.Note" class="form-control" placeholder="Ghi chú"></textarea>
+            </div>
+        </div>
+        <div class="form-group row" style="background: #f9f9f9;">
+            <label class="col-md-3 label-control"></label>
+            <div class="col-md-6 col-lg-offset-3 text-right" style="border-left:0">
+                <button class="btn btn-primary" ng-click="AddWithExtensionHistory()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form class="form form-horizontal form-bordered">
+    <div class="form-body">
+        <h4 class="form-section" style="margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+            <i class="ft-align-justify"></i> Danh sách tiền gốc
+        </h4>
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead class="cf">
+                    <tr>
+                        <th style="text-align: center; width:50px">
+                            STT
+                        </th>
+                        <th style="text-align: center">
+                            Gia hạn từ ngày
+                        </th>
+                        <th style="text-align: center">
+                            Đến ngày
+                        </th>
+                        <th style="text-align: center; width:140px">
+                            Số ngày
+                        </th>
+                        <th style="text-align: center">
+                            Nội dung
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in pawnData.ListExtentionContract">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{item.FromDate | jsonDate:"dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{item.ToDate | jsonDate:"dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{item.AddTime}}</td>
+                        <td>{{item.Note}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

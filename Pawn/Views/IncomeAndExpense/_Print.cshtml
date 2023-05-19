@@ -1,0 +1,272 @@
+﻿@using Pawn.Authorize;
+<div class="row hidden" id="FromPhieuThu">
+    <div id="cssFrom">
+        <style type="text/css">
+            #cssFrom {
+                display: none;
+            }
+
+            @@media print {
+                table{
+                    width:100%;
+                }
+                .text-center {
+                    text-align: center;
+                }
+
+                .text-left {
+                    text-align: left;
+                }
+
+                .text-right {
+                    text-align: right;
+                }
+
+                .font-bold {
+                    font-weight: bold;
+                }
+
+                .font-italic {
+                    font-style: italic;
+                }
+
+                .font-size-large {
+                    font-size: large;
+                }
+
+                .font-size-x-large {
+                    font-size: x-large;
+                }
+
+                .font-size-small {
+                    font-size: small;
+                }
+
+                .font-size-x-small {
+                    font-size: x-small;
+                }
+
+                .font-size-medium {
+                    font-size: medium;
+                }
+            }
+        </style>
+    </div>
+    <div class="card-body">
+                        <table class="" border="0">
+                                <tr>
+                                    <td width="30%">
+                                        <p class="font-bold">Đơn vị: <span>@RDAuthorize.Store.Name</span></p>
+                                        <p class="font-bold">Địa chỉ: <span>@RDAuthorize.Store.Address</span></p>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                    </td>
+                                    <td width="40%" class="text-center">
+                                        <br />
+                                        <p class="font-bold font-size-x-large">PHIẾU THU</p>
+                                        <p class="font-bold">Số: {{PrintIncome.DocumentName}}</p>
+                                        <p class="font-italic">Liên: 1</p>
+                                        <p class="font-italic">{{123|dateCharacter:'normal'}}</p>
+                                    </td>
+                                    <td width="30%">
+                                        <p class="font-bold">Mấu số 01-TT</p>
+                                        <p class="font-italic">(Ban hành theo QC số: 15/2006/QC-BTC Ngày 20/03/2016 của bộ trưởng BTC)</p>
+                                        <p class="font-bold">Nợ:</p>
+                                        <p class="font-bold">Có:</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table-borderless table" border="0">
+                                    <tr>
+                                        <td><span>Họ tên người nộp tiền:</span></td>
+                                        <td colspan="3"><span class="font-bold">{{PrintIncome.Customer}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Địa chỉ:</span></td>
+                                        <td colspan="3"><span>{{PrintIncome.CustomerAddress}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Lý do nộp:</span></td>
+                                        <td colspan="3"><span>{{PrintIncome.Reason}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Số tiền nộp:</span></td>
+                                        <td><span class="font-bold">{{PrintIncome.MoneyNumber|currency:"":"0"}}  vnđ</span> </td>
+                                        <td colspan="2"><span class="font-italic">{{PrintIncome.MoneyNumber|moneyCharacter}} (Số tiền bằng chữ)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Kèm theo: </span></td>
+                                        <td><span></span></td>
+                                        <td colspan="2"><span>(Chứng từ góc)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3" class="text-right"><span class="font-italic">{{123|dateCharacter:'normal'}}</span> </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            <p class="font-bold">Người nộp tiền</p>
+                                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="font-bold">Người lập</p>
+                                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="font-bold">Thủ quỹ</p>
+                                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="font-bold">Giám đốc chi nhánh</p>
+                                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <p class="font-size-small">Đã nhận đủ số tiền (viết bằng chữ): {{PrintIncome.MoneyNumber|moneyCharacter}}</p>
+                                <p class="font-size-small">+ Tỷ giá ngoại tệ (vàng, bạc, đá quý):</p>
+                                <p class="font-size-small">+ Số tiền qui đổi:</p>
+                                <p class="font-size-small">(Liên gửi ra ngoài phải đóng dấu)</p>
+                            </div>
+                        </div>
+                    </div>
+</div>
+
+<div id="FromPhieuChi" class="row hidden">
+    <div id="cssFrom1">
+        <style type="text/css">
+            #cssFrom1 {
+                display: none;
+            }
+
+            @@media print {
+                table {
+                    width: 100%;
+                }
+
+                .text-center {
+                    text-align: center;
+                }
+
+                .text-left {
+                    text-align: left;
+                }
+
+                .text-right {
+                    text-align: right;
+                }
+
+                .font-bold {
+                    font-weight: bold;
+                }
+
+                .font-italic {
+                    font-style: italic;
+                }
+
+                .font-size-large {
+                    font-size: large;
+                }
+
+                .font-size-x-large {
+                    font-size: x-large;
+                }
+
+                .font-size-small {
+                    font-size: small;
+                }
+
+                .font-size-x-small {
+                    font-size: x-small;
+                }
+
+                .font-size-medium {
+                    font-size: medium;
+                }
+            }
+        </style>
+    </div>
+    <div class="card-body">
+        <table class="" border="0">
+            <tr>
+                <td width="60%" class="text-center">
+                    <p class="font-bold font-size-x-large">Đơn vị: <span>@RDAuthorize.Store.Name</span></p>
+                    <p class="font-bold font-size-x-large">Hotline: <span>@RDAuthorize.Store.Phone</span></p>
+                </td>
+                <td width="40%" class="text-center">
+                    <p class="font-bold font-size-x-large">PHIẾU CHI TIỀN</p>
+                    <p class="font-bold">Ngày: {{123|dateNow:'DD-MM-YYYY'}}</p>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-borderless table" border="0">
+                    <tr>
+                        <td><span>Họ tên người nhận tiền:</span><span class="font-bold"> {{PrintExpense.Customer}}</span></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td><span>Địa chỉ:</span><span> {{PrintExpense.CustomerAddress}}</span></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td><span>Lý do chi tiền:</span><span> {{PrintExpense.Reason}}</span></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td><span>Số tiền:</span><span class="font-bold"> {{PrintExpense.MoneyNumber|currency:"":"0"}}  vnđ</span></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td><span>Bằng chữ:</span><span class="font-italic"> {{PrintExpense.MoneyNumber|moneyCharacter}}</span></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Người tạo: {{PrintExpense.CreatedUser}} ({{PrintExpense.CreatedDate}})</p>
+                        </td>
+                        <td colspan="2">
+                            <p>Người in: @RDAuthorize.Fullname ({{123|dateNow:'HH:SS DD-MM-YYYY'}})</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br /></td>
+                        <td colspan="2"><br /></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <p class="font-bold">Người lập phiếu</p>
+                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                        </td>
+                        <td class="text-center">
+                            <p class="font-bold">Người nhận tiền</p>
+                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                        </td>
+                        <td class="text-center">
+                            <p class="font-bold">Phụ trạc PGD</p>
+                            <span class="font-italic font-size-small">(Ký, họ tên)</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

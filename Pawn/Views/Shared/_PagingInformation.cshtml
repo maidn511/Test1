@@ -1,0 +1,24 @@
+﻿
+<div class="row">
+    <div class="col-md-6" style="width:50%">
+        <label>
+            Trang
+            <select id="page" style="width:50px;display:inline"
+                    class="form-control form-control-sm hide-arrow"
+                    data-ng-change="SelectPage(pagingInfo.pageNumber)"
+                    ng-model="pagingInfo.pageNumber"
+                    data-ng-options="page for page in Pager.pages track by page"></select>
+            trên {{Pager == null ? 0 : Pager.totalPages}}
+        </label>
+    </div>
+    <div class="col-md-6 text-right" style="width:50%">
+        <label>
+            Số dòng: <select class="form-control form-control-sm hide-arrow"
+                             style="width:50px;display:inline"
+                             data-ng-model="pagingInfo.numberObjectOfPage"
+                             ng-change="selectNumberObjectOfPage()"
+                             id="numberOfObject"
+                             data-ng-options="item.id as item.label for item in pagingInfo.paging"></select>
+        </label>
+    </div>
+</div>

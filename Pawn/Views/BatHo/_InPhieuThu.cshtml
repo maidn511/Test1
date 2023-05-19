@@ -1,0 +1,37 @@
+﻿@using Pawn.Authorize;
+<div id="InPhieuThu" class="hidden">
+
+    <table style="width: 100%; margin: 10px;margin-left: 20px">
+        <tr>
+            <td>{{123|dateCharacter:'normal'}}</td>
+            <td>Biên nhận thu tiền</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;"><h2>BIÊN NHẬN THU TIỀN</h2></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;">Số:{{BatHoData.Code}}</td>
+        </tr>
+        <tr><td colspan="2">Vào lúc {{123|dateNow:'HH:SS'}} ngày {{123|dateNow:'DD-MM-YYYY'}}</td>
+        <tr>
+        <tr><td colspan="2"><b>@RDAuthorize.Store.Name</b></td>
+        <tr>
+        <tr><td colspan="2">Nhân viên <b>@RDAuthorize.Firstname  @RDAuthorize.Lastname</b> đã nhận tiền của</td>
+        <tr>
+        <tr><td colspan="2">Ông (Bà): <b>{{BatHoData.CustomerName}}</b></td>
+        <tr>
+        <tr><td colspan="2">Theo hợp đồng số: <b>{{BatHoData.Code}}</b></td>
+        <tr>
+        <tr><td colspan="2">Với số tiền  <b>{{PayData.MoneyOfCustomer |currency:"":"0"}}  </b>của Kỳ <b>{{PayData.$index+1}}</b></td>
+        <tr>
+        <tr><td colspan="2">Từ ngày  <b>{{PayData.FromDate|jsonDate:"dd-MM-yyyy"}}</b> đến ngày <b>{{PayData.ToDate|jsonDate:"dd-MM-yyyy"}}</b></td>
+        <tr>
+        <tr><td colspan="2">Nợ cũ:  <b>{{BatHoData.MoneyOrther|currency:"":"0"}}</b></td>
+        <tr>
+        <tr><td colspan="2">Tổng tiền đã đóng:  <b>{{BatHoData.TotalPay|currency:"":"0"}}</b></td>
+        <tr>
+        <tr><td colspan="2">Còn lại phải đóng:  <b>{{(BatHoData.TotalMoney - (BatHoData.TotalPay - 0 + BatHoData.TotalHaving - 0 ))| currency:"":0}}</b></td>
+        <tr>
+    </table>
+
+</div>

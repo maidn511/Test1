@@ -1,0 +1,30 @@
+﻿
+@model Pawn.ViewModel.Models.BreadCrumbModels
+
+<div class="content-header row">
+    <div class="content-header-left col-md-6 col-12 mb-1">
+        <h3 class="content-header-title">@Model.Title</h3>
+    </div>
+    <div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-12">
+        <div class="breadcrumb-wrapper col-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/">Trang chủ</a>
+                </li>
+                @foreach (var item in Model.ListLiModels)
+                {
+                    <li class="@item.Class @(item.IsActive ? "active":"")">
+                        @if (item.IsActive)
+                        {
+                            @item.Name
+                        }
+                        else
+                        {
+                            <a href="@item.Href">@item.Name</a>
+                        }
+                    </li>
+                }
+            </ol>
+        </div>
+    </div>
+</div>

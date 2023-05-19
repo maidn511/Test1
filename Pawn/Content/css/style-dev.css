@@ -1,0 +1,297 @@
+﻿
+/*.table-bordered thead tr {
+    background: #00b5b8;
+    color: #fff;
+}
+
+.main-menu .main-menu-content {
+    background: #015456;
+}
+.main-menu.menu-light .navigation {
+    background: none;
+}
+
+    .main-menu.menu-light .navigation > li > a {
+        color: #f6f4f4;
+        font-weight: bold;
+    }
+    .main-menu.menu-light .navigation > li.hover > a, .main-menu.menu-light .navigation > li:hover > a, .main-menu.menu-light .navigation > li.active > a {
+        color: #058e90;
+        font-weight: bold;
+    }
+    .main-menu.menu-light .navigation > li.open > a {
+        color: #f6f4f4;
+        background: #05797c;
+    }
+
+
+[class^="pawn-icon-"], [class*=" pawn-icon-"] {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-repeat: no-repeat;
+}
+.pawn-icon-coin {
+    background-image: url('../images/icons/coin-icon.png');
+}
+
+.pawn-icon-remove {
+    background-image: url('../images/icons/remove-icon.png');
+}
+
+.pawn-icon-clock {
+    background-image: url('../images/icons/clock-icon.png');
+}
+
+.border-btn {
+    background-color: #f3f3f3;
+    background-image: none;
+    filter: none;
+    border: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding: 6px 13px;
+    text-shadow: none;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333333;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid #d9d9d9;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.chosen-container-single {
+    width: 100%;
+}*/
+
+.main-menu.menu-light .navigation,
+.main-menu-content,
+body.vertical-layout.vertical-menu.menu-collapsed .main-menu .menu-title {
+    background: #330d0d  !important;
+}
+body.vertical-layout.vertical-menu.menu-expanded .main-menu .active .menu-title {
+    background: none !important;
+}
+
+    .main-menu.menu-light .navigation li a {
+        color: #fff;
+    }
+
+
+    .main-menu.menu-light .navigation li.is-shown a {
+        color: #f6f6f6;
+    }
+.main-menu.menu-light .navigation > li.active > a {
+    color: #7f0000;
+    font-weight: 500;
+}
+.main-menu.menu-light .navigation > li.open {
+    border-left: 4px solid #b62222;
+}
+    .main-menu.menu-light .navigation > li ul li {
+        background: #2f0000;
+    }
+
+.main-menu.menu-light .navigation > li.open > a,
+.main-menu.menu-light .navigation > li.hover > a, .main-menu.menu-light .navigation > li:hover > a, .main-menu.menu-light .navigation > li.active > a {
+    color: #fff;
+    background: #6f0000;
+}
+
+.header-navbar.navbar-border {
+    border-bottom: 1px solid #a01414;
+}
+
+/*header*/
+.navbar-light {
+    background: #a01414;
+}
+
+    .navbar-light .navbar-brand {
+        color: #ffffff;
+    }
+
+    .navbar-light .navbar-nav .nav-link {
+        color: #f7f7f7;
+    }
+
+        .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus,
+        .navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
+            color: #ffffff;
+        }
+
+html body .pace .pace-progress {
+    background: #fff;
+}
+
+a {
+    color: #b62222;
+}
+
+.nav.nav-tabs.nav-underline .nav-item a.nav-link:hover {
+    color: #700606;
+}
+/*Phần table strong modal*/
+.nav.nav-tabs.nav-underline {
+    border-bottom: 1px solid #b62222;
+}
+
+    .nav.nav-tabs.nav-underline .nav-item a.nav-link:before {
+        background: #b62222;
+    }
+
+    /*Màu link*/
+    .nav.nav-tabs.nav-underline .nav-item a.nav-link {
+        color: #b62222;
+    }
+
+    /*màu button*/
+.btn-primary {
+    border-color: #b62222 !important;
+    background-color: #b62222 !important;
+}
+
+.btn-outline-primary {
+    border-color: #b62222;
+    background-color: transparent;
+    color: #b62222;
+}
+
+/*Hover*/
+    .btn-primary:hover {
+        border-color: #a01414 !important;
+        background-color: #b62222 !important;
+    }
+
+    .btn-primary:focus, .btn-primary:active {
+        border-color: #a01414 !important;
+        background-color: #b62222 !important;
+    }
+
+.btn-outline-primary:hover {
+    background-color: #b62222;
+    border-color: #872828;
+}
+
+.btn-outline-primary:hover {
+    background-color: #b62222;
+}
+
+/*Màu checkbox*/
+
+.icheckbox_flat-green, .iradio_flat-green {
+    background: url(/Content/vendors/css/forms/icheck/flat/red.png) no-repeat;
+}
+
+[class^="pawn-icon-"], [class*=" pawn-icon-"] {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-repeat: no-repeat;
+}
+
+.pawn-icon-coin {
+    background-image: url('/Content/images/icons/coin-icon.png');
+}
+
+.pawn-icon-dangerous {
+    background-image: url('/Content/images/icons/pawn-icon-dangerous.png');
+}
+
+.pawn-icon-remove {
+    background-image: url('/Content/images/icons/remove-icon.png');
+}
+
+.pawn-icon-clock {
+    background-image: url('/Content/images/icons/clock-icon.png');
+}
+
+.pawn-icon-close-contract {
+    background-image: url('/Content/images/icons/pawn-close-contract.png');
+}
+
+.modal-open .modal {
+    background-color: rgba(82, 82, 82, 0.32);
+}
+
+
+
+/*input border*/
+.border-primary {
+    border: 1px solid #b62222 !important;
+}
+
+/*button warning*/
+.btn-warning:hover {
+    border-color: #6b6a69 !important;
+    background-color: #636262 !important;
+}
+
+.btn-warning {
+    border-color: #c8c6c6 !important;
+    background-color: #848484 !important;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    padding: 0.25rem 0.1rem;
+}
+
+.btn-control .btn {
+    padding: 0.75rem 0rem;
+}
+.hide-arrow {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+
+.ft-rotate-cw {
+    color: green;
+    font-size: 15px;
+}
+
+.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+    color: #b62222;
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: #b62222;
+    color: #fff !important;
+}
+
+/*.st-name {
+    font-size: 20px;
+    position: absolute;
+    color: #a01414;
+    text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}*/
+
+.table-responsive table {
+    -webkit-overflow-scrolling: touch !important;
+    overflow: scroll !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .modal {
+        bottom: 2%;
+    }
+}

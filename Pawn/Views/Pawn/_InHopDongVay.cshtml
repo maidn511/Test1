@@ -1,0 +1,75 @@
+﻿@using Pawn.Authorize;
+<div id="InHopDongVay" class="hidden">
+    <table style="width: 100%;margin: 10px;margin-left: 20px">
+        <tr><td width="40%">{{123|dateNow:'DD-MM-YYYY'}}</td><td width="60%" style="float: right"> Hợp đồng vay tín chấp</td></tr>
+        <tr>
+            <td>
+                <b>@RDAuthorize.Store.Name</b> </br>
+                <b>Hotline: </b> @RDAuthorize.Store.Phone </br>
+                <b>Mã Giao Dịch:</b> TC-69
+            </td>
+            <td>
+                <b> HỢP ĐỒNG TÍN CHẤP</b> </br>
+                <b>(Kiêm phiếu chi tiền mặt)</b> </br>
+                <b>Ngày :</b> {{123|dateNow:'DD-MM-YYYY'}}
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2"><b>BÊN CHO VAY: </b>@RDAuthorize.Store.Name
+        </tr>
+        <tr>
+            <td>Người đại diện : @RDAuthorize.Store.OwnerName</td>
+            <td> Điện thoại : <b>@RDAuthorize.Store.Phone</b> </td>
+        </tr>
+        <tr>
+            <td colspan="2">Địa chỉ: <b>@RDAuthorize.Store.Address</b></td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td><b>BÊN VAY : {{CustomerData.Fullname}} </b></td>
+            <td> Số điện thoại : {{CustomerData.Phone}}</td>
+        <tr>
+        <tr>
+            <td colspan="2">Số CMND : {{CustomerData.IdentityCard}} <i style="margin-left: 10%;"></i> Ngày cấp : {{CustomerData.ICCreateDate}}  <i style="margin-left: 10%;"></i> Nơi cấp: {{CustomerData.ICCCreatePlace}}</td>
+        </tr>
+        <tr><td colspan="2"><b>Địa chỉ : {{CustomerData.Address}}</b></td></tr>
+        <tr><td colspan="2">THÔNG TIN TÀI SẢN & GIẤY TỜ KÈM THEO</td></tr>
+        <tr><td colspan="2">1. Loại giấy tờ :</td></tr>
+        <tr><td colspan="2">Số tiền vay : <b>{{Modal.Data.TotalMoney|currency:"":"0"}} (VNĐ)</b> <i>(Bằng chữ :{{Modal.Data.TotalMoney|moneyCharacter}})</i></td></tr>
+        <tr><td colspan="2">Thời hạn vay : từ ngày  <b>{{Modal.Data.FromDate | jsonDate: 'dd-MM-yyyy'}}</b>  đến ngày: <b>{{Modal.Data.ToDate | jsonDate: 'dd-MM-yyyy'}}</b> .</td></tr>
+        <tr><td colspan="2">CAM KẾT CỦA BÊN VAY :</td></tr>
+        <tr><td colspan="2">1. Tự nguyện chi trả lệ phí : {{Modal.Data.InterestRate |currency:"":"0"}}{{Modal.Data.InterestRateOptionString}} , tính theo số ngày thực vay</td></tr>
+        <tr>
+            <td>
+                2. Tôi cam kết tài sản thuộc quyền sở hữu hợp pháp của tôi và các giấy tờ đã xuất trình là bản gốc
+                do các cơ quan quản lý nhà nước cấp. Nếu sai, tôi hoàn toàn chịu trách nhiệm trước Pháp luật.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                3. Tôi cam kết trả gốc và lệ phí đúng hạn. Hết thời hạn trên, tôi không đến chuộc lại tài sản hoặc trả
+                lệ phí để kéo dài thêm thời hạn thì Tài sản trên sẽ thuộc quyền sở hữu của Bên cho vay, mà bên cho
+                vay không có nghĩa vụ thông báo với Bên vay. Lúc đó, Hợp đồng này có giá trị như giấy bán tài sản
+                của tôi. Bên cho vay được toàn quyền thanh lý để thu hồi vốn và số tiền nhận được từ việc thanh lý
+                Bên cho vay được hưởng toàn bộ
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                4. Tôi thực hiện việc lập Hợp đồng này trong trạng thái tinh thần hoàn toàn minh mẫn, đã đọc kỹ và
+                hiểu toàn bộ trách nhiệm và nghĩa vụ trả nợ vay số tiền trên. Tôi cam kết thực hiện tất cả các nội
+                dung trong Hợp đồng này, ký tên và điểm chỉ dưới đây để làm bằng chứng.
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center;">ĐẠI DIỆN BÊN CHO VAY </td> 
+            <td style="text-align:center;">NGƯỜI VAY</td></tr>
+        <tr>
+            <td style="text-align:center;">Thẩm định Trưởng PGDTT  </td>
+            <td style="text-align:center;">(Ký, ghi rõ họ tên và điểm chỉ)</td>
+        </tr>
+    </table>
+
+</div>

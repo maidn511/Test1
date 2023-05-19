@@ -1,0 +1,90 @@
+﻿
+@model Pawn.Models.MenuModels
+@{
+    Layout = null;
+    List<MenuModels> LstMenu = new List<MenuModels>();
+    if (ViewBag.LstMenuParent != null)
+    {
+        LstMenu = (List<MenuModels>)ViewBag.LstMenuParent;
+    }
+}
+
+<table class="table table-bordered mb-0">
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-2">Name</div>
+                <div class="col-md-10"> @Html.TextBoxFor(x => x.MenuName, new { @class = "form-control" })</div>
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-2">Description</div>
+                <div class="col-md-10"> @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })</div>
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-2">
+                    Controller
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(x => x.Controller, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    Action
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(x => x.Action, new { @class = "form-control" })
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-2">Parent</div>
+                <div class="col-md-4">
+                    <select name="ParentId" class="form-control">
+                        <option value="0">--Main Controller--</option>
+                        @foreach (var m in LstMenu)
+                        {
+                            <option value="@m.Id" @(m.Id == Model.ParentId ? "selected = 'selected'" : "")>@m.MenuName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">Order Index</div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(x => x.OrderIndex, new { @class = "form-control" })
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-2 col-md-offset-2"> @Html.CheckBoxFor(x => x.IsActive) Is Active</div>
+                <div class="col-md-2">@Html.CheckBoxFor(x => x.IsShow) Is Show</div>
+            </div>
+            @*<div class="sale-setup-label-container"><label for="DisplayOrder">Display Order</label></div>
+                <div class="sale-setup-input-container">
+                        <input name="DisplayOrder" type="text" value="@Model.DisplayOrder" />
+                    </div>*@
+
+            <input name="Id" type="hidden" value="@Model.Id" />
+        </td>
+    </tr>
+
+
+
+
+
+
+
+</table>

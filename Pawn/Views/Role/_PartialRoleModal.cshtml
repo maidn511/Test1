@@ -1,0 +1,33 @@
+﻿@model List<PawnRoleModels>
+<div class="skin skin-flat">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th style="width: 1%">#</th>
+            <th >Tên quyền</th>
+            <th>Mô tả</th>
+        </tr>
+        </thead>
+        <tbody id="tbodyRole">
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model.ToList())
+            {
+                <tr>
+                    <th scope="row">
+                        <input type="checkbox" id="input@(item.Id)" data-id="@item.Id">
+                    </th>
+                    <td class="permissionname">@item.RoleName</td>
+                    <td class="description">@item.Description</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" style="text-align: center">No data display</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

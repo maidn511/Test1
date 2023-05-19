@@ -1,0 +1,115 @@
+﻿@{
+    var lstCustomerBh = (List<BatHoModels>)ViewBag.DataCustomerBatHo;
+    var lstCustomerVl = (List<PawnContractModels>)ViewBag.DataCustomerVayLai;
+    var type = (Pawn.Libraries.InterestPaid)ViewBag.Type;
+}
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Danh sách khách hàng đóng lãi ngày " + (type == Pawn.Libraries.InterestPaid.ToDay ? "hôm nay" : "mai"),
+})
+
+<div class="content-body" id="testtest">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <div class="card-header" style="padding:0; padding-bottom:10px">
+                                    <h4 class="card-title" style="position:absolute">Bát họ</h4>
+                                    <a class="btn btn-primary btn-min-width mr-1 mb-1" target="_self" href="@Url.Action("ExportExcel", "Home", new {isVl = false, addDay = type })" style="float:right; margin-right:0 !important">
+                                        <i class="fa fa-file-excel-o"></i> Xuất Excel
+                                    </a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 2%">#</th>
+                                                <th style="width: 20%">Tên khách hàng</th>
+                                                <th>Tiền 1 ngày</th>
+                                                <th>Số tiền phải đóng lãi đến ngày @((type == Pawn.Libraries.InterestPaid.ToDay ? "hôm nay" : "mai"))</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (lstCustomerBh != null && lstCustomerBh.Count > 0)
+                                            {
+                                                var i = 1;
+                                                foreach (var item in lstCustomerBh.ToList())
+                                                {
+                                                    <tr>
+                                                        <th scope="row">@i</th>
+                                                        <td>
+                                                            @(item.CustomerName)
+                                                        </td>
+                                                        <td>@(string.Format("{0:0,#}", item.MoneyPerDay))</td>
+                                                        <td>@(string.Format("{0:0,#}", item.TotalMoney))</td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="4" style="text-align: center">No data display</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-header" style="padding:0; padding-bottom:10px">
+                                    <h4 class="card-title" style="position:absolute">Vay lãi</h4>
+                                    <a class="btn btn-primary btn-min-width mr-1 mb-1" target="_self" href="@Url.Action("ExportExcel", "Home", new {isVl = true, addDay = type })" style="float:right; margin-right:0 !important">
+                                        <i class="fa fa-file-excel-o"></i> Xuất Excel
+                                    </a>
+                                </div>
+                                <div class="table-responsive">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 2%">#</th>
+                                                    <th style="width: 20%">Tên khách hàng</th>
+                                                    <th>Tiền 1 ngày</th>
+                                                    <th>Số tiền phải đóng lãi đến ngày @((type == Pawn.Libraries.InterestPaid.ToDay ? "hôm nay" : "mai"))</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (lstCustomerVl != null && lstCustomerVl.Count > 0)
+                                                {
+                                                    var i = 1;
+                                                    foreach (var item in lstCustomerVl.ToList())
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@i</th>
+                                                            <td>
+                                                                @item.CustomerName
+                                                            </td>
+                                                            <td>@(string.Format("{0:0,#}", item.TienLaiMotNgay))</td>
+                                                            <td>@(string.Format("{0:0,#}", item.TotalMoney))</td>
+                                                        </tr>
+                                                        i++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td colspan="4" style="text-align: center">No data display</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

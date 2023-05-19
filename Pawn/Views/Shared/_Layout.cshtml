@@ -1,0 +1,368 @@
+﻿<!-- - var menuBorder = true-->
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>@ViewBag.Title</title>
+    <link rel="apple-touch-icon" href="/Content/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/Content/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
+          rel="stylesheet">
+    @*<link href="~/Content/css/bootstrap.css" rel="stylesheet" />*@
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    <!-- BEGIN STACK CSS-->
+    <link rel="stylesheet" type="text/css" href="/Content/css/vendors.css">
+    <link rel="stylesheet" type="text/css" href="/Content/css/app.css">
+    <link href="~/Scripts/datetime/boilerplate.css" rel="stylesheet" />
+    @*<link href="~/Content/widgets/angular-bootstrap-datetimepicker/datetimepicker.css" rel="stylesheet" />*@
+    <link href="~/Content/widgets/angular-bootstrap-datetimepicker/angular-moment-picker.min.css" rel="stylesheet" />
+    @*<link href="~/Scripts/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" type="text/css" href="~/Content/vendors/css/forms/selects/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/vendors/css/extensions/toastr.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/plugins/extensions/toastr.css">
+    <link rel="stylesheet" type="text/css" href="/Content/vendors/css/forms/icheck/icheck.css">
+    <!-- END STACK CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="/Content/css/core/menu/menu-types/vertical-menu.css">
+    <!-- END Page Level CSS-->
+    <!-- BEGIN Custom CSS-->
+    @Styles.Render("~/bundles/css/widgets")
+    <link rel="stylesheet" href="@Url.Content("~/Content/widgets/sweetalert2/sweetalert2.css")" />
+
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <!-- BEGIN VENDOR CSS-->
+    @RenderSection("css", required: false)
+    <!-- END VENDOR CSS-->
+    <!-- END Custom CSS-->
+</head>
+<body class="vertical-layout vertical-menu 2-columns   menu-expanded fixed-navbar"
+      data-open="click" data-menu="vertical-menu" data-col="2-columns">
+    <!-- fixed-top-->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-light navbar-border">
+        <div class="navbar-wrapper">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="/">
+                            <img class="brand-logo" alt="stack admin logo" src="/Content/images/logo/stack-logo.png">
+                            <h2 class="brand-text">CẦM ĐỒ</h2>
+                        </a>
+                    </li>
+                    <li class="nav-item d-md-none">
+                        <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav mr-auto float-left">
+                        <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+                        <li class="nav-item d-none d-md-block" style="margin: -3px;">
+                            <a class="nav-link nav-menu-main hidden-xs is-active st-name" href="javascript:void(0)" style="font-size: 20px;position: absolute;color: #a01414;font-weight:600;text-shadow: 2px 0 0 gold, -2px 0 0 gold, 0 2px 0 gold, 0 -2px 0 gold, 1px 1px gold, -1px -1px 0 #fff, 1px -1px 0 gold, -1px 1px 0 gold;"><i class="ft-store"></i> @RDAuthorize.Store.Name</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav float-right">
+                        @if (RDAuthorize.IsRoot == false)
+                        {
+                            <li class="dropdown dropdown-notification nav-item">
+                                <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                                    <i class="ficon ft-bell"></i>
+                                    <span class="badge badge-pill badge-default badge-danger badge-default badge-up">@Html.Action("Count", "Home", new { isBH = true, addDay = Pawn.Libraries.InterestPaid.Tomorrow })</span>
+                                </a>
+                                @*<ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                                        <li class="dropdown-menu-header">
+                                            <h6 class="dropdown-header m-0">
+                                                <span class="grey darken-2">Notifications</span>
+                                                <span class="notification-tag badge badge-default badge-danger float-right m-0">5 New</span>
+                                            </h6>
+                                        </li>
+                                        <li class="scrollable-container media-list">
+                                            <a href="javascript:void(0)">
+                                                <div class="media">
+                                                    <div class="media-left align-self-center"><i class="ft-plus-square icon-bg-circle bg-cyan"></i></div>
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading">You have new order!</h6>
+                                                        <p class="notification-text font-small-3 text-muted">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                        <small>
+                                                            <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">30 minutes ago</time>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all notifications</a></li>
+                                    </ul>*@
+                            </li>
+                            <li class="dropdown dropdown-notification nav-item">
+                                <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                                    <i class="ficon ft-mail"></i>
+                                    <span class="badge badge-pill badge-default badge-warning badge-default badge-up">@Html.Action("Count", "Home", new { isBH = false, addDay = Pawn.Libraries.InterestPaid.Tomorrow })</span>
+                                </a>
+                                @*<ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                                        <li class="dropdown-menu-header">
+                                            <h6 class="dropdown-header m-0">
+                                                <span class="grey darken-2">Messages</span>
+                                                <span class="notification-tag badge badge-default badge-warning float-right m-0">4 New</span>
+                                            </h6>
+                                        </li>
+                                        <li class="scrollable-container media-list">
+                                            <a href="javascript:void(0)">
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <span class="avatar avatar-sm avatar-online rounded-circle">
+                                                            <img src="/Content/images/portrait/small/avatar-s-1.png" alt="avatar"><i></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading">Margaret Govan</h6>
+                                                        <p class="notification-text font-small-3 text-muted">I like your portfolio, let's start.</p>
+                                                        <small>
+                                                            <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Today</time>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all messages</a></li>
+                                    </ul>*@
+                            </li>
+                        }
+                        <li class="dropdown dropdown-notification nav-item">
+                            <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                                <i class="ficon ft-home"></i>
+                                <span class="badge badge-pill badge-default badge-warning badge-default badge-up">@RDAuthorize.StoreList.Count()</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                                <li class="dropdown-menu-header">
+                                    <h6 class="dropdown-header m-0">
+                                        <span class="grey darken-2">Cửa hàng</span>
+                                        <span class="notification-tag badge badge-default badge-warning float-right m-0">@RDAuthorize.StoreList.Count() Cửa hàng</span>
+                                    </h6>
+                                </li>
+                                <li class="scrollable-container media-list">
+                                    @foreach (var store in RDAuthorize.StoreList)
+                                    {
+                                        if (store.Id == RDAuthorize.Store.Id)
+                                        {
+                                            <a style="background-color:bisque">
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <span class="avatar avatar-sm avatar-online rounded-circle">
+                                                            <img src="/Content/images/avatar.jpg" alt="avatar"><i></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading">@store.Name</h6>
+                                                        <p class="notification-text font-small-3 text-muted">@store.Address</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="" href="@Url.Action("SetStore","Store", new { storeId = store.Id})">
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <span class="avatar avatar-sm avatar-online rounded-circle">
+                                                            <img src="/Content/images/avatar.jpg" alt="avatar"><i></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h6 class="media-heading">@store.Name</h6>
+                                                        <p class="notification-text font-small-3 text-muted">@store.Address</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        }
+                                    }
+                                </li>
+                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all messages</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="avatar avatar-online">
+                                    <img src="@(RDAuthorize.Avatar)" alt="avatar"><i></i>
+                                </span>
+                                <span class="user-name">@(RDAuthorize.Fullname)</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#changepass"><i class="fa fa-lock"></i> Đổi mật khẩu</a>
+                                <a class="dropdown-item" href="@Url.Action("AddAccount", "Account", new { username = RDAuthorize.Username})"><i class="ft-user"></i> Đổi thông tin</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Logout", "Login")"><i class="ft-power"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+    <div class="main-menu menu-fixed menu-light menu-accordion" data-scroll-to-active="true">
+        <div class="main-menu-content">
+            @{ Html.RenderAction("Menu", "Home");}
+        </div>
+    </div>
+    <div class="app-content content">
+        <div class="content-wrapper" ng-cloak ng-app="Pawn"
+             id="pawnApp" ng-controller="pawnController"
+             data-selection-status-url="@Url.Action("LoadSelectStatusAngular", "Common")"
+             data-load-stores-url="@Url.Action("GetStoreAfterLogin","Store")"
+             ng-init="LoadData()">
+            @RenderBody()
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+    <footer class="footer footer-static footer-light navbar-border">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
+            <span class="float-md-left d-block d-md-inline-block">
+                Copyright &copy; 2018 <a class="text-bold-800 grey darken-2" href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
+                                         target="_blank">PIXINVENT</a>, All rights reserved.
+            </span>
+            <span class="float-md-right d-block d-md-inline-block d-none d-lg-block">Hand-crafted & Made with <i class="ft-heart pink"></i></span>
+        </p>
+    </footer>
+    <div class="modal fade text-left" id="changepass" role="dialog" aria-labelledby="mychangepass" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="mychangepass">Đổi mật khẩu</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control">Mật khẩu cũ</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="txtOldPass" data-required="true" data-type="password" data-key="null" data-length="6" class="form-control border-primary" placeholder="Mật khẩu cũ">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control">Mật khẩu mới</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="txtNewPass" data-required="true" data-type="password" data-compare="txtConfirmPass" data-key="null" data-length="6" class="form-control border-primary" placeholder="Mật khẩu mới">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control">Nhập lại mật khẩu mới</label>
+                                        <div class="col-md-9">
+                                            <input type="password" id="txtConfirmPass" data-required="true" data-key="null" data-length="6" class="form-control border-primary" placeholder="Mật khẩu mới">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnChangePass">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN VENDOR JS-->
+    <script src="/Content/vendors/js/vendors.min.js" type="text/javascript"></script>
+    @*<script src="~/Content/vendors/js/ui/jquery-ui.min.js"></script>*@
+    <!-- BEGIN VENDOR JS-->
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/js/angular")
+
+    <script src="@Url.Content("~/Scripts/es6-promies/es6-promise.auto.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/widgets/sweetalert2/sweetalert2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/app/common/common.js")"></script>
+    <script src="@Url.Content("~/Scripts/app/pawn.js")"></script>
+    <!-- BEGIN PAGE VENDOR JS-->
+
+    <script src="/Content/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
+    @*<script src="~/Scripts/datetime/moment-with-locales.min.js"></script>*@
+    @*<script src="~/Scripts/moment.min.js"></script>*@
+    <script src="~/Scripts/moment-with-locales.js"></script>
+    <script src="~/Content/widgets/angular-bootstrap-datetimepicker/angular-moment-picker.min.js"></script>
+    @*<script src="~/Content/widgets/angular-bootstrap-datetimepicker/datetimepicker.js"></script>
+        <script src="~/Content/widgets/angular-bootstrap-datetimepicker/datetimepicker.templates.js"></script>*@
+    @*<script src="~/Scripts/datetime/bootstrap-datetimepicker.min.js"></script>*@
+    <script src="/Content/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+    <script src="/Content/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/fileupload/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/fileupload/jquery.iframe-transport.js"></script>
+    <script src="~/Scripts/fileupload/jquery.fileupload.js"></script>
+    <script src="~/Scripts/fileupload/jquery.fileupload-process.js"></script>
+    <script src="~/Scripts/common.js"></script>
+    <script src="~/Scripts/jquery.paging.js"></script>
+    <script src="~/Scripts/validate.js"></script>
+    @RenderSection("vendor", required: false)
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN STACK JS-->
+    <script src="/Content/js/core/app-menu.js" type="text/javascript"></script>
+    <script src="/Content/js/core/app.js" type="text/javascript"></script>
+    <script src="/Content/js/scripts/customizer.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        var pagesize = @System.Configuration.ConfigurationManager.AppSettings["PageSize"];
+        var isSuccess = @((int)Pawn.Libraries.Result.Success)
+        var isError = @((int)Pawn.Libraries.Result.Error)
+        var _dateFormat = '@Pawn.Libraries.Constants.DateFormat';
+        var user = '@RDAuthorize.Username';
+        var urlChangePass = '@Url.Action("ChangePass", "Account")';
+        $(function() {
+            var url = location.pathname.split("/");
+            if (url.length > 0) {
+                if (url[1] === "") {
+                    $("#main-menu-navigation").find("a[href='/']").closest("li").addClass("active");
+                } else {
+                    ActiveMenu(location.pathname);
+                }
+            }
+        });
+        function ActiveMenu(menu) {
+            if ($("#main-menu-navigation").find("a[href='" + menu + "']").length > 0) {
+                $("#main-menu-navigation").find("a[href='" + menu + "']").closest("li").addClass("active");
+                var aparent = $("a[href='" + menu + "']").closest("ul").prev();
+                if ($(aparent).length > 0 && $(aparent).attr("href").indexOf("#") > -1) {
+                    setTimeout(function () { $(aparent).click() }, 200);
+                }
+            }
+            if (menu.split("/").length === 2)
+                return false;
+            var arrMenu = menu.split("/");
+            var strRep = arrMenu[arrMenu.length - 1];
+            menu = menu.replace("/" + strRep, "");
+            ActiveMenu(menu);
+        }
+    </script>
+    <!-- END STACK JS-->
+    @Scripts.Render("~/bundles/js/widgets")
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $("script ~ div").css('display', 'none');
+            $("center a").css('display', 'none');
+            @*var scope = angular.element($("#pawnApp")).scope();
+            scope.pathHost = "@ViewBag.pathHost";*@
+
+        });
+    </script>
+    <script src="~/Scripts/app/common/pawnHub.js"></script>
+    @* <iframe type="text/html" width="1" height="1" src="https://www.youtube.com/embed/z5nKPz4KZj0?autoplay=1" frameborder="0" allow="autoplay"></iframe>*@
+</body>
+</html>

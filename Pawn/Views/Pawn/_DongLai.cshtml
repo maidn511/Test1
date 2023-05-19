@@ -1,0 +1,166 @@
+﻿<form class="form form-horizontal form-bordered" name="DongLaiForm" novalidate="" ng-submit="PaymentChangeCustoms()">
+    <div class="form-body" style="border:1px solid #d9d9d9">
+        <h4 class="form-section" style="cursor:pointer;margin-bottom:0;border-bottom: 1px solid #d9d9d9"
+             ng-click="showPayInterest = !showPayInterest">
+            <i class="{{showPayInterest ? 'ft-chevrons-down' : 'ft-chevrons-right'}}"></i> Đóng lãi tùy biến theo ngày
+        </h4>
+
+        <div ng-show="showPayInterest" class="animate-show animate-hide">
+            <div class="form-group row">
+                <label class="col-md-3 label-control" for="projectinput2">Từ ngày:</label>
+                <div class="col-md-4">
+                    <label style="padding-top: 6px;">{{customs.FromDate | jsonDate:'dd-MM-yyyy'}}</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 label-control" for="projectinput1">Đến ngày :</label>
+                <div class="col-md-4">
+                    <div class="input-group"
+                         moment-picker="customs.ToDate"
+                         format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                        <input class="form-control"
+                               placeholder="Đến ngày"
+                               required
+                               ng-change="changeToDate()"
+                               ng-model="customs.ToDate"
+                               name="txtToDate"
+                               ng-model-options="{ updateOn: 'blur' }">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                        </div>
+                    </div>
+                    <div ng-show="DongLaiForm.txtToDate.$dirty && DongLaiForm.txtToDate.$invalid">
+                        <p class="help-block font-red" ng-show="DongLaiForm.txtToDate.$error.required">
+                        Vui lòng chọn đến ngày.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label style="padding-top: 6px;">( Ngày đóng lãi tiếp : {{customs.ContinueDate}} )</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 label-control" for="projectinput2">Số ngày :</label>
+                <div class="col-md-4">
+                    <input format-currency-input class="form-control" 
+                           pattern="[0-9]+([\.,][0-9]+)*"
+                           ng-min="0" required
+                           ng-change="changeToDay(customs.TotalDay)" 
+                           ng-model="customs.TotalDay" placeholder="Số ngày" name="txtTotalDay"/>
+                    <div ng-show="DongLaiForm.txtTotalDay.$dirty && DongLaiForm.txtTotalDay.$invalid">
+                        <p class="help-block font-red" ng-show="DongLaiForm.txtTotalDay.$error.required">
+                            Vui lòng nhập số ngày.
+                        </p>
+                        <p class="help-block font-red" ng-show="DongLaiForm.txtTotalDay.$error.ngMin">
+                        Số ngày không được nhỏ hơn bằng 0</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label style="padding-top: 6px;"> Ngày</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 label-control">Tiền lãi</label>
+                <div class="col-md-4">
+                    <label style="padding-top: 6px;"> {{(customs.InterestMoney * customs.TotalDay) | currency:"":"0" }} VND</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 label-control">Tiền khác</label>
+                <div class="col-md-4">
+                    <input format-currency-input class="form-control"
+                           name="txtOtherMony"
+                           required ng-model="customs.OtherMoney" placeholder="Tiền khác" />
+                </div>
+                <div ng-show="DongLaiForm.txtOtherMony.$dirty && DongLaiForm.txtOtherMony.$invalid">
+                    <p class="help-block font-red" ng-show="DongLaiForm.txtOtherMony.$error.required">
+                        Vui lòng nhập số tiền khác.
+                    </p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 label-control">Tổng tiền lãi</label>
+                <div class="col-md-4">
+                    <label style="padding-top: 6px;color:red"><strong>{{((customs.InterestMoney * customs.TotalDay) + (customs.OtherMoney - 0))|currency:"":"0"}} VNĐ</strong></label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 label-control"></label>
+                <div class="col-md-4" style="text-align:right">
+                    <button type="submit" class="btn btn-primary" ng-disabled="DongLaiForm.$invalid" style="margin-bottom:3px">Đóng lãi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="table table-responsive" style="padding-top:10px">
+    <table class="table table-striped table-bordered table-hover table-checkable datatable h-center" id="tblPayment">
+        <thead>
+            <tr>
+                <th width="50px">STT</th>
+                <th colspan="3">Ngày</th>
+                <th>Số ngày</th>
+                <th>Tiền lãi</th>
+                <th>Tiền khác</th>
+                <th>Tổng lãi</th>
+                <th>Tiền khách trả</th>
+                <th>
+                    Ngày GD
+                </th>
+                <th>
+                    In
+                </th>
+                <th>
+                    &nbsp;
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in DongLaiData">
+                <td align="center">{{$index+1}}</td>
+                <td align="center">{{item.FromDate |jsonDate:'dd-MM-yyyy'}}</td>
+                <td align="center"><i class="fa fa-angle-double-right" aria-hidden="true"></i></td>
+                <td align="center">{{item.ToDate |jsonDate:'dd-MM-yyyy'}}</td>
+                <td align="center">{{item.TotalDay}}</td>
+                <td align="right">{{item.InterestMoney |currency:"":"0"}} VNĐ</td>
+                <td align="right">{{item.OtherMoney |currency:"":"0"}} VNĐ</td>
+                <td align="right">
+                    {{(item.OtherMoney + item.InterestMoney) |currency:"":"0"}} VNĐ
+                </td>
+                <td align="right">
+                    <a ng-if="item.IsCurrent == false" style="font-size: 13px; font-family: Tahoma;color:blue;padding: 1px 2px">
+                        {{item.CustomerMoney| currency:"":0}}
+                    </a>
+                    <div ng-if="item.IsCurrent == true" data-placement="top" class="btn btn-primary btn-sm ng-scope " popover>
+                        {{(item.CustomerMoney| currency:"":0) || ""}}
+                        <div id="popover-content" class="row hidden">
+                            <form class="form form-horizontal">
+                                <div class="form-body">
+                                    <div class="form-group row">
+                                        <div class="col-md-9">
+                                            <input class="form-control"
+                                                   ng-model="item.CustomerMoney"
+                                                   format-currency-input />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-success" onclick="$('.popover').popover('hide');"><i class="fa fa-check"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+                <td align="center">
+                    {{item.LoanDate|jsonDate:'dd-MM-yyyy HH:00'}}
+                </td>
+                <td align="center" class="noprint">
+                    <a ng-show="item.IsPaid" ng-click="InPhieuThu(item)"><i class="ft-printer"></i></a>
+                </td>
+                <td class="checkbox-column">
+                    <input id="chk_1" type="checkbox" class="uniform"  ng-model="item.IsPaid" ng-change="PaymentChange(item, $index)">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@Html.Partial("_InPhieuThu")

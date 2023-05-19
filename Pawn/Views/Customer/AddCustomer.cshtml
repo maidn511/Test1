@@ -1,0 +1,120 @@
+﻿@model CustomerModels
+@{
+    ViewBag.Title = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + " khách hàng";
+}
+
+
+<style>
+    .form-horizontal label {
+        padding-top: 0.5rem
+    }
+
+    .untop {
+        padding-top: 0 !important
+    }
+</style>
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + " khách hàng",
+    ListLiModels = new List<LiModels>
+{
+new LiModels { Href = Url.Action("Index"), Name = "Quản lý khách hàng"},
+new LiModels { Name = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + " khách hàng", IsActive = true}
+}
+})
+<div class="content-body">
+    <section id="basic-form-layouts">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-content collpase show">
+                        <div class="card-body">
+                            @using (Ajax.BeginRouteForm("Default", new { Action = "AddCustomer" }, new AjaxOptions
+                            {
+                                HttpMethod = "POST",
+                                OnSuccess = "success"
+                            }, new { @class = "form form-horizontal", id = "frmAddCustomer" }))
+                            {
+                                <div class="form-body">
+                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                    <h4 class="form-section"><i class="ft-mail"></i> Chi tiết khách hàng</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Khách hàng</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtFullnameId" data-required="true" data-key="null" class="form-control border-primary" placeholder="Tên khách hàng" name="Fullname" value="@Model.Fullname">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">CMND</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtIdentityCard" class="form-control border-primary" placeholder="Tên khách hàng" name="IdentityCard" value="@Model.IdentityCard">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row skin skin-flat">
+                                                <label class="col-md-3 label-control untop">Cửa hàng</label>
+                                                <div class="col-md-9">
+                                                    @Html.Action("LoadSelectStore", "Common",
+                                                     new SelectOptionModels
+                                                     {
+                                                         ChosenSuggest = "-- Chọn cửa hàng --",
+                                                         DataRequired = true,
+                                                         Name = "StoreId",
+                                                         IdSelect = "slStoreId",
+                                                         DataKey = "select",
+                                                         PlaceHolder = "Cửa hàng",
+                                                         Value = Model.StoreId + ""
+                                                     })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row skin skin-flat">
+                                                <label class="col-md-3 label-control untop">Active</label>
+                                                <div class="col-md-9">
+                                                    <input type="checkbox" id="chkIsActive" data-target="#hidIsActive" class="switchery" data-size="sm" @(Model.Id == 0 ? "checked" : (Model.IsActive ? "checked" : "")) />
+                                                    <label for="chkIsActive" class="font-medium-2 text-bold-600 ml-1"></label>
+                                                    <input type="hidden" name="IsActive" id="hidIsActive" value=" @(Model.Id == 0 ? "true" : (Model.IsActive ? "true" : "false"))" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Số điện thoại</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtPhone" class="form-control border-primary" placeholder="Số điện thoại" name="Phone" value="@Model.Phone" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Địa chỉ</label>
+                                                <div class="col-md-9">
+                                                    <textarea type="text" rows="5" id="txtAddress" class="form-control border-primary" placeholder="Địa chỉ" name="Address">@Model.Address</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions right">
+                                    <a class="btn btn-warning mr-1" href="@Url.Action("Index")">
+                                        <i class="ft-x"></i> Cancel
+                                    </a>
+                                    <button type="button" id="btnCreate" class="btn btn-primary">
+                                        <i class="fa fa-check-square-o"></i> Save
+                                    </button>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts
+{
+    <script>
+        var urlCustomer = '@Url.Action("Index")';
+    </script>
+    <script src="~/Scripts/app/customer/create.js"></script>
+}

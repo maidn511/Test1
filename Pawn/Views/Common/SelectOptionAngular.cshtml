@@ -1,0 +1,10 @@
+﻿@model Pawn.ViewModel.Models.SelectOptionModels
+
+<select id="@Model.IdSelect" class="form-control"
+        style="width:100%"
+        data-required="@(Model.DataRequired ? "true" : "false")"
+        data-key="@Model.DataKey"
+        placeholder="@Model.PlaceHolder"
+        data-provide="@(Model.IsSelectPicker ? "selectpicker" :"")" @(Model.Multiple ? "multiple" : "")
+        ng-options="{{selectDatas}}"
+        ng-model="@Model.Name"></select>

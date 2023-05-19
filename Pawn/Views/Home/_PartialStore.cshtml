@@ -1,0 +1,25 @@
+﻿
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Danh sách cửa hàng",
+})
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div class="table-responsive" id="divStore">
+                            @{Html.RenderAction("_PartialStore", "Store");}
+                        </div>
+                        <nav class="text-center">
+                            <ul id="pagination" class="pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

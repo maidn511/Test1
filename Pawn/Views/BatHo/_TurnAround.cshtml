@@ -1,0 +1,164 @@
+﻿<div class="panel panel-success">
+    <div class="panel-heading" data-toggle="collapse" data-target="#history_remind">
+        <i class="fa fa-reply"></i> <label class="control-label">Thông tin đảo họ</label>
+    </div>
+    <div class="panel-body collapse show" id="history_remind">
+        <form name="turnAroundForm" novalidate="" ng-submit="TurnAroundBatHo(BatHoData.Id)">
+            <div class="col-md-12">
+                <div class="form-horizontal row-border">
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">
+                            Ngày đảo họ <span class="required">*</span>
+                        </label>
+                        <div class="col-md-4" id="divToDate">
+                            <div class="input-group"
+                                 moment-picker="TurnAround.FromDateString"
+                                 format="DD-MM-YYYY">
+                                <input class="form-control"
+                                       placeholder="Tư ngày"
+                                       name="txtFromDate"
+                                       ng-model="TurnAround.FromDateString"
+                                       ng-model-options="{ updateOn: 'blur' }">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                </div>
+                            </div>
+                            <div ng-show="turnAroundForm.txtFromDate.$dirty && turnAroundForm.txtFromDate.$invalid">
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtFromDate.$error.required">Vui chọn ngày đảo họ.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">
+                            Bát họ mới <span class="required">*</span>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="TurnAround.TotalMoney"
+                                   pattern="[0-9]+([\.,][0-9]+)*"
+                                   @*ng-max="{{TurnAround.TotalMoney}}"*@
+                                   ng-min="0"
+                                   name="txtTotalMoney"
+                                   required
+                                   format-currency-input
+                                   class="inputAmountUSD form-control digits">
+                            <div ng-show="turnAroundForm.txtTotalMoney.$dirty && turnAroundForm.txtTotalMoney.$invalid">
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtTotalMoney.$error.required">Vui lòng nhập bát họ mới.</p>
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtTotalMoney.$error.ngMin">Số tiền không được nhỏ hơn bằng 0 đ</p>
+                            </div>
+                        </div>
+                        <div class="col-md-5" style="padding-top: 7px; color: red">
+                            (@("@Chú ý: Bát họ nghĩa là tổng tiền khách phải đóng)")
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">
+                            Tiền đưa khách <span class="required">*</span>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text"
+                                   class="inputAmountUSD form-control digits"
+                                   ng-min="0"
+                                   name="txtMoneyForGues"
+                                   required
+                                   format-currency-input
+                                   ng-model="TurnAround.MoneyForGues">
+                            <div ng-show="turnAroundForm.txtMoneyForGues.$dirty && turnAroundForm.txtMoneyForGues.$invalid">
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtMoneyForGues.$error.required">Vui lòng nhập số tiền đưa khách.</p>
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtMoneyForGues.$error.ngMin">Số tiền không được nhỏ hơn bằng 0 đ</p>
+                            </div>
+                        </div>
+                        <div class="col-md-5" style="padding-top: 7px;">
+                            (Đừng trừ tiền còn phải đóng của bát cũ vào đây. Hệ thống trừ sau)
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">
+                            Bốc trong vòng <span class="required">*</span>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text"
+                                   name="txtLoanTime"
+                                   required
+                                   ng-min="0"
+                                   ng-init="'1'"
+                                   format-currency-input
+                                   ng-model="TurnAround.LoanTime"
+                                   class="form-control inputAmountUSD">
+                            <div ng-show="turnAroundForm.txtLoanTime.$dirty && turnAroundForm.txtLoanTime.$invalid">
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtLoanTime.$error.required">Vui lòng ngày bốc họ.</p>
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtLoanTime.$error.ngMin">Số ngày không được nhỏ hơn bằng 0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="padding-top: 7px;">
+                            Ngày =&gt; ( <span class="font-red">{{TurnAround.TotalMoney/TurnAround.LoanTime|currency:"":"00"}}</span>/ 1 ngày )
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">
+                            Số ngày đóng tiền <span class="required">*</span>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text"
+                                   ng-model="TurnAround.Frequency"
+                                   name="txtFrequency"
+                                   required
+                                   ng-min="0"
+                                   ng-init="TurnAround.Frequency = 1"
+                                   format-currency-input
+                                   class="form-control inputAmountUSD">
+                            <div ng-show="turnAroundForm.txtFrequency.$dirty && turnAroundForm.txtFrequency.$invalid">
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtFrequency.$error.required">Vui lòng nhập số ngày đóng tiền.</p>
+                                <p class="help-block font-red" ng-show="turnAroundForm.txtFrequency.$error.ngMin">Số ngày không được nhỏ hơn bằng 0</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            (VD : 3 ngày đóng 1 lần thì điền số 3 )
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label">
+                            Tiền dịch vụ
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text"
+                                   ng-model="TurnAround.MoneyServices"
+                                   ng-min="0"
+                                   ng-init="TurnAround.MoneyServices = 0"
+                                   format-currency-input
+                                   class="form-control inputAmountUSD">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label" style="color: red;">
+                            Tiền khách nhận về
+                        </label>
+                        <div class="col-md-9 control-label text-left">
+                            <span class="font-weight-bold" style="color: red;font-size:medium;font-family:'Times New Roman', Times, serif">
+
+                                {{TurnAround.MoneyForGues|currency:"":"00"}} - {{(BatHoData.TotalMoney - (BatHoData.TotalPay + BatHoData.TotalHaving) + BatHoData.MoneyOrther)|currency:"":"00"}} {{(BatHoData.MoneyOrther < 0)?'-':'+'}} {{Abs(BatHoData.MoneyOrther)|currency:"":"00"}} =
+                                {{TurnAround.MoneyForGues - (BatHoData.TotalMoney - (BatHoData.TotalPay + BatHoData.TotalHaving)) |currency:"":"00"}}
+
+                            </span>
+
+                        </div>
+                    </div>
+
+                    <div class="form-actions ptb5">
+                        <div class="col-md-4 col-md-offset-4"></div>
+                        <div class="col-md-4">
+                            <button id="btnGraveInstallment" type="submit" ng-disabled="turnAroundForm.$invalid"
+                                    class="btn btn-primary float-right">
+                                Thực hiện
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

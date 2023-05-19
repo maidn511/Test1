@@ -1,0 +1,168 @@
+﻿<div class="modal fade text-left" id="backdrop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form name="nameForm" novalidate="" ng-submit="Save()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17">Hợp đồng góp vốn</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <input type="hidden" ng-model="Modal.Data.Id" value="{{Modal.Data.Id || -1}}" />
+                            </div>
+                            <div class="col-md-3 icheck_minimal skin-flat">
+                                <input type="radio" ng-model="Modal.Data.IsSystem"  id="chkIsNotSystem" i-check ng-value="false">
+                                <label for="chkIsNotSystem">Người góp mới</label>
+                            </div>
+                            <div class="col-md-6 icheck_minimal skin-flat">
+                                <input type="radio" id="chkIsSystem" ng-model="Modal.Data.IsSystem" i-check ng-value="true">
+                                <label for="chkIsSystem">Người góp đã có trong hệ thống</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Họ và tên <span style="color:red">*</span></label>
+                            <div class="col-md-5">
+                                <input type="text" ng-if="Modal.Data.IsSystem == false" ng-model="Modal.Data.CustomerName" class="form-control" placeholder="Họ và tên" name="fname">
+                                <select chosen class="form-control" ng-if="Modal.Data.IsSystem == true"
+                                        no-results-text="'No data found!'"
+                                        placeholder-text-multiple="'Choose all suppliers'"
+                                        ng-model="Modal.Data.CustomerId"
+                                        ng-options="option.Id as option.Text for option in CustomerList">
+                                    <option value="">-- Chọn khách hàng --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Số điện thoại</label>
+                            <div class="col-md-5">
+                                <input type="text" ng-model="Modal.Data.Phone" class="form-control" placeholder="Số điện thoại" name="phone">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Số tiền <span style="color:red">*</span></label>
+                            <div class="col-md-5">
+                                <input type="text" format-currency-input ng-model="Modal.Data.MoneyNumber" ng-disabled="Modal.Data.IsPaid" class="form-control" placeholder="Số tiền">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Ngày góp <span style="color:red">*</span></label>
+                            <div class="col-md-5">
+                                <div class="input-group"
+                                     moment-picker="Modal.Data.DocumentDateString"
+                                     format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                                    <input class="form-control"
+                                           placeholder="Ngày góp"
+                                           ng-model="Modal.Data.DocumentDateString"
+                                           ng-disabled="Modal.Data.IsPaid"
+                                           ng-model-options="{ updateOn: 'blur' }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Hình thức lãi</label>
+                            <div class="col-md-5">
+                                <select chosen class="form-control"
+                                        no-results-text="'No data found!'"
+                                        placeholder-text-multiple="'Choose all suppliers'"
+                                        ng-model="Modal.Data.Method"
+                                        ng-change="loadRadio()"
+                                        ng-disabled="Modal.Data.IsPaid"
+                                        ng-options="option.Id as option.Text for option in rateTypes">
+                                    <option value="">-- Chọn hình thức lãi --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" ng-show="Modal.Data.Method > rateTypes[0].Id">
+                                <input type="checkbox" ng-model="Modal.Data.IsBeforeReceipt" id="chkIsBefore" class="switchery" data-size="sm" i-check />
+                                <label for="chkIsBefore">Thu lãi trước</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-show="Modal.Data.Method > rateTypes[0].Id">
+                            <label class="col-md-3 label-control">Lãi <span style="color:red">*</span></label>
+                            <div class="col-md-5">
+                                <input type="text" format-currency-input ng-model="Modal.Data.InterestRate" ng-disabled="Modal.Data.IsPaid" class="form-control" placeholder="Lãi">
+                            </div>
+                            <div class="col-md-4" ng-show="Modal.Data.Method == 15">
+                                <div class="form-group row">
+                                    <div class="col-md-6 icheck_minimal skin-flat">
+                                        <input type="radio" ng-model="Modal.Data.RateType" ng-disabled="Modal.Data.IsPaid" i-check ng-value="@((int)Pawn.Libraries.CapitalRateTypeEnum.KPerMillion)">
+                                        <label>k/1 triệu</label>
+                                    </div>
+                                    <div class="col-md-6 icheck_minimal skin-flat">
+                                        <input type="radio" ng-model="Modal.Data.RateType" ng-disabled="Modal.Data.IsPaid" i-check ng-value="@((int)Pawn.Libraries.CapitalRateTypeEnum.KperDay)">
+                                        <label>k/1 ngày</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="Modal.Data.Method == 16">
+                                <div class="col-md-12 icheck_minimal skin-flat">
+                                    <input type="radio" ng-model="Modal.Data.RateType" ng-disabled="Modal.Data.IsPaid" i-check ng-value="@((int)Pawn.Libraries.CapitalRateTypeEnum.PercentPerMonth)">
+                                    <label>% /1 tháng</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="Modal.Data.Method == 17">
+                                <div class="col-md-12 icheck_minimal skin-flat">
+                                    <input type="radio" ng-model="Modal.Data.RateType" ng-disabled="Modal.Data.IsPaid" i-check ng-value="@((int)Pawn.Libraries.CapitalRateTypeEnum.PercentPerMonthPeriodic)">
+                                    <label>% /1 tháng</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="Modal.Data.Method == 18">
+                                <div class="col-md-12 icheck_minimal skin-flat">
+                                    <input type="radio" ng-model="Modal.Data.RateType" ng-disabled="Modal.Data.IsPaid" i-check ng-value="@((int)Pawn.Libraries.CapitalRateTypeEnum.PercentPerWeek)">
+                                    <label>% /1 tuần (VD : 2% / 1 tuần)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="Modal.Data.Method == 19">
+                                <div class="col-md-12 icheck_minimal skin-flat">
+                                    <input type="radio" ng-model="Modal.Data.RateType" ng-disabled="Modal.Data.IsPaid" i-check ng-value="@((int)Pawn.Libraries.CapitalRateTypeEnum.KPerWeek)">
+                                    <label>k/1 tuần (VD : 100k / 1 tuần)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-show="Modal.Data.Method > rateTypes[0].Id">
+                            <label class="col-md-3 label-control">{{Title}} <span style="color:red">*</span></label>
+                            <div class="col-md-5">
+                                <input type="text" format-currency-input ng-model="Modal.Data.BorrowNumber" ng-disabled="Modal.Data.IsPaid" class="form-control" placeholder="{{Title}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-show="Modal.Data.Method > rateTypes[0].Id">
+                            <label class="col-md-3 label-control">Kỳ lãi <span style="color:red">*</span></label>
+                            <div class="col-md-5">
+                                <input type="text" format-currency-input ng-model="Modal.Data.BorrowPeriod" ng-disabled="Modal.Data.IsPaid" class="form-control" placeholder="Kỳ lãi">
+                            </div>
+                            <div class="col-md-4">
+                                {{Note}}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Ghi chú</label>
+                            <div class="col-md-9">
+                                <textarea rows="3" ng-model="Modal.Data.Note" class="form-control" placeholder="Ghi chú"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,10 @@
+﻿@model List<CustomerModels>
+<select multiple="multiple" size="10" class="duallistbox">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Fullname</option>
+        }
+    }
+</select>

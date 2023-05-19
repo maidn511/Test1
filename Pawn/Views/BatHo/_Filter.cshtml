@@ -1,0 +1,91 @@
+﻿<div class="row">
+    <div class="col-md-2 col-lg-1 mb-1">
+        <p>Mã HĐ:</p>
+        <input type="text" class="form-control" ng-model="Parameters.documentName"  placeholder="Mã HĐ"/>
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Tên khách hàng:</p>
+        <input type="text" class="form-control" ng-model="Parameters.customerName" placeholder="Tên khách hàng" />
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Từ ngày:</p>
+        <div class="input-group"
+             moment-picker="Parameters.fromDateString"
+             max-date="Parameters.toDateString"
+             format="DD-MM-YYYY">
+            <input class="form-control"
+                   placeholder="Tư ngày"
+                   ng-model="Parameters.fromDateString"
+                   ng-model-options="{ updateOn: 'blur' }">
+            <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Đến ngày:</p>
+        <div class="input-group"
+             moment-picker="Parameters.toDateString"
+             min-date="Parameters.fromDateString"
+             format="DD-MM-YYYY">
+            <input class="form-control"
+                   placeholder="Select a date"
+                   ng-model="Parameters.toDateString"
+                   ng-model-options="{ updateOn: 'blur' }">
+            <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-lg-1 mb-1">
+        <p>Thời gian:</p>
+        <select class="form-control" ng-change="Search()" style="height:34px!important"
+                ng-options="option.Code as option.Description for option in AdditionData.timePawns"
+                ng-model="Parameters.timePawn" ng-init="Parameters.timePawn = -1">
+            <option value="" class="hidden"></option>
+        </select>
+
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Trạng thái hợp đồng:</p>
+        <select class="form-control" ng-change="Search()" style="height:34px!important"
+                ng-options="option.Code as option.Description for option in AdditionData.documentStatus"
+                ng-model="Parameters.documentStatus" ng-init="Parameters.documentStatus = 1">
+            <option value="" class="hidden"></option>
+        </select>
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>&nbsp;</p>
+        <fieldset class="form-group">
+            <button type="button" ng-click="Search()" class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Tên khách hàng:</p>
+        <select ng-model="Parameters.StaffManagerId"
+                class="form-control" chosen
+                placeholder-text-multiple="'Tên nhân viên'"
+                disable-search="false" ng-change="Search()"
+                ng-options="item.Id as item.Username for item in staffList">
+            <option value="">Tất cả nhân viên</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Cột</p>
+        <select class="form-control" ng-change="Search()" style="height:34px!important"
+                ng-options="option.value as option.name for option in ColumnSort"
+                ng-model="Parameters.columnsort" ng-init="Parameters.columnsort = 'CreatedDate'">
+            <option value="" class="hidden"></option>
+        </select>
+    </div>
+    <div class="col-md-2 col-lg-2 mb-1">
+        <p>Sắp xếp</p>
+        <select class="form-control" ng-change="Search()" style="height:34px!important"
+                ng-options="option.value as option.name for option in SortType"
+                ng-model="Parameters.sorttype" ng-init="Parameters.sorttype = 'desc'">
+            <option value="" class="hidden"></option>
+        </select>
+    </div>
+</div>

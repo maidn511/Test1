@@ -1,0 +1,59 @@
+﻿<form class="form form-horizontal form-bordered">
+    <div class="form-body" style="border:1px solid #d9d9d9">
+        <h4 class="form-section" style="cursor:pointer;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+            <i class="ft-align-justify"></i> Tất toán khoản vay
+        </h4>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput1">Ngày đóng HĐ :</label>
+            <div class="col-md-4">
+                <div class="input-group"
+                     moment-picker="DataCloseContract.ToDateString"
+                     format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                    <input class="form-control"
+                           placeholder="Ngày đóng hợp đồng"
+                           ng-model="DataCloseContract.ToDateString"
+                           ng-model-options="{ updateOn: 'blur' }">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput2">Tiền cầm :</label>
+            <div class="col-md-4">
+                <label style="padding-top: 6px;"> {{pawnData.TotalMoney | currency:"":0 }} VNĐ</label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput2">Nợ cũ :</label>
+            <div class="col-md-4">
+                <label style="padding-top: 6px;"> {{pawnData.NoCu |currency:"":0}} VNĐ</label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control">Tiền lãi</label>
+            <div class="col-md-4">
+                <label style="padding-top: 6px;"> {{DataCloseContract.MoneyLoan| currency:"":0}} VND ({{DataCloseContract.NumberOfDayClose}} ngày)</label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control">Tiền khác</label>
+            <div class="col-md-4">
+                <input ng-model="DataCloseContract.MoneyOrther" ng-change="TestClose()" format-currency-input class="form-control" placeholder="Tiền khác" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control">Tổng tiền chuộc</label>
+            <div class="col-md-4">
+                <label style="padding-top: 6px;color:red"><strong>{{((DataCloseContract.MoneyLoan -0) + (pawnData.TotalMoney-0) + (DataCloseContract.MoneyOrther -0)) | currency:"":0}} VNĐ</strong></label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control"></label>
+            <div class="col-md-4" style="text-align:right">
+                <button class="btn btn-primary" style="margin-bottom:3px" ng-click="CloseContract()">Đóng HĐ</button>
+            </div>
+        </div>
+    </div>
+</form>

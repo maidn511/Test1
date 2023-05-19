@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Manager File Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Manager File Error",
+    ListLiModels = new List<LiModels>
+    {
+        new LiModels { Name = "Manager File Error", IsActive = true}
+    }
+})
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="right-content">
+                    <div class="box-search">
+                        <div class="form-inline">
+                            <button data-type="buttonsearch" type="button" class="btn btn-primary" id="btnSearch"><i class="fa icon-search"></i>Search</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="score-board space25">
+                                <h3 class="table-title">
+                                    <span class="titletable">
+                                        List File
+                                    </span>
+                                </h3>
+                                <div class="table-responsive" id="divLogError" style="margin-bottom: 10px">
+                                    @{Html.RenderAction("_PartialData");}
+                                </div>
+                            </div>
+                            <nav class="text-center">
+                                <ul id="Pagination" class="pagination"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var urlAjaxSearch = '@Url.Action("_PartialData")';
+        $(document).on("click", ".styleRow", function () {
+            $(".divHidden:not([data-for=" + $(this).attr("id") + "])").hide();
+            var _this = $(".divHidden[data-for=" + $(this).attr("id") + "]");
+            console.log(_this.is(":visible"));
+            if (_this.is(":visible"))
+                _this.fadeOut();
+            else
+                _this.fadeIn();
+        })
+    </script>
+    <script src="~/Scripts/app/system/error.js"></script>
+}
+

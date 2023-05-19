@@ -1,0 +1,74 @@
+﻿<form class="form form-horizontal form-bordered">
+    <div class="form-body" style="border:1px solid #d9d9d9">
+        <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+            <i class="ft-align-justify"></i> Hẹn giờ
+        </h4>
+        <div class="form-group row">
+            <label class="col-md-3 label-control" for="projectinput1">Ngày hẹn</label>
+            <div class="col-md-8">
+                <div class="input-group"
+                     moment-picker="AlarmDate.DateString"
+                     format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                    <input class="form-control"
+                           placeholder="Ngày hẹn"
+                           ng-model="AlarmDate.DateString"
+                           ng-model-options="{ updateOn: 'blur' }">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 label-control">Ghi chú</label>
+            <div class="col-md-8">
+                <textarea rows="3" ng-model="AlarmDate.Note" class="form-control" placeholder="Ghi chú"></textarea>
+            </div>
+        </div>
+        <div class="form-group row" style="background: #f9f9f9;">
+            <label class="col-md-3 label-control"></label>
+            <div class="col-md-8 text-right" style="border-left:0">
+                <input type="button" id="btnAddAlarm" value="Tạo hẹn giờ" ng-click="AddAlarmDate(1)" class="btn btn-primary">
+                <input type="button" id="btnStopAlarm" value="Dừng hẹn giờ" ng-click="AddAlarmDate(0)" class="btn btn-danger">
+            </div>
+        </div>
+    </div>
+</form>
+
+<form class="form form-horizontal form-bordered" style="margin-top:10px">
+    <div class="form-body">
+        <h4>        </h4>
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead class="cf">
+                    <tr>
+                        <th style="text-align: center; width:50px">
+                            STT
+                        </th>
+                        <th style="text-align: center">
+                            Trạng thái
+                        </th>
+                        <th style="text-align: center">
+                            Hẹn đến ngày
+                        </th>
+                        <th style="text-align: center">
+                            Nội dung hẹn giờ
+                        </th>
+                        <th style="text-align: center">
+                            Ngày tạo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in DateTimer">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{item.StatusName}}</td>
+                        <td class="text-center">{{item.Status == 1 ? (item.TimerDate| jsonDate:"dd-MM-yyyy") : ""}}</td>
+                        <td class="text-center">{{item.Note}}</td>
+                        <td class="text-center">{{item.CreatedDate| jsonDate:"dd-MM-yyyy"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>

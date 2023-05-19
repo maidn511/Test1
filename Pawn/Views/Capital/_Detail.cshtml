@@ -1,0 +1,496 @@
+﻿<div class="modal fade text-left" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">{{Detail.Method  == 14 ? "Vốn đầu tư" : "Vốn đi vay"}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row match-height">
+                    <div class="col-md-12">
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <div class="form">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered mb-0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3"><strong style="color:red">{{Detail.CustomerName}}</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:35%"><strong>Tiền vay</strong></td>
+                                                                <td colspan="2" style="text-align:right">{{Detail.TotalMoney | currency:"":0 }} VNĐ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:35%"><strong>Lãi suất</strong></td>
+                                                                <td colspan="2" style="text-align:right">{{(Detail.InterestRate || "") + "" + (Detail.MethodName || "")}}</td>
+                                                            </tr>
+                                                            <tr ng-show="Detail.Method == 14">
+                                                                <td style="width:35%"><strong>Ngày góp vốn</strong></td>
+                                                                <td colspan="2" style="text-align:right">{{Detail.FromDate }}</td>
+                                                            </tr>
+                                                            <tr ng-show="Detail.Method > 14">
+                                                                <td style="width:35%"><strong>Vay từ ngày</strong></td>
+                                                                <td style="text-align:right">{{Detail.FromDate }}</td>
+                                                                <td style="text-align:right">{{Detail.ToDate }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered mb-0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><strong>Tổng lãi</strong></td>
+                                                                <td style="text-align:right">{{Detail.TotalInterest | currency:"":0 }} VNĐ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Đã thanh toán</strong></td>
+                                                                <td style="text-align:right">{{Detail.MoneyPaid | currency:"":0}} VNĐ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong style="color:brown">Nợ cũ</strong></td>
+                                                                <td style="text-align:right">0 VNĐ</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Trạng thái</strong></td>
+                                                                <td class="{{Detail.StatusType == @((int)Pawn.Libraries.StatusTypeCapital.NoLai)? 'bgtd-nl' : ''}}" style="text-align:right">{{Detail.Method == @((int)Pawn.Libraries.CapitalMethodEnum.VonDauTu) ? "Đang góp vốn" : (Detail.StatusType == @((int)Pawn.Libraries.StatusTypeCapital.NoLai) ? "Nợ lãi":"Đang vay")}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="nav nav-tabs nav-underline no-hover-bg">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="ttl-tab" data-toggle="tab" href="#ttl" aria-controls="ttl"
+                                           aria-expanded="true">Trả tiền lãi</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="rbg-tab" data-toggle="tab" href="#rbg" aria-controls="rbg" ng-click="ChangeType(false)"
+                                           aria-expanded="false">Rút bớt gốc</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="vtv-tab" data-toggle="tab" href="#rbg" aria-controls="rbg" ng-click="ChangeType(true)"
+                                           aria-expanded="false">Vay thêm vốn</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="gh-tab" data-toggle="tab" href="#gh" aria-controls="gh"
+                                           aria-expanded="false">Gia hạn</a>
+                                    </li>
+                                    <li class="nav-item" ng-if="Detail.Method > @((int)Pawn.Libraries.CapitalMethodEnum.VonDauTu)">
+                                        <a class="nav-link" id="ttkv-tab" data-toggle="tab" href="#ttkv" aria-controls="ttkv"
+                                           aria-expanded="false">Tất toán khoản vay</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="ls-tab" data-toggle="tab" href="#ls" aria-controls="ls" ng-click="ShowHistory(Detail.Id)"
+                                           aria-expanded="false">Lịch sử</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content pt-1">
+                                    <div role="tabpanel" class="tab-pane active in" id="ttl" aria-labelledby="ttl-tab" aria-expanded="true">
+                                        <form class="form form-horizontal form-bordered" ng-if="Detail.Method > @((int)Pawn.Libraries.CapitalMethodEnum.VonDauTu)">
+                                            <div class="form-body" style="border:1px solid #d9d9d9">
+                                                <h4 class="form-section" style="cursor:pointer;margin-bottom:0;border-bottom: 1px solid #d9d9d9" ng-click="showPayInterest = !showPayInterest">
+                                                    <i class="{{showPayInterest ? 'ft-chevrons-down' : 'ft-chevrons-right'}}"></i> Đóng lãi tùy biến theo ngày
+                                                </h4>
+
+                                                <div ng-show="showPayInterest" class="animate-show animate-hide">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" for="projectinput2">Từ ngày:</label>
+                                                        <div class="col-md-4">
+                                                            <label style="padding-top: 6px;">{{Detail.CapitalPayDayDate}}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" for="projectinput1">Đến ngày :</label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-group"
+                                                                 moment-picker="DataPayInterest.ToDateString"
+                                                                 format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                                                                <input class="form-control"
+                                                                       placeholder="Đến ngày"
+                                                                       ng-model="DataPayInterest.ToDateString"
+                                                                       ng-model-options="{ updateOn: 'blur' }">
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" for="projectinput2">Số ngày :</label>
+                                                        <div class="col-md-4">
+                                                            <label style="padding-top: 6px;"> {{NumberOfDay}} ngày</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control">Tiền lãi</label>
+                                                        <div class="col-md-4">
+
+                                                            <label style="padding-top: 6px;"> {{DataPayInterest.MoneyNumber| currency:"":0}} VND</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control">Tiền khác</label>
+                                                        <div class="col-md-4">
+                                                            <input ng-model="DataPayInterest.MoneyOrther" ng-change="Test()" format-currency-input class="form-control" placeholder="Tiền khác" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control">Tổng tiền lãi</label>
+                                                        <div class="col-md-4">
+                                                            <label style="padding-top: 6px;color:red"><strong>{{TotalCapitalPayDay | currency:"":0}} VNĐ</strong></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control"></label>
+                                                        <div class="col-md-4" style="text-align:right">
+                                                            <button class="btn btn-primary" style="margin-bottom:3px" ng-click="AddPayDays()">Đóng lãi</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <div class="table-responsive" style="padding-top:10px">
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="cf">
+                                                    <tr>
+                                                        <th style="text-align: center">
+                                                            STT
+                                                        </th>
+                                                        <th style="text-align: center" colspan="3">
+                                                            Ngày
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Số ngày
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Tiền lãi
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Tiền khác
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Tổng tiền trả
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in Detail.ListCapitalPayDay">
+                                                        <td class="text-center">{{$index + 1}}</td>
+                                                        <td class="text-center">{{item.FromDate|jsonDate:"dd-MM-yyyy"}}</td>
+                                                        <td class="text-center">--></td>
+                                                        <td class="text-center">{{item.ToDate|jsonDate:"dd-MM-yyyy"}}</td>
+                                                        <td class="text-center">{{item.NumberOfDay}}</td>
+                                                        <td class="text-right">{{(item.MoneyNumber <= 0 ? 0 : item.MoneyNumber)| currency:"":0}} VND</td>
+                                                        <td class="text-right">{{(item.MoneyOrther || 0)| currency:"":0}} VND</td>
+                                                        <td class="text-right">{{(item.MoneyOrther + (item.MoneyNumber <= 0 ? 0 : item.MoneyNumber)) | currency:"":0}} VND</td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" ng-if="item.MoneyNumber > 0" ng-model="item.IsPaid" ng-change="Paid(item, $index)" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="rbg" role="tabpanel" aria-labelledby="rbg-tab"
+                                         aria-expanded="false">
+                                        <form class="form form-horizontal form-bordered">
+                                            <div class="form-body" style="border:1px solid #d9d9d9">
+                                                <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                                                    <i class="ft-align-justify"></i> {{TitleLoan}}
+                                                </h4>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput1">{{DateTitleLoan}}</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group"
+                                                             moment-picker="WithDrawal.LoadDateString"
+                                                             format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                                                            <input class="form-control"
+                                                                   placeholder="{{DateTitleLoan}}"
+                                                                   ng-model="WithDrawal.LoadDateString"
+                                                                   ng-model-options="{ updateOn: 'blur' }">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput2">{{MoneyTitleLoan}}</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" format-currency-input ng-model="WithDrawal.MoneyNumber" class="form-control" placeholder="{{MoneyTitleLoan}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control">Ghi chú</label>
+                                                    <div class="col-md-8">
+                                                        <textarea rows="3" ng-model="WithDrawal.Note" class="form-control" placeholder="Ghi chú"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="background: #f9f9f9;">
+                                                    <label class="col-md-3 label-control"></label>
+                                                    <div class="col-md-8 text-right" style="border-left:0">
+                                                        <button class="btn btn-primary" ng-click="AddWithDrawal()">Đồng ý</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <form class="form form-horizontal form-bordered">
+                                            <div class="form-body">
+                                                <h4 class="form-section" style="margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                                                    <i class="ft-align-justify"></i> Danh sách tiền gốc
+                                                </h4>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered mb-0">
+                                                        <thead class="cf">
+                                                            <tr>
+                                                                <th style="text-align: center">
+                                                                    STT
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                    Ngày
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                    Nội dung
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                    Số tiền
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="item in DrawalData">
+                                                                <td class="text-center">{{$index + 1}}</td>
+                                                                <td class="text-center">{{item.LoadDate | jsonDate:"dd-MM-yyyy"}}</td>
+                                                                <td class="text-center">{{(!item.IsLoan ? "Trả bớt gốc" : "Vay thêm tiền") + ": " + (item.Note || "")}}</td>
+                                                                <td class="text-right">{{(item.IsLoan ? "" : "-") + "" + (item.MoneyNumber| currency:"":0)}} VND</td>
+                                                                <td class="text-center"><i class="ft-trash-2" style="cursor:pointer" ng-click="DeleteLoan(item)"></i></td>
+                                                            </tr>
+                                                            <tr class="bgtd">
+                                                                <td class="text-right" colspan="3" style="color:brown"><strong>Tổng gốc còn lại</strong></td>
+                                                                <td class="text-right" style="color:brown"><strong>{{Detail.TotalMoney | currency:"":0 }} VNĐ</strong></td>
+                                                                <td class="text-center"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="gh" role="tabpanel" aria-labelledby="gh-tab" aria-expanded="false">
+                                        <form class="form form-horizontal form-bordered">
+                                            <div class="form-body" style="border:1px solid #d9d9d9">
+                                                <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                                                    <i class="ft-align-justify"></i> Gia hạn hợp đồng
+                                                </h4>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput1">Khách hàng</label>
+                                                    <div class="col-md-8">
+                                                        <label style="padding-top: 6px;"><strong>{{Detail.CustomerName}}</strong></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput2">Gia hạn thêm *</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" format-currency-input ng-model="ExtentionContract.AddTime" class="form-control" placeholder="Số ngày">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control">Ghi chú</label>
+                                                    <div class="col-md-8">
+                                                        <textarea rows="3" ng-model="ExtentionContract.Note" class="form-control" placeholder="Ghi chú"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="background: #f9f9f9;">
+                                                    <label class="col-md-3 label-control"></label>
+                                                    <div class="col-md-8 text-right" style="border-left:0">
+                                                        <button class="btn btn-primary" ng-click="AddWithExtensionHistory()">Đồng ý</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <form class="form form-horizontal form-bordered">
+                                            <div class="form-body">
+                                                <h4 class="form-section" style="margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                                                    <i class="ft-align-justify"></i> Danh sách tiền gốc
+                                                </h4>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered mb-0">
+                                                        <thead class="cf">
+                                                            <tr>
+                                                                <th style="text-align: center; width:50px">
+                                                                    STT
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                    Gia hạn từ ngày
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                    Đến ngày
+                                                                </th>
+                                                                <th style="text-align: center; width:140px">
+                                                                    Số ngày
+                                                                </th>
+                                                                <th style="text-align: center">
+                                                                    Nội dung
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="item in Detail.ListExtentionContract">
+                                                                <td class="text-center">{{$index + 1}}</td>
+                                                                <td class="text-center">{{item.FromDate | jsonDate:"dd-MM-yyyy"}}</td>
+                                                                <td class="text-center">{{item.ToDate | jsonDate:"dd-MM-yyyy"}}</td>
+                                                                <td class="text-center">{{item.AddTime}}</td>
+                                                                <td>{{item.Note}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="ttkv" ng-if="Detail.Method > @((int)Pawn.Libraries.CapitalMethodEnum.VonDauTu)" role="tabpanel" aria-labelledby="ttkv-tab" aria-expanded="false">
+                                        <form class="form form-horizontal form-bordered">
+                                            <div class="form-body" style="border:1px solid #d9d9d9">
+                                                <h4 class="form-section" style="cursor:pointer;margin-bottom:0;border-bottom: 1px solid #d9d9d9" ng-click="showPayInterest = !showPayInterest">
+                                                    <i class="ft-align-justify"></i> Tất toán khoản vay
+                                                </h4>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput1">Ngày đóng HĐ :</label>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group"
+                                                             moment-picker="DataCloseContract.ToDateString"
+                                                             format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                                                            <input class="form-control"
+                                                                   placeholder="Đến ngày"
+                                                                   ng-model="DataCloseContract.ToDateString"
+                                                                   ng-model-options="{ updateOn: 'blur' }">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput2">Tiền cầm :</label>
+                                                    <div class="col-md-4">
+                                                        <label style="padding-top: 6px;"> {{Detail.TotalMoney | currency:"":0 }} VNĐ</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="projectinput2">Nợ cũ :</label>
+                                                    <div class="col-md-4">
+                                                        <label style="padding-top: 6px;"> 0 VNĐ</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control">Tiền lãi</label>
+                                                    <div class="col-md-4">
+                                                        <label style="padding-top: 6px;"> {{DataCloseContract.MoneyLoan| currency:"":0}} VND ({{DataCloseContract.NumberOfDayClose}} ngày)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control">Tiền khác</label>
+                                                    <div class="col-md-4">
+                                                        <input ng-model="DataCloseContract.MoneyOrther" ng-change="TestClose()" format-currency-input class="form-control" placeholder="Tiền khác" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control">Tổng tiền lãi</label>
+                                                    <div class="col-md-4">
+                                                        <label style="padding-top: 6px;color:red"><strong>{{(DataCloseContract.TotalMoney + Detail.TotalMoney) | currency:"":0}} VNĐ</strong></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control"></label>
+                                                    <div class="col-md-4" style="text-align:right">
+                                                        <button class="btn btn-primary" style="margin-bottom:3px" ng-click="CloseContract()">Đóng HĐ</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane" id="ls" role="tabpanel" aria-labelledby="ls-tab" aria-expanded="false">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="cf">
+                                                    <tr>
+                                                        <th style="text-align: center">
+                                                            STT
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Ngày
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Giao dịch viên
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Số tiền ghi nợ
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Số tiền ghi có
+                                                        </th>
+                                                        <th style="text-align: center">
+                                                            Nội dung
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in History">
+                                                        <td class="text-center">{{$index + 1}}</td>
+                                                        <td class="text-center">{{item.ActionDate | jsonDate:"dd-MM-yyyy HH:mm:ss"}}</td>
+                                                        <td class="text-center">{{item.CreatedBy}}</td>
+                                                        <td class="text-right">{{item.DebitMoney| currency:"":0}}</td>
+                                                        <td class="text-right">{{item.HavingMoney| currency:"":0}}</td>
+                                                        <td class="text-center">{{item.Content}}</td>
+                                                    </tr>
+                                                    <tr class="bgtd">
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-right" style="color:brown">Tổng tiền</td>
+                                                        <td class="text-right" style="color:red"><strong>{{TotalDebit| currency:"":0}}</strong></td>
+                                                        <td class="text-right" style="color:red"><strong>{{TotalHaving| currency:"":0}}</strong></td>
+                                                        <td class="text-center"></td>
+                                                    </tr>
+                                                    <tr class="bgtd">
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-right" style="color:brown"><strong>Chênh lệch</strong></td>
+                                                        <td class="text-center" colspan="2" style="color:red"><strong>{{(TotalHaving - TotalDebit)| currency:"":0}}</strong></td>
+                                                        <td class="text-center"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-primary" ng-click="AddData()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

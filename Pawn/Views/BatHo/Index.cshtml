@@ -1,0 +1,485 @@
+﻿
+@{
+    ViewBag.Title = "Bát họ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/vendors/js/gallery/photo-swipe/photoswipe.css" rel="stylesheet" />
+<link href="~/Content/vendors/js/gallery/photo-swipe/default-skin/default-skin.css" rel="stylesheet" />
+<link href="~/Content/css/pages/gallery.css" rel="stylesheet" />
+<style>
+    .uploadfile {
+        border: dashed 1px #ccc;
+        height: 50px;
+        text-align: center;
+        line-height: 3.5;
+        width: 145px;
+    }
+
+    .delete-img {
+        position: absolute;
+        right: 24px;
+        top: 8px;
+        width: 25px;
+        height: 22px;
+        background: red;
+        color: white;
+        text-align: center;
+        cursor: pointer
+    }
+
+    .closewithmoney {
+        margin-top: 15px;
+    }
+
+    .fa-heart {
+        color: #ff5d5d;
+        font-size: 18px;
+    }
+
+    .ft-rotate-cw {
+        color: green;
+        font-size: 15px;
+    }
+</style>
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Hợp đồng vay họ",
+    ListLiModels = new List<LiModels>
+{
+new LiModels { Name = "Bát họ", IsActive = true}
+}
+})
+<input style="display: none" id="fileupload" accept="image/*" type="file" multiple name="files" data-url="@Url.Action("UploadChungTu", "Upload")" data-sequential-uploads="true" data-form-data='{"script": "true"}' autocomplete="off" />
+<input style="display: none" id="fileupload1" type="file" multiple name="files" data-url="@Url.Action("UploadImage", "Upload")" data-sequential-uploads="true" data-form-data='{"script": "true"}' autocomplete="off" />
+<div class="content-body" id="table"
+     data-ng-controller="tableController"
+     data-url="@Url.Action("GetAllData", "Batho")"
+     data-detail-url="@Url.Action("GetDetailData", "IncomeAndExpense")"
+     data-update-url="@Url.Action("UpdateIncomeAndExpense", "IncomeAndExpense")"
+     data-add-url="@Url.Action("AddNewBH", "Batho")"
+     data-delete-url="@Url.Action("DeleteIncomeAndExpense", "IncomeAndExpense")"
+     data-history-remind-url="@Url.Action("LoadHistoryRemind", "BatHo")"
+     data-add-history-remind-url="@Url.Action("AddHistoryRemind", "BatHo")"
+     data-turnaround-url="@Url.Action("TurnAroundBatHo", "BatHo")"
+     data-history-action-url="@Url.Action("LoadHistoryAction", "BatHo")">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        @Html.Partial("_Filter")
+                    </div>
+                    <div class="card-body">
+                        @Html.Partial("_List")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade text-left" id="addform" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            @Html.Partial("_BHDetail")
+        </div>
+    </div>
+    <div class="modal fade text-left" id="detail" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17">Hợp đồng vay họ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="header cusName">
+                                                    <strong style="color:red">{{BatHoData.CustomerName}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Bát họ</strong></td>
+                                                <td colspan="2" align="right">{{BatHoData.TotalMoney| currency:"":0}} VNĐ</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Tỷ lệ</strong></td>
+                                                <td colspan="2" align="right">10 ăn <b>{{(BatHoData.MoneyForGues * 10/BatHoData.TotalMoney).toFixed(2)}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Họ từ ngày</strong></td>
+                                                <td align="right">{{BatHoData.FromDateDetail | jsonDate:"dd-MM-yyyy"}}</td>
+                                                <td align="right" id="tdToDate">{{BatHoData.ToDate}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header">
+                                                    <strong style="color:brown"> {{BatHoData.MoneyOrther > 0 ? "Tiền thừa" :"Nợ cũ"}}</strong>
+                                                </td>
+                                                <td colspan="2" align="right" class="bold" id="tdDebitMoney"> <strong style="color:brown">{{Abs(BatHoData.MoneyOrther)| currency:"":0}} VNĐ</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="header"><strong>Số tiền giao khách</strong></td>
+                                                    <td colspan="2" align="right"><span class="bold"><strong>{{BatHoData.MoneyForGues| currency:"":0}}</strong> </span>VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Tổng tiền phải đóng</strong></td>
+                                                    <td colspan="2" align="right"><span class="bold highlight"><strong style="color:brown">{{BatHoData.TotalMoney| currency:"":0}} </strong></span>VNĐ</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Đã đóng được</strong></td>
+                                                    <td colspan="2" align="right">
+                                                        <span class="bold" id="spanPaymentMoney"><strong>{{(BatHoData.TotalPay + BatHoData.TotalHaving)| currency:"":0}}</strong></span> VNĐ
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Còn lại phải đóng</strong></td>
+                                                    <td colspan="2" align="right">
+                                                        <span class="bold highlight" id="spanPaymentMoney"><strong style="color:brown">{{(BatHoData.TotalMoney - (BatHoData.TotalPay + BatHoData.TotalHaving))| currency:"":0}}</strong></span> VNĐ
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="header"><strong>Tổng lãi</strong></td>
+                                                    <td colspan="2" align="right">
+                                                        <span class="bold" id="spanPaymentMoney"><strong>{{(BatHoData.TotalMoney - BatHoData.MoneyForGues)| currency:"":0}}</strong></span> VNĐ
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-tabs nav-underline no-hover-bg">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="ldt-tab" data-toggle="tab" href="#ldt" aria-controls="ldt" aria-expanded="true">Lịch đóng tiền</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="dhd-tab" data-toggle="tab" href="#dhd" aria-controls="dhd" ng-click="CalculatorContract()" aria-expanded="false">Đóng hợp đồng</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="no-tab" data-toggle="tab" href="#no" aria-controls="no" ng-click="ChangeType(true)" aria-expanded="false">Nợ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="history-tab" ng-click="LoadHistory(BatHoData.Id)" data-toggle="tab" href="#tab_history" aria-controls="tab_history" aria-expanded="false">Lịch sử</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="turnaround-tab" ng-click="LoadDaoHo()" data-toggle="tab" href="#tab_turnaround" aria-controls="dh" aria-expanded="false">Đảo họ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="ct-tab" data-toggle="tab" href="#ct" ng-click="LoadChungTu(BatHoData.Id)" aria-controls="ct" aria-expanded="false">Chứng từ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="hg-tab" data-toggle="tab" href="#tab_hg" aria-controls="tab_hg" aria-expanded="false" ng-click="CallTabTimer()">Hẹn giờ</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content pt-1">
+                                <div role="tabpanel" class="tab-pane active in" id="ldt" aria-labelledby="ldt-tab" aria-expanded="true">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover table-checkable datatable h-center" id="tblPayment">
+                                            <thead>
+                                                <tr>
+                                                    <th class="noprint">
+                                                        In
+                                                    </th>
+                                                    <th class="text-center" width="50px">STT</th>
+                                                    <th class="text-center" style="width:150px">Ngày họ</th>
+                                                    <th style="text-align: right">
+                                                        <div data-placement="top" class="btn btn-primary btn-sm ng-scope " style="background:#f53d3d !important" id="btnUpdatePayment" popover>
+                                                            Sửa
+                                                            <div id="popover-content" class="row hidden">
+                                                                <form class="form form-horizontal">
+                                                                    <div class="form-body">
+                                                                        <div class="form-group row">
+                                                                            <label class="col-md-3 label-control" for="projectinput1">Tiền họ:</label>
+                                                                            <div class="col-md-6">
+                                                                                <input type="text" class="form-control" format-currency-input placeholder="Tiền họ" ng-model="PaymentNeedMoney" />
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <button type="button" style="height:30px; margin-top:2px" class="btn btn-sm btn-primary" ng-click="ChangePaymentMoney()">Lưu</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <span style="margin-left:6px;">
+                                                            Tiền họ
+                                                        </span>
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Ngày giao dịch
+                                                    </th>
+                                                    <th style="text-align: right">Tiền khách trả</th>
+                                                    <th width="40px;">
+                                                        &nbsp;
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in BatHoData.ListBatHoPay">
+                                                    <td align="center" class="noprint">
+                                                        <i ng-show="item.IsPaid" class="ft-printer"></i>
+                                                    </td>
+                                                    <td align="center">{{$index+1}}</td>
+                                                    <td align="center">{{(item.FromDate | jsonDate:"dd/MM") + ((item.ToDate | jsonDate:"dd/MM") !=  (item.FromDate | jsonDate:"dd/MM") ? ("-->" + (item.ToDate | jsonDate:"dd/MM") + " ("+ item.NumberOfDays + " ngày)") : "")}}</td>
+                                                    <td align="right">
+                                                        {{item.PaymentNeedMoney| currency:"":0}} VNĐ
+                                                    </td>
+                                                    <td align="center">
+                                                        <span style="font-size: 12px; font-family: Tahoma;">
+                                                            <a href="javascript:void(0)" ng-if="item.IsCurrent == false">
+                                                                {{item.LoanDate | jsonDate:"dd-MM-yyyy HH:00"}}
+                                                            </a>
+                                                            <div ng-if="item.IsCurrent == true" data-placement="top" class="btn btn-primary btn-sm ng-scope " popover>
+                                                                {{item.LoanDate}}
+                                                                <div id="popover-content" class="row hidden">
+                                                                    <form class="form form-horizontal">
+                                                                        <div class="form-body">
+                                                                            <div class="form-group row">
+                                                                                <div class="col-md-9">
+                                                                                    <div class="input-group"
+                                                                                         inline="true"
+                                                                                         moment-picker="item.LoanDate"
+                                                                                         format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                                                                                        <input class="form-control hidden"
+                                                                                               placeholder="Tư ngày"
+                                                                                               ng-model="item.LoanDate"
+                                                                                               ng-init="item.LoanDate = FormatDate(item.LoanDate)"
+                                                                                               ng-model-options="{ updateOn: 'blur' }">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-3">
+                                                                                    <button type="button" class="btn btn-success" onclick="$('.popover').popover('hide');"><i class="fa fa-check"></i></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="icon-double-angle-right"></i>&nbsp;
+                                                        <a ng-if="item.IsCurrent == false" style="font-size: 13px; font-family: Tahoma;color:blue;padding: 1px 2px">
+                                                            {{item.MoneyOfCustomer| currency:"":0}}
+                                                        </a>
+                                                        <div ng-if="item.IsCurrent == true" data-placement="top" class="btn btn-primary btn-sm ng-scope " popover>
+                                                            {{item.MoneyOfCustomer| currency:"":0}}
+                                                            <div id="popover-content" class="row hidden">
+                                                                <form class="form form-horizontal">
+                                                                    <div class="form-body">
+                                                                        <div class="form-group row">
+                                                                            <div class="col-md-9">
+                                                                                <input class="form-control"
+                                                                                       ng-model="item.MoneyOfCustomer"
+                                                                                       format-currency-input />
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <button type="button" class="btn btn-success" onclick="$('.popover').popover('hide');"><i class="fa fa-check"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="checkbox-column">
+                                                        <input type="checkbox" ng-model="item.IsPaid" ng-change="Paid(item, $index)" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="dhd" role="tabpanel" aria-labelledby="dhd-tab" aria-expanded="false">
+                                    <div class="form-group row">
+                                        <div class="col-md-9" ng-if="IsPayDone == true">
+                                            <strong>Hợp đồng này đã hoàn thành ! Xin mời bạn click vào nút "Đóng hợp đồng"</strong>
+                                        </div>
+                                        <div class="col-md-9" ng-if="IsPayDone == false">
+                                            <b>@("Chú ý : ")</b>
+                                            <br>
+                                            Số kỳ còn phải đóng :&nbsp;&nbsp;<span class="bold highlight"> <strong style="color:brown">{{NumberInterestRate}} kỳ ( = {{MoneyNumber| currency:"":0}} VNĐ )</strong></span>
+                                            <br>
+                                            {{BatHoData.MoneyOrther > 0 ? "Tiền thừa" :"Nợ cũ"}} :&nbsp;&nbsp;<span class="bold highlight"><strong style="color:brown">{{Abs(BatHoData.MoneyOrther)| currency:"":0}} VNĐ</strong></span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-primary btn-block" ng-click="ConfirmClostInstallment()">Đóng hợp đồng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="no" role="tabpanel" aria-labelledby="no-tab" aria-expanded="false">
+                                    <div class="form-group row">
+                                        <form class="form form-horizontal form-bordered col-md-6">
+                                            <div class="form-body" style="border:1px solid #d9d9d9">
+                                                <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                                                    <i class="ft-align-justify"></i> Khách hàng nợ lãi
+                                                </h4>
+                                                <div class="form-group row">
+                                                    <label class="col-md-6 control-label" style="padding-top:12px">Số tiền nợ lại lần này <span class="required">*</span></label>
+                                                    <div class="col-md-6" style="padding-right:5px">
+                                                        <input type="text" id="txtMoneyDebt" format-currency-input ng-model="MoneyDebt" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <h4 class="form-section text-right" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9;padding-right:7px; height:40px">
+                                                    <input type="button" value="Ghi nợ" class="btn btn-primary pull-right" style="margin-top:1px" ng-click="AddDebt(true)">
+                                                </h4>
+                                            </div>
+                                        </form>
+                                        <form class="form form-horizontal form-bordered col-md-6">
+                                            <div class="form-body" style="border:1px solid #d9d9d9">
+                                                <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                                                    <i class="ft-align-justify"></i> Khách hàng trả nợ
+                                                </h4>
+                                                <div class="form-group row">
+                                                    <label class="col-md-6 control-label" style="padding-top:12px">Số tiền trả nợ <span class="required">*</span></label>
+                                                    <div class="col-md-6" style="padding-right:5px">
+                                                        <input type="text" format-currency-input id=txt"MoneyHaving" ng-model="MoneyHaving" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <h4 class="form-section text-right" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9;padding-right:7px; height:40px">
+                                                    <input type="button" value="Thanh toán" class="btn btn-primary pull-right" style="margin-top:1px" ng-click="AddDebt(false)">
+                                                </h4>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_history" role="tabpanel" aria-labelledby="history-tab" aria-expanded="false">
+                                    @Html.Partial("_History")
+                                </div>
+                                <div class="tab-pane" id="tab_turnaround" role="tabpanel" aria-labelledby="dh-tab" aria-expanded="false">
+                                    @Html.Partial("_TurnAround")
+                                </div>
+                                <div class="tab-pane" id="ct" role="tabpanel" aria-labelledby="ct-tab" aria-expanded="false">
+                                    <section id="image-gallery" class="card">
+                                        <div class="card-content">
+                                            <div class="card-body" style="padding:0; padding-left:20px;margin-top:20px">
+                                                <div class="c0l-md-3 uploadfile">
+                                                    <figure>
+                                                        <a href="javascript:void(0)" data-size="480x360">
+                                                            Upload File
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                            <div class="card-body  my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+                                                <div class="row">
+                                                    <figure class="col-lg-3 col-md-6 col-12" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" ng-repeat="item in DataChungTu" style="margin-bottom:10px;position:relative">
+                                                        <span class="delete-img" ng-click="DeleteImg(item)">x</span>
+                                                        <a href="{{item.Url}}/{{item.FileGuild}}.{{item.Ext}}" itemprop="contentUrl" data-size="480x360">
+                                                            <img class="img-thumbnail img-fluid" style="height:190px; width:150px" src="{{item.Url}}/{{item.FileGuild}}.{{item.Ext}}"
+                                                                 itemprop="thumbnail" alt="Image description" />
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                            <!--/ Image grid -->
+                                            <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="pswp__bg"></div>
+                                                <div class="pswp__scroll-wrap">
+                                                    <div class="pswp__container">
+                                                        <div class="pswp__item"></div>
+                                                        <div class="pswp__item"></div>
+                                                        <div class="pswp__item"></div>
+                                                    </div>
+                                                    <div class="pswp__ui pswp__ui--hidden">
+                                                        <div class="pswp__top-bar">
+                                                            <div class="pswp__counter"></div>
+                                                            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                                                            <button class="pswp__button pswp__button--share" title="Share"></button>
+                                                            <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                                                            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                                                            <div class="pswp__preloader">
+                                                                <div class="pswp__preloader__icn">
+                                                                    <div class="pswp__preloader__cut">
+                                                                        <div class="pswp__preloader__donut"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                                                            <div class="pswp__share-tooltip"></div>
+                                                        </div>
+                                                        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                                                        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                                                        <div class="pswp__caption hide">
+                                                            <div class="pswp__caption__center"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ PhotoSwipe -->
+                                    </section>
+                                </div>
+                                <div class="tab-pane" id="tab_hg" role="tabpanel" aria-labelledby="hg-tab" aria-expanded="false">
+                                    @Html.Partial("_HenGio")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" ng-click="Search()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section vendor{
+    <script src="~/Content/js/scripts/popover/popover.js"></script>
+    <script src="~/Content/vendors/js/gallery/masonry/masonry.pkgd.min.js"></script>
+    <script src="~/Content/vendors/js/gallery/photo-swipe/photoswipe.min.js"></script>
+    <script src="~/Content/vendors/js/gallery/photo-swipe/photoswipe-ui-default.min.js"></script>
+}
+@section scripts {
+    @Scripts.Render("~/Scripts/app/common/table.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var urlLoadSelectStaff = '@Url.Action("LoadSelectStaffByStore", "Common")';
+        var urlGetMaxContract =  '@Url.Action("GetMaxContractBHCode")';
+    </script>
+    <script>
+        var urlLoadDetailBatHo = '@Url.Action("LoadDetailBatHo")';
+         var urlAddUpdateBHContract = '@Url.Action("AddNewBH")';
+        var urlLoadDetailBatHoModel = '@Url.Action("LoadDetailBatHoModel")';
+        var urlUpdateBh = '@Url.Action("UpdateBh")';
+        var urlUpdateBadDebt = '@Url.Action("UpdateBadDebt")';
+        var urlUpdateBhPay = '@Url.Action("UpdateBhPay")';
+        var urlDeleteBatHo = '@Url.Action("DeleteBatHo")';
+        var urlLoadChungtu = '@Url.Action("LoadChungtu", "Common")';
+        var urlAddFile = '@Url.Action("AddFile", "Common")';
+        var urlDeleteFile = '@Url.Action("DeleteFile", "Common")';
+        var urlCloseContract = '@Url.Action("CloseContract")';
+
+        var urlAddDebt = '@Url.Action("AddDebt", "Common")';
+        var urlLoadTimer = '@Url.Action("LoadTimer", "Common")';
+        var urlAddTimer = '@Url.Action("AddTimer", "Common")';
+          var urlLoadCustomerList = '@Url.Action("LoadDataCustomer", "Common")';
+        var urlLoadSelectStoreWithoutCurrent = '@Url.Action("LoadSelectStoreWithoutCurrent", "Common")';
+        var urlConvertStore = '@Url.Action("ConvertStore")';
+        var urlUpdateMoneySI = '@Url.Action("UpdateMoneySI")';
+        var docType = @((int)Pawn.Libraries.DocumentTypeEnum.BatHo);
+        var storeCurrent = @(RDAuthorize.Store.Id);
+    </script>
+    <script src="~/Content/js/scripts/gallery/photo-swipe/photoswipe-script.js"></script>
+    <script src="~/Scripts/app/batho/index.js"></script>
+}
+
+
+
+

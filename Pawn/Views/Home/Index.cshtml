@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (RDAuthorize.IsRoot || RDAuthorize.IsAdmin)
+{
+    Html.RenderAction("_PartialStore");
+}
+<br />
+<br />
+@if (RDAuthorize.IsAdmin || RDAuthorize.IsUser || RDAuthorize.IsUserStore)
+{
+    Html.RenderAction("_PartialCustomerPaidTomorow", new { addDay = Pawn.Libraries.InterestPaid.Tomorrow});
+
+    Html.RenderAction("_PartialCustomerPaidTomorow", new { addDay = Pawn.Libraries.InterestPaid.ToDay});
+
+}
+
+@section scripts
+{
+    <script>
+        var urlAjaxSearch = '@Url.Action("_PartialStore", "Store")';
+    </script>
+    <script src="~/Scripts/app/store/index.js"></script>
+}

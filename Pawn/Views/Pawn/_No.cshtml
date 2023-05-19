@@ -1,0 +1,34 @@
+﻿<div class="form-group row">
+    <form class="form form-horizontal form-bordered col-md-6">
+        <div class="form-body" style="border:1px solid #d9d9d9">
+            <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                <i class="ft-align-justify"></i> Khách hàng nợ lãi
+            </h4>
+            <div class="form-group row">
+                <label class="col-md-6 control-label" style="padding-top:12px">Số tiền nợ lại lần này <span class="required">*</span></label>
+                <div class="col-md-6" style="padding-right:5px">
+                    <input type="text" format-currency-input ng-model="MoneyDebt" class="form-control">
+                </div>
+            </div>
+            <h4 class="form-section text-right" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9;padding-right:7px; height:40px">
+                <input type="button" value="Ghi nợ" class="btn btn-primary pull-right" style="margin-top:1px" ng-click="AddDebt(true)">
+            </h4>
+        </div>
+    </form>
+    <form class="form form-horizontal form-bordered col-md-6">
+        <div class="form-body" style="border:1px solid #d9d9d9">
+            <h4 class="form-section" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9">
+                <i class="ft-align-justify"></i> Khách hàng trả nợ
+            </h4>
+            <div class="form-group row">
+                <label class="col-md-6 control-label" style="padding-top:12px">Số tiền trả nợ <span class="required">*</span></label>
+                <div class="col-md-6" style="padding-right:5px">
+                    <input type="text" format-currency-input ng-model="MoneyHaving" class="form-control">
+                </div>
+            </div>
+            <h4 class="form-section text-right" style="background: #f9f9f9;margin-bottom:0;border-bottom: 1px solid #d9d9d9;padding-right:7px; height:40px">
+                <input type="button" value="Thanh toán" class="btn btn-primary pull-right" style="margin-top:1px" ng-click="AddDebt(false)">
+            </h4>
+        </div>
+    </form>
+</div>

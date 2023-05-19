@@ -1,0 +1,79 @@
+﻿@model List<FileInfo>
+<style>
+    .styleRow {
+        width: 100%;
+        padding: 8px;
+        border: solid 1px black;
+        margin-left: 0;
+        margin-bottom: 5px;
+        cursor: pointer
+    }
+
+    .divHidden {
+        width: 100%;
+        padding: 10px;
+    }
+
+
+    div.styleRow:last-child {
+        margin-bottom: 0
+    }
+</style>
+
+<input type="hidden" id="hidTotalRows" data-paging="#Pagination" data-totalrows="@ViewBag.TotalRows"/>
+@if (Model != null && Model.Count > 0)
+{
+    var i = 0;
+    <div class="row styleRow" style="background: coral;color:white">
+        <div class="col-md-2">FileName</div>
+        <div class="col-md-2">Created Date</div>
+        <div class="col-md-8">Error</div>
+    </div>
+    foreach (var item in Model)
+    {
+        <div class="row styleRow" id="@item.Name.Replace(item.Extension,"")">
+            <div class="col-md-2">@item.Name.Replace(item.Extension, "")</div>
+            <div class="col-md-2">@item.CreationTime.ToString("dd/MM/yyyy HH:mm:ss")</div>
+            <div class="col-md-8">@{Html.RenderAction("GetError", new { path = item.FullName });}</div>
+            <div style="clear: both"></div>
+            <hr />
+            <div style="display: @(i == 0 ?"block":"none")" class="divHidden" data-for="@item.Name.Replace(item.Extension, "")">
+                Detail: <br /> <br /> @{Html.RenderAction("GetFullError", new { path = item.FullName });}
+            </div>
+        </div>
+                            i++;
+                        }
+                    }
+
+                    @*<table class="table table-bordered" id="tbFileError">
+                            <thead>
+                                <tr>
+                                    <th style="width: 1%;">No</th>
+                                    <th style="width: 3%;">File Name</th>
+                                    <th style="width: 10%;">Create Date</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyFileError" totalRow="@ViewBag.TotalRows">
+                                @if (Model != null && Model.Count > 0)
+                                {
+                                    var i = ViewBag.Index;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@i</td>
+                                            <td class="text-center">@item.Name</td>
+                                            <td>@item.CreationTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                            <td>@{Html.RenderAction("GetError", new { path = item.FullName });}</td>
+                                        </tr>
+                                                        i++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td colspan="8" style="text-align: center">No data display</td>
+                                                    </tr>
+                                                }
+                            </tbody>
+                        </table>*@

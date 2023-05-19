@@ -1,0 +1,20 @@
+﻿@using System.Configuration
+@{
+    ViewBag.Title = "Danh sách phiếu chi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Quản lý thu chi",
+    ListLiModels = new List<LiModels>
+    {
+        new LiModels { Name = "Chi hoạt động", IsActive = true}
+    }
+})
+@Html.Partial("_Content")
+@section scripts
+{
+    @Scripts.Render("~/Scripts/app/common/table.js")
+    @Scripts.Render("~/Scripts/app/incomeandexpense/expense.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

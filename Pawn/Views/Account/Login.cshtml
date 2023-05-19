@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+<div class="content-header row">
+</div>
+<div class="content-body">
+    <section class="flexbox-container">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="col-md-4 col-10 box-shadow-2 p-0">
+                <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
+                    <div class="card-header border-0">
+                        <div class="card-title text-center">
+                            <img src="/Content/images/backgrounds/logo.png" alt="branding logo">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "frmLogin" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary()
+                                if (!string.IsNullOrEmpty(ViewBag.Error))
+                                {
+                                    <div class="help-block" style="color:red"><ul role="alert"><li>@ViewBag.Error</li></ul></div>
+                                }
+                                <fieldset class="form-group floating-label-form-group">
+                                    <label for="txtUsername">Tài khoản</label>
+                                    <input type="text" class="form-control" id="txtUsername" placeholder="Tài khoản" name="username" value="@ViewBag.Username" required>
+                                </fieldset>
+                                <fieldset class="form-group floating-label-form-group mb-1">
+                                    <label for="txtPassword">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" name="password" required />
+                                </fieldset>
+                                <div class="form-group row">
+                                    <div class="col-md-6 col-12 text-center text-sm-left">
+                                        <fieldset>
+                                            <input type="checkbox" id="remember-me" name="chkRemember" class="chk-remember" @(!string.IsNullOrEmpty(ViewBag.Username) ? "checked" : "")>
+                                            <label for="remember-me"> Remember Me</label>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary btn-block"><i class="ft-unlock"></i> Login</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section scripts{
+    <script>
+        $("input").on("input change", function () {
+            $(".help-block").remove();
+        })
+    </script>
+}

@@ -1,0 +1,211 @@
+﻿@using System.Configuration
+@model AccountModels
+
+@{
+    ViewBag.Title = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + "  tài khoản";
+}
+
+<style>
+    .form-horizontal label {
+        padding-top: 0.5rem
+    }
+
+    .untop {
+        padding-top: 0 !important
+    }
+</style>
+
+<link href="~/Scripts/datetime/boilerplate.css" rel="stylesheet" />
+<link href="~/Scripts/datetime/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<input style="display: none" id="fileupload" accept="image/*" type="file" name="files" data-url="@Url.Action("UploadAvatar", "Upload")" data-sequential-uploads="true" data-form-data='{"script": "true"}' autocomplete="off" />
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + "  tài khoản",
+    ListLiModels = new List<LiModels>
+        {
+        new LiModels { Href = Url.Action("Index"), Name = "Quản lý tài khoản"},
+        new LiModels { Name = (Model.Id > 0 ? "Cập nhật" : "Thêm mới") + "  tài khoản", IsActive = true}
+        }
+})
+<div class="content-body">
+    <section id="basic-form-layouts">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-content collpase show">
+                        <div class="card-body">
+                            @using (Ajax.BeginRouteForm("Default", new { Action = "AddAccount" }, new AjaxOptions
+                            {
+                                HttpMethod = "POST",
+                                OnSuccess = "success"
+                            }, new { @class = "form form-horizontal", id = "frmAddAccount" }))
+                            {
+                                <div class="form-body">
+                                    <h4 class="form-section"><i class="fa fa-eye"></i> About User</h4>
+                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Username</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtUsername" data-required="true" data-key="null" data-length="6" class="form-control border-primary" placeholder="Tên đăng nhập" name="Username" value="@Model.Username">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Mật khẩu</label>
+                                                <div class="col-md-6">
+                                                    <input type="password" id="txtPassword" class="form-control border-primary" placeholder="Password" name="Password" value="@Model.Password" @(Model.Id > 0 ? "disabled" : "")>
+                                                </div>
+                                                <div class="col-md-3  row skin skin-flat">
+                                                    <input type="checkbox" id="chkChangePass" data-target="#IsChangePass" class="switchery" data-size="sm" />
+                                                    <label for="chkChangePass" class="font-medium-2 text-bold-600 ml-1">Đổi mật khẩu</label>
+                                                    <input type="hidden" name="IsChangePass" id="IsChangePass" value="false" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Cửa hàng</label>
+                                                <div class="col-md-9">
+                                                    @Html.Action("LoadSelectStore", "Common",
+                                                                   new SelectOptionModels
+                                                                   {
+                                                                       ChosenSuggest = "-- Chọn cửa hàng --",
+                                                                       DataRequired = true,
+                                                                       Name = "Store.Id",
+                                                                       IdSelect = "slStoreId",
+                                                                       DataKey = "null",
+                                                                       PlaceHolder = "Cửa hàng",
+                                                                       Value = (Model.Store != null ? (Model.Store.Id + "") : "") + "",
+                                                                   })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Loại tài khoản</label>
+                                                <div class="col-md-9">
+                                                    @Html.Action("LoadSelectAccountType", "Common",
+                                                                  new SelectOptionModels
+                                                                  {
+                                                                      ChosenSuggest = "-- Chọn loại tài khoản --",
+                                                                      DataRequired = true,
+                                                                      Name = "AccountType",
+                                                                      IdSelect = "slAccountType",
+                                                                      DataKey = "select",
+                                                                      PlaceHolder = "Loại tài khoản",
+                                                                      Value = Model.AccountType + "",
+                                                                  })
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Họ</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtFirstname" data-required="true" data-key="null" class="form-control border-primary" placeholder="Họ" name="Firstname" value="@Model.Firstname">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control" for="txtLastname">Tên</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control border-primary" data-required="true" data-key="null" type="text" placeholder="Tên" id="txtLastname" name="Lastname" value="@Model.Lastname">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row skin skin-flat">
+                                                <label class="col-md-3 label-control untop">Active</label>
+                                                <div class="col-md-9">
+                                                    <input type="checkbox" id="chkIsActive" data-target="#hidIsActive" class="switchery" data-size="sm" @(Model.Id == 0 ? "checked" : (Model.IsActive ? "checked" : "")) />
+                                                    <label for="chkIsActive" class="font-medium-2 text-bold-600 ml-1"></label>
+                                                    <input type="hidden" name="IsActive" id="hidIsActive" value=" @(Model.Id == 0 ? "true" : (Model.IsActive ? "true" : "false"))" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row last">
+                                                <label class="col-md-3 label-control">Avatar</label>
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <a href="javascript:void(0)" class="uploadfile">
+                                                        @{
+                                                            var url = Model.Avatar ?? ConfigurationManager.AppSettings["DefaultImage"];
+                                                        }
+                                                        <img class="img-thumbnail  border-primary" src="@url">
+                                                        <input type="hidden" name="Avatar" value="@Model.Avatar" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h4 class="form-section"><i class="ft-mail"></i> Chi tiết tài khoản</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Email</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" id="txtEmail" data-type="email" class="form-control border-primary" placeholder="Email" name="Email" value="@Model.Email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row last">
+                                                <label class="col-md-3 label-control">Ngày sinh</label>
+                                                <div class="col-md-9">
+                                                    @{
+                                                        var birthday = Model.Birthday != null ? Model.Birthday.Value.ToString(Pawn.Libraries.Constants.DateFormat) : "";
+                                                    }
+
+                                                    <input type="text" class="form-control birthday hasDatepicker border-primary" data-date-fomat="@(Pawn.Libraries.Constants.DateFormat.ToLower())" minview="date" placeholder="Ngày sinh" value="@birthday" />
+                                                    <input type="hidden" name="Birthday" value="@Model.Birthday" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row skin skin-flat last">
+                                                <label class="col-md-3 label-control untop">Giới tính</label>
+                                                <div class="col-md-9">
+                                                    <input type="checkbox" id="chkGender" data-target="#hidGender" class="switchery" data-size="sm" @(Model.Id == 0 ? "checked" : (Model.IsActive ? "checked" : "")) />
+                                                    <label for="chkGender" class="font-medium-2 text-bold-600 ml-1"></label>
+                                                    <input type="hidden" name="Gender" id="hidGender" value="@(Model.Id == 0 ? "true" : (Model.IsActive ? "true" : "false"))" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+
+
+                                            <div class="form-group row">
+                                                <label class="col-md-3 label-control">Địa chỉ</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control border-primary" type="url" placeholder="Địa chỉ" id="txtAddress" name="Address" value="@Model.Address">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row last">
+                                                <label class="col-md-3 label-control">Phone Number</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control border-primary" type="tel" placeholder="Contact Number" name="Phone" value="@Model.Phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions right">
+                                    <a class="btn btn-warning mr-1" href="@Url.Action("Index")">
+                                        <i class="ft-x"></i> Cancel
+                                    </a>
+                                    <button type="button" id="btnCreate" class="btn btn-primary">
+                                        <i class="fa fa-check-square-o"></i> Save
+                                    </button>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts
+{
+    <script>
+        var urlAccount = '@Url.Action("Index","Account")';
+
+    </script>
+
+
+    <script src="~/Scripts/datetime/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/datetime/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/app/account/create.js?v=@DateTime.Now.Millisecond"></script>
+}

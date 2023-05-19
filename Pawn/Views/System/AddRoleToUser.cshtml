@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "AddRoleToUser";
+    List<SelectListItem> slUserList = (List<SelectListItem>)ViewBag.ListUser;
+    List<SelectListItem> slRoleList = (List<SelectListItem>)ViewBag.ListRole;
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+<div class="content-body">
+    @using (Ajax.BeginForm("UpdateUserRole", "System", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divEmp" }))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select class="select2" name="slUserId" style="width: 100%;" onchange="LoadRoleByUser(this)">
+                                        <option value="-1">Chọn tài khoản</option>
+                                        @if (slUserList != null && slUserList.Any())
+                                        {
+                                            foreach (var item in slUserList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select name="slRoleId" class="select2" style="width: 100%;">
+                                        <option value="-1">Chọn quyền</option>
+                                        @if (slRoleList != null && slRoleList.Any())
+                                        {
+                                            foreach (var item in slRoleList)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-success" onclick="UpdateUserRole()">Cập nhật</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
+        
+
+        function LoadRoleByUser(_this) {
+            var value = _this.value;
+            $.ajax({
+                type: 'POST',
+                url: '/System/GetRoleByUser',
+                data: { userId: value},
+                dataType: 'json',
+                //async: false,
+                success: function (result) {
+                    if (result > 0) {
+                        $('select[name=slRoleId]').val(result).change();
+                    }
+                }
+            });
+        }
+    </script>
+}
+

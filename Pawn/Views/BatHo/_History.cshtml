@@ -1,0 +1,116 @@
+﻿
+<div class="panel panel-danger">
+    <div class="panel-heading" data-toggle="collapse" data-target="#history_remind">
+    <i class="fa fa-bell"></i> <label class="control-label">Lịch sử nhắc nợ</label></div>
+    <div class="panel-body collapse show" id="history_remind">
+        <form class="form form-horizontal form-bordered" name="remindForm" novalidate="" ng-submit="AddHistoryRemind(contentRemind,BatHoData.Id)">
+            <div class="form-group row">
+                <label class="col-md-2 label-control">
+                    Ghi Chú
+                </label>
+                <div class="col-md-9">
+                    <textarea rows="4" cols="5" class="form-control" name="txtRemindContent"
+                              placeholder="Ghi chú"
+                              required maxlength="500" ng-model="contentRemind">
+                </textarea>
+                    <div ng-show="remindForm.txtRemindContent.$dirty && remindForm.txtRemindContent.$invalid">
+                        <p class="help-block font-red" ng-show="remindForm.txtRemindContent.$error.required">
+                            Vui lòng nhập nội dung ghi chú.
+                        </p>
+                    </div>
+                    <br />
+                    <button type="submit" ng-disabled="remindForm.$invalid" class="btn btn-danger float-right">Lưu</button>
+                </div>
+            </div>
+        </form>
+      
+          <div class="table-responsive">
+              <br />
+            <table class="table table-bordered mb-0">
+                <thead class="cf">
+                    <tr>
+                        <th style="text-align: center">
+                            #
+                        </th>
+                        <th style="text-align: center">
+                            Ngày
+                        </th>
+                        <th style="text-align: center">
+                            Người thao tác
+                        </th>
+                        <th style="text-align: center">
+                            Nội dung
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in HistoryRemind">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{item.ActionDate | jsonDate:"dd-MM-yyyy HH:mm:ss"}}</td>
+                        <td class="text-center">{{item.CreatedBy}}</td>
+                        <td class="text-center">{{item.Content}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-warning">
+    <div class="panel-heading" data-toggle="collapse" data-target="#history_action">
+    <i class="fa fa-history"></i> <label class="control-label">Lịch sử thao tác</label></div>
+    <div class="panel-body collapse" id="history_action">
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead class="cf">
+                    <tr>
+                        <th style="text-align: center">
+                            STT
+                        </th>
+                        <th style="text-align: center">
+                            Ngày
+                        </th>
+                        <th style="text-align: center">
+                            Giao dịch viên
+                        </th>
+                        <th style="text-align: center">
+                            Số tiền ghi nợ
+                        </th>
+                        <th style="text-align: center">
+                            Số tiền ghi có
+                        </th>
+                        <th style="text-align: center">
+                            Nội dung
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in HistoryAction">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{item.ActionDate | jsonDate:"dd-MM-yyyy HH:mm:ss"}}</td>
+                        <td class="text-center">{{item.CreatedBy}}</td>
+                        <td class="text-right">{{item.DebitMoney| currency:"":0}}</td>
+                        <td class="text-right">{{item.HavingMoney| currency:"":0}}</td>
+                        <td class="text-center">{{item.Content}}</td>
+                    </tr>
+                    <tr class="bgtd">
+                        <td></td>
+                        <td></td>
+                        <td class="text-right" style="color:brown">Tổng tiền</td>
+                        <td class="text-right" style="color:red"><strong>{{TotalDebit| currency:"":0}}</strong></td>
+                        <td class="text-right" style="color:red"><strong>{{TotalHaving| currency:"":0}}</strong></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    <tr class="bgtd">
+                        <td></td>
+                        <td></td>
+                        <td class="text-right" style="color:brown"><strong>Chênh lệch</strong></td>
+                        <td class="text-center" colspan="2" style="color:red"><strong>{{(TotalHaving - TotalDebit)| currency:"":0}}</strong></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

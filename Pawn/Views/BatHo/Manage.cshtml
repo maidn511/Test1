@@ -1,0 +1,687 @@
+﻿
+@{
+    ViewBag.Title = "Manage";
+}
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Bốc bát họ",
+    ListLiModels = new List<LiModels>
+{
+new LiModels { Name = "Trang chủ", Href = "/"},
+new LiModels { Name = "Bát họ", IsActive = true}
+}
+})
+<div class="content-body" id="table"
+     data-ng-controller="tableController"
+     data-url="@Url.Action("GetAllData", "CashBook")"
+     data-detail-url="@Url.Action("GetDetailData", "IncomeAndExpense")"
+     data-update-url="@Url.Action("UpdateIncomeAndExpense", "IncomeAndExpense")"
+     data-add-url="@Url.Action("AddNewBH", "Batho")"
+     data-delete-url="@Url.Action("DeleteIncomeAndExpense", "IncomeAndExpense")"
+     data-history-remind-url="@Url.Action("LoadHistoryRemind", "BatHo")"
+     data-add-history-remind-url="@Url.Action("AddHistoryRemind", "BatHo")"
+     data-history-action-url="@Url.Action("LoadHistoryAction", "BatHo")">
+    <div class="content-body">
+        <div class="table-responsive">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary" ng-click="getDataSelect()" data-toggle="modal" data-target="#addform">Thêm mới</button>
+                                    </div>
+
+                                </div>
+                                <table class="table table-bordered table-striped" id="tblListInstallment">
+                                    <thead>
+                                        <tr>
+
+                                            <th width="15px" class="align-center hidden-xs hidden-sm">#</th>
+                                            <th width="80px" class="align-center">Mã HĐ</th>
+                                            <th>Tên KH</th>
+                                            <th width="11%" class="align-right">Tiền giao khách</th>
+                                            <th width="72px" class="align-center hidden-xs hidden-sm">Tỷ lệ</th>
+                                            <th width="180px" class="align-center">Thời gian</th>
+                                            <th width="7%" class="align-right">Tiền đã đóng</th>
+                                            <th width="6%" class="align-right hidden-sm hidden-xs">Nợ cũ</th>
+
+                                            <th width="6%" class="align-right hidden-sm hidden-xs">Tiền 1 ngày</th>
+                                            <th width="10%" class="align-right">Còn phải đóng</th>
+                                            <th width="9%" class="align-center">Tình trạng</th>
+                                            <th width="10%" class="align-center">Ngày phải đóng tiền</th>
+                                            <th width="134px">
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+
+                                            <td align="center" class="hidden-xs hidden-sm">1</td>
+                                            <td align="center">BH-407</td>
+                                            <td>
+                                                <a data-toggle="modal" href="#divInsertInstallment" onclick="EditInstallment(1605293)" data-backdrop="static"><b>ádfgh</b></a>
+                                            </td>
+
+                                            <td align="right">
+                                                5,000,000
+                                            </td>
+                                            <td align="right" class="hidden-xs hidden-sm">10 ăn <b>8.33</b></td>
+                                            <td align="center">15/09 <span style="color:red">--&gt;</span> 14/10 (30 ngày)</td>
+                                            <td align="right">
+                                                0
+                                                <div class="lstDescription">  </div>
+                                            </td>
+                                            <td align="right" class="hidden-sm hidden-xs"></td>
+
+                                            <td align="right" class="hidden-sm hidden-xs">
+                                                333,333
+                                            </td>
+
+                                            <td align="right" class="cusName">
+                                                10,000,000
+                                                <div class="lstDescription">(30 kỳ)</div>
+                                            </td>
+                                            <td align="center" class="NoLai">Nợ họ</td>
+                                            <td align="center" class="">
+                                                <a id="NextDateRate_1605293" href="#PopNextDateRate" data-toggle="modal-popover" class="bs-tooltip editable-click" title="Click vào đây để hẹn lại ngày khách trả" onclick="ChangeNextDate('15-09-2018',1605293,'ádfgh')">
+                                                    15-09-2018
+                                                </a>
+                                            </td>
+                                            <td class="align-center">
+                                                <a class="btn border-btn btn-sm" ng-click="LoadDetailBatHo(1)"><i class="pawn-icon-coin"></i></a>
+                                                <a class="btn border-btn btn-sm"><i class="pawn-icon-remove"></i></a>
+                                                <a class="btn border-btn btn-sm"><i class="pawn-icon-clock"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td align="center" class="hidden-xs hidden-sm">2</td>
+                                            <td align="center">BH-406</td>
+                                            <td>
+                                                <a data-toggle="modal" href="#divInsertInstallment" onclick="EditInstallment(1605289)" data-backdrop="static"><b>test</b></a>
+                                            </td>
+
+                                            <td align="right">
+                                                20,000,000
+                                            </td>
+                                            <td align="right" class="hidden-xs hidden-sm">10 ăn <b>8.33</b></td>
+                                            <td align="center">15/09 <span style="color:red">--&gt;</span> 24/09 (10 ngày)</td>
+                                            <td align="right">
+                                                0
+                                                <div class="lstDescription">  </div>
+                                            </td>
+                                            <td align="right" class="hidden-sm hidden-xs"></td>
+
+                                            <td align="right" class="hidden-sm hidden-xs">
+                                                2,400,000
+                                            </td>
+
+                                            <td align="right" class="cusName">
+                                                24,000,000
+                                                <div class="lstDescription">(5 kỳ)</div>
+                                            </td>
+                                            <td align="center" class="">Đang vay</td>
+                                            <td align="center" class="DongLai">
+                                                <a id="NextDateRate_1605289" href="#PopNextDateRate" data-toggle="modal-popover" class="bs-tooltip editable-click" title="Click vào đây để hẹn lại ngày khách trả" onclick="ChangeNextDate('16-09-2018',1605289,'test')">
+                                                    Hôm nay
+                                                </a>
+                                            </td>
+                                            <td class="align-center">
+
+                                                <a data-toggle="modal" href="#divPayment" class="btn btn-sm"
+                                                   onclick="Payment(1605289,true);" title="Đóng tiền">
+                                                    <i class="icol-coins"></i>
+                                                </a>
+                                                <a class="btn btn-sm" onclick="CancelInstallment(1605289,'test', 406);" title="Xóa hợp đồng"><i class="icol-cross"></i></a>
+                                                <a data-toggle="modal" href="#divPayment" class="btn btn-sm" onclick="AlarmTab(1605289,true);" title="Hẹn giờ"><i class="icol-alarm"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td align="center" class="hidden-xs hidden-sm">3</td>
+                                            <td align="center">BH-403</td>
+                                            <td>
+                                                <a data-toggle="modal" href="#divInsertInstallment" onclick="EditInstallment(1317624)" data-backdrop="static"><b>test</b></a>
+                                            </td>
+
+                                            <td align="right">
+                                                12
+                                            </td>
+                                            <td align="right" class="hidden-xs hidden-sm">10 ăn <b>8.33</b></td>
+                                            <td align="center">24/07 <span style="color:red">--&gt;</span> 11/09 (50 ngày)</td>
+                                            <td align="right">
+                                                0
+                                                <div class="lstDescription"> (15 kỳ) </div>
+                                            </td>
+                                            <td align="right" class="hidden-sm hidden-xs"></td>
+
+                                            <td align="right" class="hidden-sm hidden-xs">
+                                                0
+                                            </td>
+
+                                            <td align="right" class="cusName">
+                                                12
+                                                <div class="lstDescription">(35 kỳ)</div>
+                                            </td>
+                                            <td align="center" class="QuaHan">Quá hạn</td>
+                                            <td align="center" class="">
+                                                <a id="NextDateRate_1317624" href="#PopNextDateRate" data-toggle="modal-popover" class="bs-tooltip editable-click" title="Click vào đây để hẹn lại ngày khách trả" onclick="ChangeNextDate('08-08-2018',1317624,'test')">
+                                                    08-08-2018
+                                                </a>
+                                            </td>
+                                            <td class="align-center">
+
+                                                <a data-toggle="modal" href="#divPayment" class="btn btn-sm" onclick="Payment(1317624,true);" title="Đóng tiền"><i class="icol-coins"></i></a>
+                                                <a class="btn btn-sm" onclick="BadDebtInstallment(1317624,'test', 403);" title="Nợ xấu"><i class="icol-nuclear"></i></a>
+                                                <a class="btn btn-sm" onclick="CancelInstallment(1317624,'test', 403);" title="Xóa hợp đồng"><i class="icol-cross"></i></a>
+                                                <a data-toggle="modal" href="#divPayment" class="btn btn-sm" onclick="AlarmTab(1317624,true);" title="Hẹn giờ"><i class="icol-alarm"></i></a>
+                                            </td>
+                                        </tr>
+                                        <!--FOOTER-->
+                                        <tr class="tr_footer">
+                                            <td class="hidden-xs hidden-sm">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td><a style="color:brown"><strong>Tổng Tiền</strong></a></td>
+                                            <td align="right" style="color:red;"><strong>25,000,012</strong></td>
+                                            <td class="hidden-xs hidden-sm"></td>
+                                            <td></td>
+                                            <td class="align-right" style="color:red;"><strong>0</strong></td>
+                                            <td class="align-right hidden-sm hidden-xs" style="color:red;"><strong>0</strong> </td>
+                                            <td class="align-right hidden-sm hidden-xs" style="color:red;"><strong> 2,733,333</strong> </td>
+                                            <td align="right" style="color:red;"><strong>34,000,012</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="modal fade text-left" id="addform" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            @Html.Partial("_BHDetail")
+        </div>
+    </div>
+    <div class="modal fade text-left" id="detail" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17">Hợp đồng vay họ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="header cusName">
+                                                    <strong style="color:red">{{BatHoData.CustomerName}}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Bát họ</strong></td>
+                                                <td colspan="2" align="right">{{BatHoData.TotalMoney| currency:"":0}} VNĐ</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Tỷ lệ</strong></td>
+                                                <td colspan="2" align="right">10 ăn <b>{{(BatHoData.MoneyForGues * 10/BatHoData.TotalMoney).toFixed(2)}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Họ từ ngày</strong></td>
+                                                <td align="right">{{BatHoData.FromDate | jsonDate:"dd-MM-yyyy"}}</td>
+                                                <td align="right" id="tdToDate">{{BatHoData.ToDate}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header">
+                                                    <strong style="color:brown"> {{BatHoData.MoneyOrther > 0 ? "Tiền thừa" :"Nợ cũ"}}</strong>
+                                                </td>
+                                                <td colspan="2" align="right" class="bold" id="tdDebitMoney"> <strong style="color:brown">{{Abs(BatHoData.MoneyOrther)| currency:"":0}} VNĐ</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td class="header"><strong>Số tiền giao khách</strong></td>
+                                                <td colspan="2" align="right"><span class="bold"><strong>{{BatHoData.MoneyForGues| currency:"":0}}</strong> </span>VNĐ</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Tổng tiền phải đóng</strong></td>
+                                                <td colspan="2" align="right"><span class="bold highlight"><strong style="color:brown">{{BatHoData.TotalMoney| currency:"":0}} </strong></span>VNĐ</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Đã đóng được</strong></td>
+                                                <td colspan="2" align="right">
+                                                    <span class="bold" id="spanPaymentMoney"><strong>{{BatHoData.TotalPay| currency:"":0}}</strong></span> VNĐ
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Còn lại phải đóng</strong></td>
+                                                <td colspan="2" align="right">
+                                                    <span class="bold highlight" id="spanPaymentMoney"><strong style="color:brown">{{(BatHoData.TotalMoney - BatHoData.TotalPay)| currency:"":0}}</strong></span> VNĐ
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="header"><strong>Tổng lãi</strong></td>
+                                                <td colspan="2" align="right">
+                                                    <span class="bold" id="spanPaymentMoney"><strong>{{(BatHoData.TotalMoney - BatHoData.MoneyForGues)| currency:"":0}}</strong></span> VNĐ
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-tabs nav-underline no-hover-bg">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="ldt-tab" data-toggle="tab" href="#ldt" aria-controls="ldt" aria-expanded="true">Lịch đống tiền</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="dhd-tab" data-toggle="tab" href="#dhd" aria-controls="dhd" aria-expanded="false">Đóng hợp đồng</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="no-tab" data-toggle="tab" href="#no" aria-controls="no" ng-click="ChangeType(true)" aria-expanded="false">Nợ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="history-tab" ng-click="LoadHistory(BatHoData.Id)" data-toggle="tab" href="#tab_history" aria-controls="tab_history" aria-expanded="false">Lịch sử</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="dh-tab" data-toggle="tab" href="#dh" aria-controls="dh" aria-expanded="false">Đảo họ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="ct-tab" data-toggle="tab" href="#ct" aria-controls="ct" aria-expanded="false">Chứng từ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="hg-tab" data-toggle="tab" href="#ct" aria-controls="ct" aria-expanded="false">Hẹn giờ</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content pt-1">
+                                <div role="tabpanel" class="tab-pane active in" id="ldt" aria-labelledby="ldt-tab" aria-expanded="true">
+                                    <table class="table table-striped table-bordered table-hover table-checkable datatable h-center" id="tblPayment">
+                                        <thead>
+                                            <tr>
+                                                <th class="noprint">
+                                                    In
+                                                </th>
+                                                <th width="50px">STT</th>
+                                                <th>Ngày họ</th>
+                                                <th style="text-align: right">
+                                                    <div data-placement="top" class="btn btn-primary btn-sm ng-scope " style="background:#f53d3d !important" id="btnUpdatePayment" popover>
+                                                        Sửa
+                                                        <div id="popover-content" class="row hide">
+                                                            <form class="form form-horizontal">
+                                                                <div class="form-body">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-3 label-control" for="projectinput1">Tiền họ:</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" class="form-control" format-currency-input placeholder="Tiền họ" ng-model="PaymentNeedMoney" />
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <button type="button" style="height:30px; margin-top:2px" class="btn btn-sm btn-primary" ng-click="ChangePaymentMoney()">Lưu</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <span style="margin-left:6px;">
+                                                        Tiền họ
+                                                    </span>
+                                                </th>
+                                                <th>
+                                                    Ngày giao dịch
+                                                </th>
+                                                <th style="text-align: right">Tiền khách trả</th>
+                                                <th width="40px;">
+                                                    &nbsp;
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in BatHoData.ListBatHoPay">
+                                                <td align="center" class="noprint">
+                                                    <i ng-show="item.IsPaid" class="ft-printer"></i>
+                                                </td>
+                                                <td align="center">{{$index+1}}</td>
+                                                <td align="center">{{(item.FromDate | jsonDate:"dd/MM") + "-->" + (item.ToDate | jsonDate:"dd/MM") + " ("+ BatHoData.Frequency + " ngày)"}}</td>
+                                                <td align="right">
+                                                    {{item.PaymentNeedMoney| currency:"":0}} VNĐ
+                                                </td>
+                                                <td align="center">
+                                                    <span style="font-size: 12px; font-family: Tahoma;">
+                                                        <a href="javascript:void(0)" ng-if="item.IsCurrent == false">
+                                                            {{item.LoanDate | jsonDate:"dd-MM-yyyy"}}
+                                                        </a>
+                                                        <div ng-if="item.IsCurrent == true" data-placement="left" class="btn btn-primary btn-sm ng-scope " popover>
+                                                            {{item.LoanDate}}
+                                                            <div id="popover-content" class="row hide">
+                                                                <form class="form form-horizontal">
+                                                                    <div class="form-body">
+                                                                        <div class="form-group row">
+                                                                            <div class="col-md-9">
+                                                                                <div class="input-group"
+                                                                                     inline="true"
+                                                                                     moment-picker="item.LoanDate"
+                                                                                      max-date="maxDateString"
+                                                                                     format="@(Pawn.Libraries.Constants.DateFormat.ToUpper())">
+                                                                                    <input class="form-control hide"
+                                                                                           placeholder="Tư ngày"
+                                                                                           ng-model="item.LoanDate"
+                                                                                           ng-init="item.LoanDate = FormatDate(item.LoanDate)"
+                                                                                           ng-model-options="{ updateOn: 'blur' }">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <button type="button" class="btn btn-success" onclick="$('.popover').popover('hide');"><i class="fa fa-check"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </td>
+                                                <td align="right">
+                                                    <i class="icon-double-angle-right"></i>&nbsp;
+                                                    <a ng-if="item.IsCurrent == false" style="font-size: 13px; font-family: Tahoma;color:blue;padding: 1px 2px">
+                                                        {{item.MoneyOfCustomer| currency:"":0}}
+                                                    </a>
+                                                    <div ng-if="item.IsCurrent == true" data-placement="top" class="btn btn-primary btn-sm ng-scope " popover>
+                                                        {{item.MoneyOfCustomer| currency:"":0}}
+                                                        <div id="popover-content" class="row hide">
+                                                            <form class="form form-horizontal">
+                                                                <div class="form-body">
+                                                                    <div class="form-group row">
+                                                                        <div class="col-md-9">
+                                                                            <input class="form-control"
+                                                                                  
+                                                                                   ng-model="item.MoneyOfCustomer"
+                                                                                   format-currency-input />
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <button type="button" class="btn btn-success" onclick="$('.popover').popover('hide');"><i class="fa fa-check"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="checkbox-column">
+                                                    <input type="checkbox" ng-model="item.IsPaid" ng-change="Paid(item, $index)" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="dhd" role="tabpanel" aria-labelledby="dhd-tab" aria-expanded="false">
+                                    <div class="col-md-9">
+                                        <b>@("Chú ý : ")</b>
+                                        <br>
+                                        Số kỳ còn phải đóng :&nbsp;&nbsp;<span class="bold highlight"> 30 kỳ ( =10,000,000 VNĐ )</span>
+                                        <br>
+                                        Nợ cũ :&nbsp;&nbsp;<span class="bold highlight"> 0 VNĐ</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-primary btn-block" onclick="CloseInstallment();">Đóng hợp đồng</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="no" role="tabpanel" aria-labelledby="no-tab" aria-expanded="false">
+                                    <div class="col-md-6">
+                                        <div class="widget box">
+                                            <div class="widget-header">
+                                                <h4><i class="icol-coins"></i>Khách hàng nợ lãi</h4>
+                                            </div>
+                                            <div class="widget-content">
+                                                <form class="form-horizontal row-border">
+                                                    <div class="form-group ptb5">
+                                                        <label class="col-md-6 control-label">Số tiền nợ lại lần này <span class="required">*</span></label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" id="Money_Debit_1" name="Money_Debit_1" class="inputAmountUSD form-control digits">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-actions ptb5">
+                                                        <div class="col-md-12">
+                                                            <input type="button" value="Ghi nợ" class="btn btn-primary pull-right" onclick="AddDebit('1');">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="widget box">
+                                            <div class="widget-header">
+                                                <h4><i class="icol-money"></i>Khách hàng trả nợ</h4>
+                                            </div>
+                                            <div class="widget-content">
+                                                <form class="form-horizontal row-border" id="validate-1" action="#" novalidate="novalidate">
+                                                    <div class="form-group ptb5">
+                                                        <label class="col-md-6 control-label">Số tiền trả nợ <span class="required">*</span></label>
+                                                        <div class="col-md-6">
+                                                            <input type="text" id="Money_Debit_2" name="Money_Debit_2" class="inputAmountUSD form-control digits">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-actions ptb5">
+                                                        <div class="col-md-12">
+                                                            <input type="button" value="Thanh toán" class="btn btn-primary pull-right" onclick="AddDebit('2');">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_history" role="tabpanel" aria-labelledby="history-tab" aria-expanded="false">
+                                    @Html.Partial("_History")
+                                </div>
+                                <div class="tab-pane" id="dh" role="tabpanel" aria-labelledby="dh-tab" aria-expanded="false">
+                                    <div class="col-md-12">
+                                        <div class="form-horizontal row-border">
+
+                                            <div class="form-group ptb5">
+                                                <label class="col-md-3 control-label">
+                                                    Ngày Đảo Họ <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-4" id="divToDate">
+                                                    <input type="text" id="strFromDateNew" name="strFromDateNew" class="form-control datepicker hasDatepicker" size="10">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group ptb5">
+                                                <label class="col-md-3 control-label">
+                                                    Bát họ mới <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" id="TotalMoneyNew" name="strTotalMoneyNew" class="inputAmountUSD form-control digits" value="10000000">
+                                                </div>
+                                                <div class="col-md-5" style="padding-top: 7px; color: red">
+                                                    (@("@Chú ý: Bát họ nghĩa là tổng tiền khách phải đóng)")
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group ptb5">
+                                                <label class="col-md-3 control-label">
+                                                    Tiền đưa khách <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" id="TotalMoneyReceivedNew" name="strTotalMoneyReceivedNew" class="inputAmountUSD form-control digits" value="5000000">
+                                                </div>
+                                                <div class="col-md-5" style="padding-top: 7px;">
+                                                    (Đừng trừ tiền còn phải đóng của bát cũ vào đây. Hệ thống trừ sau)
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group ptb5">
+                                                <label class="col-md-3 control-label">
+                                                    Bốc trong vòng <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" id="LoanTimeNew" name="LoanTimeNew" class="form-control inputAmountUSD" minlength="5" value="30">
+                                                </div>
+                                                <div class="col-md-4" style="padding-top: 7px;">
+                                                    Ngày =&gt; ( <span id="MoneyOneDayNew" class="cusName">333,333</span>/ 1 ngày )
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group ptb5">
+                                                <label class="col-md-3 control-label">
+                                                    Số ngày đóng tiền <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <input type="text" id="FrequencyNew" name="FrequencyNew" class="form-control inputAmountUSD" minlength="5" value="1">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    (VD : 3 ngày đóng 1 lần thì điền số 3 )
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group ptb5">
+                                                <label class="col-md-3 control-label" style="color: red;">
+                                                    Tiền khách nhận về
+                                                </label>
+                                                <div class="col-md-9 pt5">
+                                                    <span class="bold highlight" id="lblContentNew" style="color: red;">5,000,000 - 10,000,000 = -5,000,000</span>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-actions ptb5">
+                                                <label class="col-md-3 control-label"></label>
+                                                <div class="col-md-4">
+                                                    <button id="btnGraveInstallment" class="btn btn-primary pull-left" onclick="GraveInstallment(1605293)">Đảo Họ</button>
+                                                </div>
+                                                <div class="col-md-4">
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="ct" role="tabpanel" aria-labelledby="ct-tab" aria-expanded="false">
+                                    up ảnh
+                                </div>
+                                <div class="tab-pane" id="hg" role="tabpanel" aria-labelledby="hg-tab" aria-expanded="false">
+                                    <div class="col-md-12">
+                                        <div class="widget box">
+                                            <div class="widget-header">
+                                                <h4><i class="icon-reorder"></i>Hẹn giờ</h4>
+                                            </div>
+                                            <div class="widget-content">
+                                                <form class="form-horizontal row-border" id="form-alarmDate" action="#" novalidate="novalidate">
+                                                    <div class="form-group ptb5">
+                                                        <label class="col-md-4 control-label">Ngày hẹn<span class="required">*</span></label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control datepicker2 hasDatepicker" value="17-09-2018" id="DateAlarm" name="DateAlarm" size="10">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group ptb5">
+                                                        <label class="col-md-4 control-label">Ghi chú</label>
+                                                        <div class="col-md-6">
+                                                            <textarea rows="4" cols="5" name="NoteAlarm" id="txtNoteAlarm" class="auto form-control"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions ptb5">
+                                                        <div class="col-md-10">
+                                                            <input type="button" id="btnStopAlarm" value="Dừng hẹn giờ" class="btn btn-danger pull-right">
+                                                            <input type="button" id="btnAddAlarm" value="Tạo hẹn giờ" class="btn btn-primary pull-right">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div id="divResultAlarm">
+                                            <table class="table table-striped table-bordered table-hover table-checkable datatable h-center" id="tblPayment">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="50px">STT</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Hẹn đến ngày</th>
+                                                        <th>Nội dung hẹn giờ</th>
+                                                        <th>Ngày tạo</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none" id="tesst">
+        <div class='row'>
+            <div class='col-md-8'>
+                <input type='text' />
+            </div>
+            <div class='col-md-'>
+                <button>abc</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section vendor{
+    <script src="~/Content/js/scripts/popover/popover.js"></script>
+}
+@section scripts {
+    @Scripts.Render("~/Scripts/app/common/table.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var urlLoadSelectStaff = '@Url.Action("LoadSelectStaffByStore", "Common")';
+        var urlGetMaxContract =  '@Url.Action("GetMaxContractBHCode")';
+    </script>
+    <script>
+        var urlLoadDetailBatHo = '@Url.Action("LoadDetailBatHo")';
+         var urlAddUpdateBHContract = '@Url.Action("AddNewBH")';
+        var urlUpdateBh = '@Url.Action("UpdateBh")';
+        var urlUpdateBhPay = '@Url.Action("UpdateBhPay")';
+    </script>
+
+    <script src="~/Scripts/app/batho/index.js"></script>
+}

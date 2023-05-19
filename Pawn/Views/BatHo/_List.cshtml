@@ -1,0 +1,126 @@
+﻿<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <button class="btn btn-primary btn-min-width mr-1 mb-1" type="button" ng-click="getDataSelect()" data-toggle="modal" data-target="#addform">
+                <i class="fa fa-plus"></i> Thêm mới
+            </button>
+            <a class="btn btn-primary btn-min-width mr-1 mb-1" target="_self" href="@Url.Action("ExportExcel","BatHo")">
+                <i class="fa fa-file-excel-o"></i> Xuất Excel
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped w-100"
+           style="position: relative; width: 100%; height: 100%"
+           role="grid" id="tblListInstallment">
+        <thead class="cf">
+            <tr>
+                <th style="text-align: center"
+                    class="{{sortType!='PageIndex'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'PageIndex'; sortReverse = !sortReverse">
+                    #
+                </th>
+                <th class="{{sortType!='Code'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Code'; sortReverse = !sortReverse">Mã HĐ</th>
+                <th class="{{sortType!='MoneyForGues'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyForGues'; sortReverse = !sortReverse">Tên KH</th>
+                <th class="{{sortType!='MoneyForGues'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyForGues'; sortReverse = !sortReverse">Tiền giao khách</th>
+                <th tabindex="0" aria-controls="datatable-responsive">Tỷ lệ</th>
+                <th tabindex="0" aria-controls="datatable-responsive">Thời gian</th>
+                <th class="{{sortType!='TotalPay'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'TotalPay'; sortReverse = !sortReverse">Tiền đã đóng</th>
+                <th class="{{sortType!='MoneyOrther'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyOrther'; sortReverse = !sortReverse">Nợ cũ</th>
+                <th class="{{sortType!='MoneyPerOnce'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyPerOnce'; sortReverse = !sortReverse">Tiền 1 ngày</th>
+                <th class="{{sortType!='TotalMoney'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'TotalMoney'; sortReverse = !sortReverse">Còn phải đóng</th>
+                <th class="{{sortType!='Status'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Status'; sortReverse = !sortReverse">Tình trạng</th>
+                <th class="{{sortType!='PayDate'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'PayDate'; sortReverse = !sortReverse">Ngày phải đóng tiền</th>
+                <th width="134px">
+                    Chức năng
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="item in filteredItems = (ListOfItem | filter : search | orderBy:sortType:sortReverse)">
+                <td style="text-align: center; width: 40px !important; vertical-align: middle" data-title="#">{{(Pager.currentPage - 1) *Pager.pageSize + ($index + 1)}}</td>
+                <td>
+                    {{item.Code}}
+                </td>
+                <td align="center">
+                    <a href="#" class="font-blue-alt" ng-click="GetDetailById(item.Id)" data-toggle="modal" data-target="#addform">
+                        {{item.CustomerName}}
+                    </a>
+                    {{item.Phone}}
+
+                </td>
+                <td align="right">
+                    {{item.MoneyForGues|currency:"":"0"}}
+                </td>
+                <td align="right" class="hidden-xs hidden-sm">10 ăn <b>{{((item.MoneyForGues * 10)/item.TotalMoney).toFixed(2)}}</b></td>
+                <td align="center">
+                    {{item.FromDateString.substr(0,5)}} <span style="color:red">--&gt;</span> {{item.ToDateString.substr(0,5)}}
+                    <div class="lstDescription">({{item.NumberDate| currency:"":0}} ngày)</div>
+                </td>
+                <td align="right">
+                    {{item.TotalPay| currency:"":0}}
+                    <div class="lstDescription">({{item.PeriodHadPay| currency:"":0}} kỳ)</div>
+                </td>
+                <td align="right" class="hidden-sm hidden-xs">
+                    {{(item.TotalMoneyMustPaid - item.TotalPay + item.DebtMoney)| currency:"":0}}
+                </td>
+
+                <td align="right" class="hidden-sm hidden-xs">
+                    {{item.TotalMoney/item.NumberDate | currency:"":0}}
+                </td>
+
+                <td align="right" class="cusName">
+                    {{item.TotalMoney - item.TotalPay| currency:"":0}}
+                    <div class="lstDescription">({{item.PeriodNotPay| currency:"":0}} kỳ)</div>
+                </td>
+                <td align="center" style="{{item.ColorContractString}}">{{item.StatusContractString}}</td>
+                <td align="center" class="">
+                    @* <a id="NextDateRate_1605293" href="#PopNextDateRate" data-toggle="modal-popover" class="bs-tooltip editable-click" title="Click vào đây để hẹn lại ngày khách trả" onclick="ChangeNextDate('15-09-2018',1605293,'ádfgh')">*@
+                    {{item.IsCloseContract == false ? item.PayDate : "Hoàn thành"}}
+                    @* Click vào update lại ngày trong bảng BHPay *@
+                    @*</a>*@
+                </td>
+                <td class="align-center btn-control">
+                    <a class="btn border-btn btn-sm" ng-click="LoadDetailBatHo(item.Id)" title="Đóng lãi"><i class="pawn-icon-coin"></i></a>
+                    <a ng-if="item.IsCloseContract == false" class="btn border-btn btn-sm" ng-click="ChangeIsDebt(item, !item.IsBadDebt)" title="{{(item.StatusContract == @((int)Pawn.Libraries.StatusContractEnum.NoXau)? 'Chuyển HD từ nợ xấu về bình thường': 'Nợ xấu')}}"><i class="{{(item.StatusContract == @((int)Pawn.Libraries.StatusContractEnum.NoXau)? 'fa fa-heart': 'pawn-icon-dangerous')}}"></i></a>
+                    <a ng-if="item.IsCloseContract == false" class="btn border-btn btn-sm" ng-click="DeleteBatHo(item)" title="{{(item.IsDeleted == true ? 'Khôi phục': 'Xóa HĐ')}}"><i class="{{(item.IsDeleted == true ? 'ft-rotate-cw': 'pawn-icon-remove')}}"></i></a>
+                    <a  ng-if="item.IsCloseContract == false" class="btn border-btn btn-sm" ng-click="OpenTimer(item.Id)" title="Hẹn giờ"><i class="pawn-icon-clock"></i></a>
+                </td>
+            </tr>
+            <tr ng-show="ListOfItem.length == 0 || ListOfItem == undefined">
+                <td colspan="13">
+                    @Html.Partial("_NoDataFound")
+                </td>
+            </tr>
+            <!--FOOTER-->
+            <tr class="tr_footer">
+                    <td class="hidden-xs hidden-sm">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><a style="color:brown"><strong>Tổng Tiền</strong></a></td>
+                    <td align="right" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].SumMoneyForGuest : 0)| currency:"":0}}</strong></td>
+                    <td class="hidden-xs hidden-sm"></td>
+                    <td></td>
+                    <td align="right" class="align-right" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].SumPaid : 0)| currency:"":0}}</strong></td>
+                    <td align="right" class="align-right hidden-sm hidden-xs" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].SumMoneyDebt : 0)| currency:"":0}}</strong> </td>
+                    <td align="right" class="align-right hidden-sm hidden-xs" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].SumMoneyPerDay : 0)| currency:"":0}}</strong> </td>
+                    <td align="right" style="color:red;"><strong>{{(ListOfItem.length > 0 ? (ListOfItem[0].SumTotalMoney - ListOfItem[0].SumMoneyMustPaid) : 0)| currency:"":0}}</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </tbody>
+    </table>
+    @Html.Partial("_PagingInformation")
+</div>
+

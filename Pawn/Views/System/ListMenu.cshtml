@@ -1,0 +1,216 @@
+﻿@model IEnumerable<Pawn.Models.MenuModels>
+@{
+    ViewBag.Title = "ListMenu";
+}
+
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="content-header clearfix">
+                            <h1 class="pull-left">
+                                Manage menu
+                            </h1>
+                            <div class="pull-left" style="margin-top: 27px; margin-left: 27px;">
+                                <a href="javascript:void(0)" onclick="getdetailmenu(0);" name="save" data-toggle="modal" data-target="#dialog-model">
+                                    <i class="fa fa-floppy-o"></i>
+                                    CREATE
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Access control list is a list of permissions attached to customer roles. This list specifies the access rights of users to objects.
+                        </p>
+                        <div class="scroll-wrapper">
+                            <table class="table table-hover table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">
+                                            <strong>Name</strong>
+                                        </th>
+                                        <th scope="col">
+                                            <strong>Description</strong>
+                                        </th>
+                                        <th scope="col">
+                                            <strong>Controller</strong>
+                                        </th>
+                                        <th scope="col">
+                                            <strong>Action</strong>
+                                        </th>
+                                        <th scope="col">
+                                            <strong>--</strong>
+                                        </th>
+                                    </tr>
+                                    @foreach (var pr in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span>@pr.MenuName</span>
+                                            </td>
+                                            <td>
+                                                <span>@pr.Description</span>
+                                            </td>
+                                            <td>
+                                                <span>@pr.Controller</span>
+                                            </td>
+                                            <td>
+                                                <span>@pr.Action</span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <a href="javascript:void(0)" onclick="getdetailmenu(@pr.Id);" name="save" data-toggle="modal" data-target="#dialog-model">
+                                                        <i class="fa fa-floppy-o"></i>
+                                                        EDIT
+                                                    </a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        if (pr.LstMenuChild != null && pr.LstMenuChild.Any())
+                                        {
+                                            foreach (var m in pr.LstMenuChild)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <span> --> @m.MenuName</span>
+                                                    </td>
+                                                    <td>
+                                                        <span> --> @m.Description</span>
+                                                    </td>
+                                                    <td>
+                                                        <span> --> @m.Controller</span>
+                                                    </td>
+                                                    <td>
+                                                        <span> --> @m.Action</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>
+                                                            <a href="javascript:void(0)" onclick="getdetailmenu(@m.Id);" name="save" data-toggle="modal" data-target="#dialog-model">
+                                                                <i class="fa fa-floppy-o"></i>
+                                                                EDIT
+                                                            </a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" id="dialog-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form  id="fr-menu" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17">Hợp đồng góp vốn</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="form-detail">
+                     
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="managemenu()" class="btn btn-outline-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+
+    <script>
+        function getdetailmenu(id) {
+            $.ajax({
+                type: 'POST',
+                url: '/System/GetDetailMenu',
+                data: { id: id },
+                dataType: 'json',
+                //async: false,
+                success: function (result) {
+                    if (result.Message) {
+                        alert(result.Message);
+                    }
+                    else {
+                        $("#form-detail").html(result);
+                        $("input:checkbox").click(function () {
+                            if ($(this).val() === 'true') {
+                                $(this).prop("checked", false);
+                                $(this).val('false');
+                            }
+                            else {
+                                $(this).prop("checked", true);
+                                $(this).val('true');
+                            }
+                        });
+                        //$('input[name=IsActive]').parents('span').addClass("checked");
+                        //$("input[name=IsActive]").prop('checked', 'checked');
+                        //$("#dialog-model").dialog({
+                        //    resizable: false,
+                        //    width: '800px',
+                        //    position: ["middle", "center"],
+                        //    buttons: {
+                        //        "Ok": function () {
+                        //            managemenu();
+                        //        },
+                        //        "Cancel": function () {
+                        //            $(this).dialog("close");
+                        //        }
+                        //    }
+                        //});
+                    }
+                }
+            });
+
+
+        }
+        function managemenu() {
+            $.ajax({
+                type: 'POST',
+                url: '/System/ManageMenu',
+                data: $('#fr-menu').serialize(),
+                dataType: 'json',
+                //async: false,
+                success: function (result) {
+                    if (result.Message) {
+                        alert(result.Message);
+                    }
+                    else {
+                        alert('Update success');
+                        $("#dialog-model").dialog('close');
+                        window.location.reload(true);
+                    }
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+
+

@@ -1,0 +1,49 @@
+﻿@model List<CustomerModels>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 1%">#</th>
+            <th>Tên khách hàng</th>
+            <th>Số đt</th>
+            <th>Địa chỉ</th>
+            <th class="text-center">Ngày tạo</th>
+            <th class="text-center" style="width: 3%">Action</th>
+        </tr>
+    </thead>
+    <tbody id="tbodyCustomer" data-paging="#pagination" data-totalrows="@ViewBag.TotalRows">
+        @if (Model != null && Model.Count > 0)
+        {
+            var i = ViewBag.Index;
+            foreach (var item in Model.ToList())
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>
+                        <a href="/quan-ly-khach-hang/chinh-sua-khach-hang/@item.Id" style="margin-right: 10px; cursor: pointer">
+                            @item.Fullname
+                        </a>
+                    </td>
+                    <td>@item.Phone</td>
+                    <td>@item.Address</td>
+                    <td class="">@item.CreatedDate.ToString(Pawn.Libraries.Constants.DateFormat)</td>
+                    <td class="text-center">
+                        <a href="/quan-ly-khach-hang/chinh-sua-khach-hang/@item.Id" style="margin-right: 10px; cursor: pointer">
+                            <i title="Edit" class="fa fa-edit"></i>
+                        </a>
+                        <a href="javascript:void(0)" data-id="@item.Id" style="margin-right: 10px; cursor: pointer" data-action="btnDelete">
+                            <i title="Delete" data-id="@item.Id" class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                i++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" style="text-align: center">No data display</td>
+            </tr>
+        }
+    </tbody>
+</table>

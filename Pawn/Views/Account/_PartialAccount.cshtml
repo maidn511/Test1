@@ -1,0 +1,64 @@
+﻿@using System.Configuration
+@model List<AccountModels>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 1%">#</th>
+            <th>Cửa hàng</th>
+            <th class="text-center">Loại tài khoản</th>
+            <th class="text-center">Username</th>
+            <th class="text-center" style="width: 5%">Avatar</th>
+            <th class="text-center">Họ và tên</th>
+            <th class="text-center">SDT</th>
+            <th class="text-center" style="width: 3%">Trạng thái</th>
+            <th class="text-center" style="width: 3%">Action</th>
+        </tr>
+    </thead>
+    <tbody id="tbodyAccount" data-paging="#pagination" data-totalrows="@ViewBag.TotalRows">
+        @if (Model != null && Model.Count > 0)
+        {
+            var i = ViewBag.Index;
+            foreach (var item in Model.ToList())
+            {
+        <tr>
+            <th scope="row">@i</th>
+            <td>@item.StoreName</td>
+            <td class="text-center ">@item.AccountTypeName</td>
+            <td class="text-center ">
+                <a href="@(RDAuthorize.IsPermissionConfig("AccountEdit") ? "/quan-ly-tai-khoan/chinh-sua-tai-khoan/" + item.Username : "javascript:void(0)")" style="margin-right: 10px; cursor: pointer">
+                    @item.Username
+                </a>
+            </td>
+            <td><img height="64" src="@(!string.IsNullOrEmpty(item.Avatar)? item.Avatar : ConfigurationManager.AppSettings["DefaultImage"])" /></td>
+            <td class="">@item.Firstname @item.Lastname</td>
+
+            <td class="">@item.Phone</td>
+            <td class="text-center ">@(item.IsActive ? "Hoạt động" : "Khóa")</td>
+            <td class="text-center">
+                @if (RDAuthorize.IsPermissionConfig("AccountEdit"))
+        {
+            <a href="/quan-ly-tai-khoan/chinh-sua-tai-khoan/@item.Username" style="margin-right: 10px; cursor: pointer">
+                <i title="Edit" class="fa fa-edit"></i>
+            </a>
+}
+
+                @if (RDAuthorize.IsPermissionConfig("AccountDelete"))
+        {
+            <a href="javascript:void(0)" data-id="@item.Id" style="margin-right: 10px; cursor: pointer" data-action="btnDelete">
+                <i title="Delete" data-id="@item.Id" class="fa fa-trash"></i>
+            </a>
+}
+            </td>
+        </tr>
+                i++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" style="text-align: center">No data display</td>
+            </tr>
+        }
+    </tbody>
+</table>

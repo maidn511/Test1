@@ -1,0 +1,129 @@
+﻿@using Pawn.Libraries
+<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <button class="btn btn-primary btn-min-width mr-1 mb-1" ng-click="getDataSelect()" data-toggle="modal" data-target="#addform">
+                <i class="fa fa-plus"></i> Thêm mới
+            </button>
+            <a class="btn btn-primary btn-min-width mr-1 mb-1" target="_self" href="@Url.Action("ExportExcel","Pawn")">
+                <i class="fa fa-file-excel-o"></i> Xuất Excel
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped w-100"
+           style="position: relative; width: 100%; height: 100%"
+           role="grid" id="tblListInstallment">
+        <thead class="cf">
+            <tr>
+                <th style="text-align: center"
+                    class="{{sortType!='PageIndex'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'PageIndex'; sortReverse = !sortReverse">
+                    #
+                </th>
+                <th class="{{sortType!='Code'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Code'; sortReverse = !sortReverse">Mã HĐ</th>
+                <th class="{{sortType!='CustomerName'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'CustomerName'; sortReverse = !sortReverse">Tên KH</th>
+                <th class="{{sortType!='Collateral'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Collateral'; sortReverse = !sortReverse">Tài sản</th>
+                <th tabindex="0" aria-controls="datatable-responsive">VNĐ</th>
+                <th tabindex="0" aria-controls="datatable-responsive">Ngày vay</th>
+                <th class="{{sortType!='TotalPay'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'TotalPay'; sortReverse = !sortReverse">Lãi đã đóng</th>
+                <th class="{{sortType!='MoneyOrther'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyOrther'; sortReverse = !sortReverse">Nợ cũ</th>
+                <th class="{{sortType!='MoneyPerOnce'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyPerOnce'; sortReverse = !sortReverse">Lãi đến hôm nay</th>
+                <th class="{{sortType!='Status'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Status'; sortReverse = !sortReverse">Tình trạng</th>
+                <th class="{{sortType!='PayDate'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                    tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'PayDate'; sortReverse = !sortReverse">Ngày phải đóng tiền</th>
+                <th width="134px">
+                    Chức năng
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="item in filteredItems = (ListOfItem | filter : search | orderBy:sortType:sortReverse)">
+                <td style="text-align: center; width: 40px !important; vertical-align: middle" data-title="#">{{(Pager.currentPage - 1) *Pager.pageSize + ($index + 1)}}</td>
+                <td>
+                    {{item.Code}}
+                </td>
+                <td align="center">
+                    <a href="javascript:void(0)" class="font-blue-alt" ng-click="ShowDetailByItem(item)" data-toggle="modal" data-target="#addform">
+                        {{item.CustomerName}}
+                    </a>
+                    {{item.Phone}}
+                </td>
+                <td align="right">
+                    {{item.Collateral}}
+                </td>
+                <td align="right" class="hidden-xs hidden-sm">
+                    {{(item.TotalMoney + item.TienVayThem)|currency:"":"0"}} <br />
+                    <label class="small font-red"><b>{{item.InterestRate |currency:"":""}}</b>{{item.InterestRateOptionString}}</label>
+                </td>
+
+                <td align="center">
+                    {{item.PawnDate}} <br />
+                    <span class="small"> Kỳ lãi:  {{item.InterestRateNumber}} {{item.InterestRateTypeString}} </span>
+                </td>
+                <td align="right">
+                    {{item.LaiDaDong| currency:"":0}}<br />
+                    <span ng-show="item.LaiDaDong > 0" class="small">({{item.NgayLaiDaDong}} ngày)</span>
+                </td>
+                <td align="right" class="hidden-sm hidden-xs">
+                    {{item.NoCu| currency:"":0}}
+                </td>
+
+                <td align="right" class="hidden-sm hidden-xs">
+                    {{item.LaiDenNgay| currency:"":0}}<br />
+                    <span ng-show="item.LaiDenNgay > 0" class="small">({{item.NgayLaiHomNay}} ngày)</span>
+                </td>
+
+
+                <td align="center" ng-class="(item.Status == @Convert.ToInt32(PawnStatusEnum.QuaHan) || item.Status == @Convert.ToInt32(PawnStatusEnum.TraGoc))?'bg-danger':(item.Status == @Convert.ToInt32(PawnStatusEnum.NoLai)?'bg-warning':'')">
+                    <span>
+                        {{item.IsBadDebt ? 'Nợ xấu' : item.StatusString}}
+                    </span>
+                </td>
+                <td align="center" class="">
+                    {{item.NgayPhaiDongLaiString}}<br />
+                    <span class="small" ng-if="item.IsNotification"><i class="fa fa-bell" style="color:orange"></i></span>
+                </td>
+                <td class="align-center">
+                    <a class="btn border-btn btn-sm" data-ng-click="LoadPawnDetail(item)" title="Đóng lãi"><i class="pawn-icon-coin"></i></a>
+                    <a class="btn border-btn btn-sm" ng-if="item.IsPaid == false && item.IsCloseContract == false" ng-click="CloseContractClick(item)" title="Đóng HĐ"><i class="pawn-icon-close-contract"></i></a>
+                    <a class="btn border-btn btn-sm" ng-if="item.IsCloseContract == false" ng-click="ChangeIsDebt(item)" title="{{(item.IsBadDebt ? 'Chuyển HD từ nợ xấu về bình thường': 'Nợ xấu')}}"><i class="{{(item.IsBadDebt ? 'fa fa-heart': 'pawn-icon-dangerous')}}"></i></a>
+                    <a class="btn border-btn btn-sm" ng-if="item.IsPaid == false && item.IsCloseContract == false" ng-click="DeletePawn(item)" title="{{(item.IsDeleted == true ? 'Khôi phục': 'Xóa HĐ')}}"><i class="{{(item.IsDeleted == true ? 'ft-rotate-cw': 'pawn-icon-remove')}}"></i></a>
+                    <a class="btn border-btn btn-sm" ng-if="item.IsCloseContract == false" ng-click="OpenTimer(item)" title="Hẹn giờ khoản vay"><i class="pawn-icon-clock"></i></a>
+                </td>
+            </tr>
+            <tr ng-show="ListOfItem.length == 0 || ListOfItem == undefined">
+                <td colspan="13">
+                    @Html.Partial("_NoDataFound")
+                </td>
+            </tr>
+            <!--FOOTER-->
+            <tr class="tr_footer">
+                <td class="hidden-xs hidden-sm">&nbsp;</td>
+                <td></td>
+                <td></td>
+                <td><a style="color:brown"><strong>Tổng Tiền</strong></a></td>
+                <td align="right" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].SumTotalMoney : 0)| currency:"":0}}</strong></td>
+                <td></td>
+                <td align="right" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].SumTotalMoneyPaid : 0)| currency:"":0}}</strong></td>
+                <td class="align-right" style="color:red;"></td>
+                @*<td align="right" style="color:red;"><strong>{{(ListOfItem|total:"LaiDenNgay")| currency:"":0}}</strong> </td>*@
+                <td align="right" style="color:red;"><strong>{{(ListOfItem.length > 0 ? ListOfItem[0].TongTienLai : 0)| currency:"":0}}</strong> </td>
+                <td class="align-right" style="color:red;"></td>
+                <td align="right" style="color:red;"><strong></strong></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    @Html.Partial("_PagingInformation")
+</div>
+

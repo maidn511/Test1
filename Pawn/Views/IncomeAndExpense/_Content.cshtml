@@ -1,0 +1,259 @@
+﻿<div class="content-body" id="table"
+     data-ng-controller="tableController"
+     data-url="@Url.Action("GetAllData", "IncomeAndExpense")"
+     data-detail-url="@Url.Action("GetDetailData", "IncomeAndExpense")"
+     data-update-url="@Url.Action("UpdateIncomeAndExpense", "IncomeAndExpense")"
+     data-add-url="@Url.Action("AddIncomeAndExpense", "IncomeAndExpense")"
+     data-delete-url="@Url.Action("DeleteIncomeAndExpense", "IncomeAndExpense")">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title" id="horz-layout-card-center">Phiếu {{method}}</h4>
+                </div>
+                <div class="card-content collpase show">
+                    <div class="card-body">
+                        <form class="form form-horizontal" name="nameForm" novalidate="" ng-submit="Save()">
+                            <div class="form-body">
+                                <div class="form-group row">
+                                    <label class="col-md-4 label-control" for="eventRegInput1">Người {{customer}} tiền <span style="color:red">*</span></label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control"
+                                               required
+                                               ng-model="Modal.Data.Customer"
+                                               placeholder="Người {{customer}} tiền"
+                                               name="txtMoneyReceiver" />
+                                        <div ng-show="nameForm.txtMoneyReceiver.$dirty && nameForm.txtMoneyReceiver.$invalid">
+                                            <p class="help-block font-red" ng-show="nameForm.txtMoneyReceiver.$error.required">Vui lòng nhập người {{customer}} tiền.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 label-control" for="eventRegInput2">Số tiền <span style="color:red">*</span></label>
+                                    <div class="col-md-8">
+                                        <input class="form-control wc-button-110"
+                                               @*style="text-align: right"*@
+                                               ng-model="Modal.Data.MoneyNumber"
+                                               placeholder="Số tiền"
+                                               pattern="[0-9]+([\.,][0-9]+)*"
+                                               @*ng-max="{{GuessModel.MaxPostage}}"*@
+                                               ng-min="0"
+                                               name="txtMoneyNumber" required
+                                               format-currency-input />
+                                        <div ng-show="nameForm.txtMoneyNumber.$dirty && nameForm.txtMoneyNumber.$invalid">
+                                            <p class="help-block font-red" ng-show="nameForm.txtMoneyNumber.$error.required">Vui lòng nhập số tiền.</p>
+                                            <p class="help-block font-red" ng-show="nameForm.txtMoneyNumber.$error.ngMin">Số tiền không được nhỏ hơn bằng 0 đ</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 label-control">Loại phiếu <span style="color:red">*</span></label>
+                                    <div class="col-md-8">
+                                        <select name="cbbType" class="form-control" required
+                                                ng-options="option.Id as option.Text for option in categoryOptions"
+                                                ng-model="Modal.Data.Method">
+                                            <option value="" style="color:gray" disabled="disabled">-- Chọn loại phiếu {{method}} --</option>
+                                        </select>
+                                        <div ng-show="nameForm.cbbType.$dirty && nameForm.cbbType.$invalid">
+                                            <p class="help-block font-red" ng-show="nameForm.cbbType.$error.required">Vui lòng chọn loại phiếu {{method}}.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-4 label-control">Lý do {{method}} tiền</label>
+                                    <div class="col-md-8">
+                                        <textarea rows="3"
+                                                  name="txtReason"
+                                                  ng-model="Modal.Data.Reason"
+                                                  class="form-control"
+                                                  placeholder="Lý do {{method}} tiền"></textarea>
+                                        @*<div ng-show="nameForm.txtReason.$dirty && nameForm.txtReason.$invalid">
+                                                <p class="help-block font-red" ng-show="nameForm.txtReason.$error.required">Vui lòng nhập lý do {{method}} tiền.</p>
+                                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions right">
+                                <button type="submit" class="btn btn-warning mr-1" ng-disabled="nameForm.$invalid">
+                                    <i class="ft-x"></i> {{method |capitalize}} tiền
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <select name="cbbType" class="form-control" required
+                                            ng-options="option.Id as option.Text for option in categoryOptions"
+                                            ng-model="Parameters.Method">
+                                        <option value="">-- Chọn loại phiếu {{method}} --</option>
+                                    </select>
+                                </fieldset>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                <div class="input-group"
+                                     moment-picker="Parameters.fromDateString"
+                                     max-date="Parameters.toDateString"
+                                     format="DD-MM-YYYY">
+                                    <input class="form-control"
+                                           placeholder="Tư ngày"
+                                           ng-model="Parameters.fromDateString"
+                                           ng-model-options="{ updateOn: 'blur' }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                <div class="input-group"
+                                     moment-picker="Parameters.toDateString"
+                                     min-date="Parameters.fromDateString"
+                                     format="DD-MM-YYYY">
+                                    <input class="form-control"
+                                           placeholder="Select a date"
+                                           ng-model="Parameters.toDateString"
+                                           ng-model-options="{ updateOn: 'blur' }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2"><span class="fa fa-calendar"></span></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-lg-4 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <button type="button" ng-click="Search()" class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel-body" style="position: relative; padding: 15px 0 15px 0">
+                            @Html.Partial("_Loading")
+                            <table class="table table-bordered table-striped w-100"
+                                   style="position: relative; width: 100%; height: 100%"
+                                   role="grid">
+                                <thead class="cf">
+                                    <tr>
+                                        <th style="text-align: center" class="{{sortType!='PageIndex'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}" tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'PageIndex'; sortReverse = !sortReverse">
+                                            #
+                                        </th>
+                                        <th class="{{sortType!='VoucherCode'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'VoucherCode'; sortReverse = !sortReverse">
+                                            Mã phiếu
+                                        </th>
+                                        <th class="{{sortType!='MethodString'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MethodString'; sortReverse = !sortReverse">
+                                            Loại phiếu
+                                        </th>
+                                        <th class="{{sortType!='CreatedDate'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'CreatedDate'; sortReverse = !sortReverse">
+                                            Ngày lập
+                                        </th>
+                                        <th class="{{sortType!='Customer'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Customer'; sortReverse = !sortReverse">
+                                            Khách hàng
+                                        </th>
+                                        <th class="{{sortType!='MoneyNumber'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'MoneyNumber'; sortReverse = !sortReverse">
+                                            Số tiền
+                                        </th>
+                                        <th class="{{sortType!='Reason'?'sorting':(sortReverse?'sorting_asc':'sorting_desc')}}"
+                                            tabindex="0" aria-controls="datatable-responsive" ng-click="sortType = 'Reason'; sortReverse = !sortReverse">
+                                            Ghi chú
+                                        </th>
+                                        <th>
+                                            Thao tác
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="item in filteredItems = (ListOfItem | filter : search | orderBy:sortType:sortReverse)" contextmenurepeater>
+                                        <td style="text-align: center; width: 40px !important; vertical-align: middle" data-title="#">{{(Pager.currentPage - 1) *Pager.pageSize + ($index + 1)}}</td>
+                                        <td style="vertical-align: middle;"><a class="font-blue-alt" href="#" ng-click="ShowDetailByItem(item)">{{item.VoucherCode}}</a></td>
+                                        <td class="text-center">{{item.MethodString}}</td>
+                                        <td class="text-center">{{item.CreatedDate}}</td>
+                                        <td class="text-center">{{item.Customer}}</td>
+                                        <td class="text-right">{{item.MoneyNumber| currency:"":0}}</td>
+                                        <td style="vertical-align: middle; width: 250px !important">{{item.Reason}}</td>
+                                        <td style="vertical-align: middle; width: 100px !important; text-align: center">
+                                            @if (RDAuthorize.IsPermissionConfig("AccountEdit"))
+                                            {
+                                                <a ng-click="PrintData(item)" style="margin-right: 10px; cursor: pointer">
+                                                    <i title="Edit" class="fa fa-print"></i>
+                                                </a>
+                                            }
+
+                                            @if (RDAuthorize.IsPermissionConfig("AccountDelete"))
+                                            {
+                                                <a ng-click="Delete(item.Id)" style="margin-right: 10px; cursor: pointer" data-action="btnDelete">
+                                                    <i title="Delete" class="fa fa-trash"></i>
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="ListOfItem.length == 0 || ListOfItem == undefined">
+                                        <td colspan="8">
+                                            @Html.Partial("_NoDataFound")
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @Html.Partial("_PagingInformation")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_Print")
+
+</div>
+
+<!-- Modal -->
+@*<div class="modal fade text-left" id="backdrop" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="vertical-alignment-helper" style="width: 100%; margin: 0 auto;">
+            <div class="modal-dialog vertical-align-center" style="left: 0 !important">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Phiếu {{method}}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                                <fieldset class="form-group">
+                                    <label for="txtcustomer">Người {{method}} tiền</label>
+                                    <input class="form-control" id="txtcustomer" ng-model="Modal.Data.DoiTuong" type="text" />
+                                </fieldset>
+                                <fieldset class="form-group">
+                                    <label for="txtcategory">Loại phiếu</label>
+                                    <select name="mySelect" id="txtcategory" class="form-control"
+                                            ng-options="option.id as option.name for option in categoryOptions"
+                                            ng-model="Modal.Data.LoaiPhieu"></select>
+                                </fieldset>
+                                <fieldset class="form-group">
+                                    <label for="txtprice">Số tiền</label>
+                                    <input class="form-control" id="txtprice" ng-model="Modal.Data.SoTien" type="text"/>
+                                </fieldset>
+                                <fieldset class="form-group">
+                                    <label for="txtDescription">Lý do {{method}} tiền</label>
+                                    <textarea class="form-control" id="txtDescription" ng-model="Modal.Data.LyDo" rows="3"></textarea>
+                                </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn green btn-outline-primary">Lưu</button>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

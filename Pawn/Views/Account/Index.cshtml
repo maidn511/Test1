@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Quản trị tài khoản";
+}
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Quản trị tài khoản",
+    ListLiModels = new List<LiModels>
+    {
+        new LiModels { Name = "Quản trị tài khoản", IsActive = true}
+    }
+})
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <input type="text" class="form-control border-primary" data-button="#btnSearch" id="txtKeyword" placeholder="Từ khóa tìm kiếm">
+                                </fieldset>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    @Html.Action("LoadSelectAccountType", "Common",
+                                             new SelectOptionModels
+                                             {
+                                                 ChosenSuggest = "-- Chọn loại tài khoản --",
+                                                 IdSelect = "slAccountType"
+                                             })
+                                </fieldset>
+                            </div>
+                            <div class="col-xl-2 mb-1 skin skin-flat" style="padding-top: 8px">
+                                <fieldset class="form-group">
+                                    <input type="checkbox" id="chkIsActive" class="switchery" data-size="sm" checked="" />
+                                    <label for="chkIsActive">Hoạt động</label>
+                                </fieldset>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-12 mb-1">
+                                <fieldset class="form-group">
+                                    <button type="button" class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @if (RDAuthorize.IsPermissionConfig("AccountAdd"))
+                {
+                    <div class="box-search" style="padding-bottom: 10px">
+                        <div class="form-inline">
+                            <a class="btn btn-primary" href="@Url.Action("AddAccount")"><i class="fa fa-plus"></i>Thêm tài khoản</a>
+                        </div>
+                    </div>
+        }
+                        <div class="table-responsive" id="divAccount">
+                            @{Html.RenderAction("_PartialAccount");}
+                        </div>
+                        <nav class="text-center">
+                            <ul id="pagination" class="pagination"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        var urlAjaxSearch = '@Url.Action("_PartialAccount")';
+        var urlAjaxDelete = '@Url.Action("DeleteAccount")';
+    </script>
+    <script src="~/Scripts/app/account/index.js?v=@DateTime.Now.Millisecond"></script>
+}

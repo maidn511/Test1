@@ -1,0 +1,124 @@
+﻿@model Pawn.Models.MenuPermissionModel
+@{
+    ViewBag.Title = "Permission";
+    var modelRoles = Model.Roles.OrderBy(x => x.Id);
+}
+
+
+@Html.Action("AddBreadCrumb", "Common", new BreadCrumbModels
+{
+    Title = "Phân quyền",
+    ListLiModels = new List<LiModels>
+{
+new LiModels { Name = "Phân quyền", IsActive = true}
+}
+})
+
+<div class="content-body">
+    <section id="basic-form-layouts">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body" style="padding-bottom:0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="javascript:void(0)" onclick="submitform();" name="save" class="btn btn-primary btn-min-width mr-1 mb-1">
+                                        <i class="fa fa-floppy-o"></i>
+                                        Save
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="fr-permission" method="post" class="form-horizontal">
+                                <div class="panel-group">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            @if (Model.Roles.Count == 0)
+                                            {
+                                                <text>No permissions defined</text>
+                                            }
+                                            else if (Model.Menus.Count == 0)
+                                            {
+                                                <text>No customer roles available</text>
+                                            }
+                                            else
+                                            {
+                                                <div class="scroll-wrapper">
+                                                    <table class="table table-hover table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="col">
+                                                                    <strong>Permission URL</strong>
+                                                                </th>
+                                                                @foreach (var cr in modelRoles)
+                                                                {
+                                                                    if (cr.Id == Pawn.Libraries.RoleEnum.Root) { continue; }
+                                                                    <th scope="col">
+                                                                        <div class="checkbox skin skin-flat">
+                                                                            <label>
+                                                                                <input type="checkbox" data-size="sm" class="switchery" id="selectall-@(cr.Id)" data-id="@(cr.Id)" onchange="test()" />
+                                                                                <strong>@cr.Name</strong>
+                                                                            </label>
+                                                                        </div>
+                                                                    </th>
+                                                                }
+                                                            </tr>
+                                                            @foreach (var pr in Model.Menus)
+                                                            {
+                                                                string strMarginLeft = pr.Level + "0px";
+                                                                <tr>
+                                                                    <td>
+                                                                        <span style="margin-left: @strMarginLeft" title="@pr.Description">@pr.Name</span>
+                                                                    </td>
+                                                                    @foreach (var cr in modelRoles)
+                                                                    {
+                                                                        if (cr.Id == Pawn.Libraries.RoleEnum.Root) { continue; }
+                                                                        var allowed = Model.Allowed.ContainsKey(cr.Id) && Model.Allowed[cr.Id][pr.Id];
+                                                                        <td class="skin skin-flat">
+                                                                            <input data-size="sm" class="switchery allow_@(cr.Id)" type="checkbox" value="@(pr.Id)" name="allow_@(cr.Id)" @(allowed ? " checked=checked" : null) />
+                                                                        </td>
+                                                                    }
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        function submitform() {
+            $.ajax({
+                type: 'POST',
+                url: '/System/Permission',
+                data: $('#fr-permission').serialize(),
+                dataType: 'json',
+                success: function (result) {
+                    if (result.Message)
+                        notification(notifiType.error, "Thất bại!", result.Message);
+                    else
+                        notification(notifiType.success, "Thành công!", "Phân quyền thành công!");
+                }
+            });
+        }
+        $(function () {
+            $('[id^="selectall"]').on('ifChanged', function (event) {
+                $('.allow_' + $(this).attr("data-id")).iCheck($(this).is(':checked') ? "check" : "uncheck")
+            });
+        })
+    </script>
+}
+

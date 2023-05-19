@@ -1,0 +1,51 @@
+﻿@model List<MenuModels>
+
+@helper LoadMenuHtml(int intParentId, bool isRoot)
+{
+    if (isRoot)
+    {
+        @:<ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+    }
+    else
+    {
+        @:<ul class="menu-content">
+    }
+
+if (Model.Any())
+{
+    var lstMenu = Model.Where(c => c.IsCms && c.ParentId == intParentId);
+    foreach (var item in lstMenu)
+    {
+        //if (!RDAuthorize.IsPermission(item.RoleName))
+        //{
+        //    continue;
+        //}
+        var hasChildren = Model.Any(c => c.ParentId == item.Id);
+                <li class="nav-item @(hasChildren ? "has-sub" :"")">
+
+                    @if (isRoot)
+                    {
+                        <a href="@(!string.IsNullOrEmpty(item.Url) ? item.Url : "#")">
+                            <i class="@item.Icon"></i>
+                            <span class="menu-title" data-i18n="">
+                                @item.MenuName
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="menu-item" href="@(!string.IsNullOrEmpty(item.Url) ? item.Url : "#")">
+                            @item.MenuName
+                        </a>
+                    }
+
+                    @if (hasChildren)
+                    {
+                        @LoadMenuHtml(item.Id, false);
+                    }
+                </li>
+        }
+    }
+    @:</ul>
+}
+@LoadMenuHtml(0, true);

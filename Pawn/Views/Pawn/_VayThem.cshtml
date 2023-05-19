@@ -1,0 +1,56 @@
+﻿<div class="col-md-12">
+    <div class="widget box">
+        <div class="widget-header">
+            <h4><i class="icon-reorder"></i>Vay thêm tiền</h4>
+        </div>
+        <div class="widget-content">
+            <form class="form-horizontal row-border" id="validate-1" action="#" novalidate="novalidate">
+                <div class="form-group ptb5">
+                    <label class="col-md-4 control-label">Ngày vay thêm gốc</label>
+                    <div class="col-md-4">
+                        <input type="text" id="strDateVayThem" name="strDateVayThem" class="form-control datepicker hasDatepicker" size="10">
+                    </div>
+                </div>
+
+                <div class="form-group ptb5">
+                    <label class="col-md-4 control-label">Số tiền vay thêm <span class="required">*</span></label>
+                    <div class="col-md-4">
+                        <input type="text" id="TotalMoney_VayThem" name="TotalMoney_VayThem" class="inputAmountUSD form-control digits">
+                    </div>
+                </div>
+
+                <div class="form-group ptb5">
+                    <label class="col-md-4 control-label">Ghi chú</label>
+                    <div class="col-md-6">
+                        <textarea rows="2" cols="5" name="Note_VayThem" id="Note_VayThem" class="auto form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions ptb5">
+                    <div class="col-md-10">
+                        <input type="button" value="Đồng ý" class="btn btn-primary pull-right" onclick="AdditionalLoan();">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Danh sách tiền gốc-->
+    <div class="widget-header">
+        <h4><i class="icon-reorder"></i>Danh sách tiền gốc</h4>
+    </div>
+    <div class="widget-content">
+        <table class="table table-striped table-bordered table-hover table-checkable datatable h-center" id="tblPayment">
+            <thead>
+                <tr>
+                    <th width="50px">STT</th>
+                    <th>Ngày</th>
+                    <th>Nội dung</th>
+                    <th>Số tiền</th>
+                    <th>
+                        &nbsp;
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+﻿
+@model Pawn.ViewModel.Models.SelectOptionModels
+
+<select id="@Model.IdSelect" class="@Model.Class border-primary"
+        style="width:100%"
+        data-required="@(Model.DataRequired ? "true" : "false")"
+        data-key="@Model.DataKey" name="@Model.Name"
+        placeholder="@Model.PlaceHolder"
+        data-provide="@(Model.IsSelectPicker ? "selectpicker" :"")" @(Model.Multiple ? "multiple" : "")
+        @(!string.IsNullOrEmpty(Model.Attribute) ? Model.Attribute : "")>
+    <option value="">@(!string.IsNullOrEmpty(Model.ChosenSuggest) ? Model.ChosenSuggest : "--Please choose--")</option>
+    @if (Model?.ListItems != null)
+    {
+        foreach (var item in Model.ListItems)
+        {
+            var isSelected = item.Value.Equals(Model.Value);
+            <option @(isSelected ? "selected" : "") value="@item.Value">@item.Text</option>
+        }
+    }
+</select>
